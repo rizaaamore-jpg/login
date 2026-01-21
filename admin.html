@@ -77,6 +77,32 @@
 <body>
 
 <script>
+function simpanJam(){
+  const open = document.getElementById("openHour").value;
+  const close = document.getElementById("closeHour").value;
+
+  if(open === "" || close === ""){
+    alert("Jam tidak boleh kosong");
+    return;
+  }
+
+  localStorage.setItem("settingAbsen", JSON.stringify({
+    open: parseInt(open),
+    close: parseInt(close)
+  }));
+
+  alert("✅ Jam absen berhasil diubah");
+}
+
+/* LOAD JAM SAAT ADMIN BUKA */
+const setting = JSON.parse(localStorage.getItem("settingAbsen"));
+if(setting){
+  document.getElementById("openHour").value = setting.open;
+  document.getElementById("closeHour").value = setting.close;
+}
+</script>
+  
+<script>
 /* =====================
    CEK ROLE ADMIN
 ===================== */
