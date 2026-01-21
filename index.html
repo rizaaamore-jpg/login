@@ -1,47 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transparent Login Form</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-
-awesome/4.7.0/css/font -awesome.min.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transparent Login Form</title>
+
+  <!-- Font Awesome (FIXED) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<link rel="stylesheet" href="style.css">
 <body>
+
   <div class="bg-img">
     <div class="content">
+
       <header>Login Here</header>
-        <form action="#">
-          <div class="field">
-            <i class="fa fa-user"></i>
-            <input type="text" placeholder="Enter Email or Phone" required />
-          </div>
-          <div class="field space">
-            <i class="fa fa-lock"></i>
-            <input type="password" class="pass-key" placeholder="EnterPassword" required />
-            <span class="show">SHOW</span>
-          </div>
-          <div class="pass">
-            <a href="#">Forgot Password?</a>
-          </div>
-          <div class="field">
-            <input type="submit" value="LOGIN">
-          </div>
-        </form>
+
+      <form action="#" method="post">
+
+        <div class="field">
+          <i class="fa fa-user"></i>
+          <input type="text" placeholder="Enter Email or Phone" required>
+        </div>
+
+        <div class="field space">
+          <i class="fa fa-lock"></i>
+          <input type="password" class="pass-key" placeholder="Enter Password" required>
+          <span class="show">SHOW</span>
+        </div>
+
+        <div class="pass">
+          <a href="#">Forgot Password?</a>
+        </div>
+
+        <div class="field">
+          <input type="submit" value="LOGIN">
+        </div>
+
+      </form>
+
       <div class="login">Or login with</div>
+
       <div class="links">
         <div class="facebook">
-          <i class="fa fa-facebook"> <span>Facebook</span></i>
+          <i class="fa fa-facebook"></i>
+          <span>Facebook</span>
         </div>
+
         <div class="gmail">
-          <i class="fa fa-envelope"> <span>G-Mail</span></i>
+          <i class="fa fa-envelope"></i>
+          <span>G-Mail</span>
         </div>
       </div>
-      <div class="signup"> Don't have an account? <a href="#">Signup Now</a>
+
+      <div class="signup">
+        Don't have an account?
+        <a href="#">Signup Now</a>
       </div>
+
     </div>
   </div>
+
+  <!-- SHOW PASSWORD SCRIPT -->
+  <script>
+    const passField = document.querySelector(".pass-key");
+    const showBtn = document.querySelector(".show");
+
+    showBtn.onclick = () => {
+      if (passField.type === "password") {
+        passField.type = "text";
+        showBtn.textContent = "HIDE";
+      } else {
+        passField.type = "password";
+        showBtn.textContent = "SHOW";
+      }
+    };
+  </script>
+
 </body>
 </html>
