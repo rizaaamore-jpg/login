@@ -2,56 +2,145 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin</title>
-  <link rel="stylesheet" href="admin.css">
+  <title>Dashboard Admin - Absen</title>
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f0fdf4;
+      padding:20px;
+    }
+    h2{
+      color:#166534;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+      background:white;
+    }
+    th, td{
+      border:1px solid #ccc;
+      padding:10px;
+      text-align:center;
+    }
+    th{
+      background:#22c55e;
+      color:white;
+    }
+    tr:nth-child(even){
+      background:#f0fdf4;
+    }
+    button{
+      padding:6px 12px;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+    }
+    .hapus{
+      background:#dc2626;
+      color:white;
+    }
+    .logout{
+      background:#166534;
+      color:white;
+      margin-bottom:10px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <h2>ADMIN</h2>
-  <a href="#">Dashboard</a>
-  <a href="#">Data Absensi</a>
-  <a href="#">Data Siswa</a>
-  <a href="#" onclick="toggleDark()">Dark Mode</a>
-  <a href="#" onclick="logout()">Logout</a>
-</div>
+<script>
+/* =====================
+   CEK ROLE ADMIN
+===================== */
+if(localStorage.getItem("role") !== "admin"){
+  alert("Akses ditolak!");
+  window.location.href = "index.html";
+}
+</script>
 
-<div class="main">
-  <header>
-    <h2>Dashboard Absensi</h2>
-  </header>
+<h2>Dashboard Admin - Data Absen</h2>
 
-  <div class="filter">
-    <select id="filterKelas">
-      <option value="">Semua Kelas</option>
-      <option>X TKJ 1</option>
-      <option>X TKJ 2</option>
-      <option>X TKJ 3</option>
-    </select>
+<button class="logout" onclick="logout()">Logout</button>
 
-    <input type="date" id="filterTanggal">
-    <button onclick="renderData()">Filter</button>
-    <button onclick="exportExcel()">Export Excel</button>
-  </div>
+<table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Nama</th>
+      <th>Kelas</th>
+      <th>Status</th>
+      <th>Waktu</th>
+      <th>Tanggal</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="absenTable"></tbody>
+</table>
 
-  <table>
-    <thead>
+<script>
+/* =====================
+   LOAD DATA ABSEN
+===================== */
+function loadAbsen(){
+  const data = JSON.parse(localStorage.getItem("absen")) || [];
+  const table = document.getElementById("absenTable");
+  table.innerHTML = "";
+
+  if(data.length === 0){
+    table.innerHTML = `
       <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Kelas</th>
-        <th>Status</th>
-        <th>Tanggal</th>
+        <td colspan="7">Belum ada data absen</td>
       </tr>
-    </thead>
-    <tbody id="tabelAbsen"></tbody>
-  </table>
-</div>
+    `;
+    return;
+  }
 
-<script src="data.js"></script>
-<script src="export.js"></script>
-<script src="admin.js"></script>
-<script src="logout.js"></script>
+  data.forEach((item, index) => {
+    table.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${item.nama}</td>
+        <td>${item.kelas}</td>
+        <td>${item.status}</td>
+        <td>${item.waktu}</td>
+        <td>${item.tanggal}</td>
+        <td>
+          <button class="hapus" onclick="hapusAbsen(${index})">
+            Hapus
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* =====================
+   HAPUS DATA ABSEN
+===================== */
+function hapusAbsen(index){
+  if(!confirm("Yakin ingin menghapus data ini?")) return;
+
+  let data = JSON.parse(localStorage.getItem("absen")) || [];
+  data.splice(index,1);
+  localStorage.setItem("absen", JSON.stringify(data));
+  loadAbsen();
+}
+
+/* =====================
+   LOGOUT
+===================== */
+function logout(){
+  localStorage.removeItem("loginUser");
+  localStorage.removeItem("role");
+  window.location.href = "index.html";
+}
+
+/* =====================
+   LOAD SAAT BUKA
+===================== */
+loadAbsen();
+</script>
+
 </body>
 </html>
