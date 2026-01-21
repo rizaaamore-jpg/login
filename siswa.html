@@ -47,8 +47,8 @@
 <script src="data.js"></script>
 <script src="logout.js"></script>
   <script>
-const openHour = 6;   // jam buka absen
-const closeHour = 8;  // jam tutup absen
+const openHour = 21;   // jam buka absen
+const closeHour = 22;  // jam tutup absen
 
 function updateClock(){
   const now = new Date();
@@ -77,7 +77,7 @@ function checkAbsenTime(hour){
     status.style.color = "#16a34a";
   }else{
     btn.disabled = true;
-    status.innerText = "❌ Absen ditutup (06:00 - 08:00)";
+    status.innerText = "❌ Absen ditutup (21:00 - 22:00)";
     status.style.color = "#dc2626";
   }
 }
