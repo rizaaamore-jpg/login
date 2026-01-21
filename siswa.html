@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+  <meta charset="UTF-8">
   <title>Absen Siswa</title>
   <link rel="stylesheet" href="siswa.css">
 </head>
@@ -13,15 +14,14 @@
 </script>
 
 <h2>Form Absen Siswa</h2>
-  
+
+<!-- JAM -->
 <div class="clock-box">
   <div id="clock"></div>
   <div id="date"></div>
 </div>
 
-<button id="absenBtn" onclick="absen()">ABSEN SEKARANG</button>
-<p id="absenStatus"></p>
-  
+<!-- FORM ABSEN -->
 <form id="absenForm">
   <input type="text" id="nama" placeholder="Nama Siswa" required>
 
@@ -33,72 +33,94 @@
   </select>
 
   <select id="status" required>
-    <option>Hadir</option>
-    <option>Izin</option>
-    <option>Sakit</option>
-    <option>Alfa</option>
+    <option value="Hadir">Hadir</option>
+    <option value="Izin">Izin</option>
+    <option value="Sakit">Sakit</option>
+    <option value="Alfa">Alfa</option>
   </select>
 
-  <button type="submit">Simpan Absen</button>
+  <button id="absenBtn" type="submit">ABSEN SEKARANG</button>
 </form>
 
-<p id="notif"></p>
+<p id="absenStatus"></p>
 
-<script src="data.js"></script>
-<script src="logout.js"></script>
-  <script>
-const openHour = 21;   // jam buka absen
-const closeHour = 22;  // jam tutup absen
+<script>
+/* =====================
+   BATAS JAM ABSEN
+===================== */
+const openHour = 21;
+const closeHour = 22;
 
+/* =====================
+   JAM REALTIME
+===================== */
 function updateClock(){
   const now = new Date();
-
-  const h = String(now.getHours()).padStart(2,'0');
-  const m = String(now.getMinutes()).padStart(2,'0');
-  const s = String(now.getSeconds()).padStart(2,'0');
-
-  const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
-  const months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-
-  document.getElementById("clock").innerText = `${h}:${m}:${s}`;
+  document.getElementById("clock").innerText =
+    now.toLocaleTimeString();
   document.getElementById("date").innerText =
-    `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    now.toLocaleDateString("id-ID", {
+      weekday:"long", year:"numeric", month:"long", day:"numeric"
+    });
 
   checkAbsenTime(now.getHours());
 }
 
 function checkAbsenTime(hour){
   const btn = document.getElementById("absenBtn");
-  const status = document.getElementById("absenStatus");
+  const info = document.getElementById("absenStatus");
 
   if(hour >= openHour && hour < closeHour){
     btn.disabled = false;
-    status.innerText = "⏰ Waktu absen dibuka";
-    status.style.color = "#16a34a";
+    info.innerText = "⏰ Waktu absen dibuka";
+    info.style.color = "green";
   }else{
     btn.disabled = true;
-    status.innerText = "❌ Absen ditutup (21:00 - 22:00)";
-    status.style.color = "#dc2626";
+    info.innerText = "❌ Absen ditutup (21:00 - 22:00)";
+    info.style.color = "red";
   }
 }
 
-function absen(){
-  const user = localStorage.getItem("loginUser");
-  const time = new Date().toLocaleTimeString();
+/* =====================
+   SIMPAN ABSEN (FINAL)
+===================== */
+document.getElementById("absenForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const nama   = document.getElementById("nama").value;
+  const kelas  = document.getElementById("kelas").value;
+  const status = document.getElementById("status").value;
+
+  const now = new Date();
+  const today = now.toLocaleDateString();
 
   let data = JSON.parse(localStorage.getItem("absen")) || [];
+
+  // ❌ CEGAH ABSEN DOBEL
+  if(data.find(a => a.nama === nama && a.tanggal === today)){
+    document.getElementById("absenStatus").innerText =
+      "⚠️ Kamu sudah absen hari ini";
+    return;
+  }
+
   data.push({
-    user: user,
-    waktu: time,
-    tanggal: new Date().toLocaleDateString()
+    nama: nama,
+    kelas: kelas,
+    status: status,
+    waktu: now.toLocaleTimeString(),
+    tanggal: today
   });
 
   localStorage.setItem("absen", JSON.stringify(data));
-  document.getElementById("absenStatus").innerText = "✅ Absen berhasil";
-}
 
-setInterval(updateClock,1000);
+  document.getElementById("absenStatus").innerText =
+    "✅ Absen berhasil (" + status + ")";
+  this.reset();
+});
+
+setInterval(updateClock, 1000);
 updateClock();
-                 </script>  
+</script>
+
 </body>
 </html>
