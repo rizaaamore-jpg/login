@@ -7,6 +7,7 @@
 </head>
 <body>
 
+<!-- CEK ROLE -->
 <script>
   if(localStorage.getItem("role") !== "siswa"){
     window.location.href = "index.html";
@@ -46,21 +47,31 @@
 
 <script>
 /* =====================
-   BATAS JAM ABSEN
+   SETTING JAM (DARI ADMIN)
 ===================== */
-const openHour = 21;
-const closeHour = 22;
+let settingAbsen = JSON.parse(localStorage.getItem("settingAbsen")) || {
+  open: 21,
+  close: 22
+};
+
+const openHour  = settingAbsen.open;
+const closeHour = settingAbsen.close;
 
 /* =====================
    JAM REALTIME
 ===================== */
 function updateClock(){
   const now = new Date();
+
   document.getElementById("clock").innerText =
     now.toLocaleTimeString();
+
   document.getElementById("date").innerText =
     now.toLocaleDateString("id-ID", {
-      weekday:"long", year:"numeric", month:"long", day:"numeric"
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
     });
 
   checkAbsenTime(now.getHours());
@@ -76,16 +87,24 @@ function checkAbsenTime(hour){
     info.style.color = "green";
   }else{
     btn.disabled = true;
-    info.innerText = "❌ Absen ditutup (21:00 - 22:00)";
+    info.innerText =
+      `❌ Absen ditutup (${openHour}:00 - ${closeHour}:00)`;
     info.style.color = "red";
   }
 }
 
 /* =====================
-   SIMPAN ABSEN (FINAL)
+   SIMPAN ABSEN
 ===================== */
 document.getElementById("absenForm").addEventListener("submit", function(e){
   e.preventDefault();
+
+  const currentHour = new Date().getHours();
+  if(currentHour < openHour || currentHour >= closeHour){
+    document.getElementById("absenStatus").innerText =
+      "❌ Absen di luar jam";
+    return;
+  }
 
   const nama   = document.getElementById("nama").value;
   const kelas  = document.getElementById("kelas").value;
@@ -96,7 +115,7 @@ document.getElementById("absenForm").addEventListener("submit", function(e){
 
   let data = JSON.parse(localStorage.getItem("absen")) || [];
 
-  // ❌ CEGAH ABSEN DOBEL
+  // CEGAH ABSEN DOBEL
   if(data.find(a => a.nama === nama && a.tanggal === today)){
     document.getElementById("absenStatus").innerText =
       "⚠️ Kamu sudah absen hari ini";
@@ -118,6 +137,9 @@ document.getElementById("absenForm").addEventListener("submit", function(e){
   this.reset();
 });
 
+/* =====================
+   JALANKAN JAM
+===================== */
 setInterval(updateClock, 1000);
 updateClock();
 </script>
