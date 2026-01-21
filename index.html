@@ -64,6 +64,27 @@
     </div>
   </div>
 
+  <script>
+function loginSocial(type){
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let username = type + "_user";
+
+  if(!users.find(u => u.username === username)){
+    users.push({
+      username: username,
+      password: "-",
+      role: "siswa"
+    });
+    localStorage.setItem("users", JSON.stringify(users));
+  }
+
+  localStorage.setItem("role","siswa");
+  localStorage.setItem("loginUser",username);
+  window.location.href = "siswa.html";
+}
+  </script>
+
   <!-- SHOW PASSWORD SCRIPT -->
   <script>
     const passField = document.querySelector(".pass-key");
