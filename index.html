@@ -3,17 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <!-- ANTI ZOOM & RESPONSIVE -->
   <meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>Transparent Login Form</title>
 
-  <!-- Font Awesome -->
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FONT AWESOME -->
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <div class="bg-img">
@@ -21,8 +32,7 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
       <header>Login Here</header>
 
-      <!-- LOGIN FORM -->
-      <form action="#" method="post">
+      <form>
 
         <div class="field">
           <i class="fa fa-user"></i>
@@ -47,23 +57,19 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
       <div class="login">Or login with</div>
 
-      <!-- SOCIAL LOGIN -->
       <div class="links">
-        <div class="facebook" onclick="loginSocial('facebook')">
-          <i class="fa fa-facebook"></i>
-          <span>Facebook</span>
+        <div class="facebook" onclick="loginSocial('Facebook')">
+          <i class="fa fa-facebook"></i> Facebook
         </div>
 
-        <div class="gmail" onclick="loginSocial('gmail')">
-          <i class="fa fa-envelope"></i>
-          <span>G-Mail</span>
+        <div class="gmail" onclick="loginSocial('G-Mail')">
+          <i class="fa fa-envelope"></i> G-Mail
         </div>
       </div>
 
-      <!-- SIGNUP (SATU SAJA) -->
       <div class="signup">
         Don't have an account?
-        <a href="register.html">Signup Now</a>
+        <a href="#">Signup Now</a>
       </div>
 
     </div>
@@ -83,32 +89,11 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
         showBtn.textContent = "SHOW";
       }
     };
-  </script>
 
-  <!-- SOCIAL LOGIN SCRIPT -->
-  <script>
-    function loginSocial(type) {
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-      let username = type + "_user";
-
-      if (!users.find(u => u.username === username)) {
-        users.push({
-          username: username,
-          password: "-",
-          role: "siswa"
-        });
-        localStorage.setItem("users", JSON.stringify(users));
-      }
-
-      localStorage.setItem("role", "siswa");
-      localStorage.setItem("loginUser", username);
-      window.location.href = "siswa.html";
+    function loginSocial(type){
+      alert("Login dengan " + type + " (demo)");
     }
   </script>
-
-  <!-- USER & AUTH -->
-  <script src="users.js"></script>
-  <script src="auth.js"></script>
 
 </body>
 </html>
