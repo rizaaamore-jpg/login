@@ -50,23 +50,6 @@ button{
   }
 }
 
-/* CLOCK */
-.clock-box{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-#clock{
-  font-size:36px;
-  font-weight:700;
-  color:#16a34a;
-}
-
-#date{
-  font-size:14px;
-  color:#166534;
-}
-
 .clock-box{
   text-align:center;
   margin-bottom:20px;
