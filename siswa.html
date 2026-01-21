@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Absen Siswa</title>
+  <link rel="stylesheet" href="siswa.css">
+</head>
+<body>
+
+<script>
+  if(localStorage.getItem("role") !== "siswa"){
+    window.location.href = "index.html";
+  }
+</script>
+
+<h2>Form Absen Siswa</h2>
+
+<form id="absenForm">
+  <input type="text" id="nama" placeholder="Nama Siswa" required>
+
+  <select id="kelas" required>
+    <option value="">Pilih Kelas</option>
+    <option>X TKJ 1</option>
+    <option>X TKJ 2</option>
+    <option>X TKJ 3</option>
+  </select>
+
+  <select id="status" required>
+    <option>Hadir</option>
+    <option>Izin</option>
+    <option>Sakit</option>
+    <option>Alfa</option>
+  </select>
+
+  <button type="submit">Simpan Absen</button>
+</form>
+
+<p id="notif"></p>
+
+<script src="data.js"></script>
+<script src="logout.js"></script>
+</body>
+</html>
