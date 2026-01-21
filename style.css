@@ -21,12 +21,22 @@ body{
   justify-content:center;
 }
 
-.content{
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   background:#ecfdf5;
-  padding:35px;
-  width:360px;
-  border-radius:16px;
-  box-shadow:0 25px 50px rgba(0,0,0,0.35);
+}
+
+.card{
+  background:#ffffff;
+  width:95%;
+  max-width:480px;
+  padding:32px;
+  border-radius:22px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.1);
+  text-align:center;
 }
 
 header{
