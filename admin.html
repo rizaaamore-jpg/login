@@ -1,50 +1,57 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Admin Absensi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<script>
-  if(localStorage.getItem("role") !== "admin"){
-    window.location.href = "index.html";
-  }
-</script>
-
-<header>
-  <h2>Dashboard Admin</h2>
-  <button onclick="logout()">Logout</button>
-</header>
-
-<div class="filter">
-  <select id="filterKelas">
-    <option value="">Semua Kelas</option>
-    <option>X TKJ 1</option>
-    <option>X TKJ 2</option>
-    <option>X TKJ 3</option>
-  </select>
-
-  <input type="date" id="filterTanggal">
-  <button onclick="renderData()">Filter</button>
-  <button onclick="exportExcel()">Export Excel</button>
+<div class="sidebar">
+  <h2>ADMIN</h2>
+  <a href="#">Dashboard</a>
+  <a href="#">Data Absensi</a>
+  <a href="#">Data Siswa</a>
+  <a href="#" onclick="toggleDark()">Dark Mode</a>
+  <a href="#" onclick="logout()">Logout</a>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Nama</th>
-      <th>Kelas</th>
-      <th>Status</th>
-      <th>Tanggal</th>
-    </tr>
-  </thead>
-  <tbody id="tabelAbsen"></tbody>
-</table>
+<div class="main">
+  <header>
+    <h2>Dashboard Absensi</h2>
+  </header>
+
+  <div class="filter">
+    <select id="filterKelas">
+      <option value="">Semua Kelas</option>
+      <option>X TKJ 1</option>
+      <option>X TKJ 2</option>
+      <option>X TKJ 3</option>
+    </select>
+
+    <input type="date" id="filterTanggal">
+    <button onclick="renderData()">Filter</button>
+    <button onclick="exportExcel()">Export Excel</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Kelas</th>
+        <th>Status</th>
+        <th>Tanggal</th>
+      </tr>
+    </thead>
+    <tbody id="tabelAbsen"></tbody>
+  </table>
+</div>
 
 <script src="data.js"></script>
 <script src="export.js"></script>
+<script src="admin.js"></script>
 <script src="logout.js"></script>
 </body>
 </html>
