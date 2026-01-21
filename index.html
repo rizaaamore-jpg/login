@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transparent Login Form</title>
 
-  <!-- Font Awesome (FIXED) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css">
@@ -19,6 +20,7 @@
 
       <header>Login Here</header>
 
+      <!-- LOGIN FORM -->
       <form action="#" method="post">
 
         <div class="field">
@@ -44,53 +46,29 @@
 
       <div class="login">Or login with</div>
 
+      <!-- SOCIAL LOGIN -->
       <div class="links">
-        <div class="facebook">
+        <div class="facebook" onclick="loginSocial('facebook')">
           <i class="fa fa-facebook"></i>
           <span>Facebook</span>
         </div>
 
-        <div class="gmail">
+        <div class="gmail" onclick="loginSocial('gmail')">
           <i class="fa fa-envelope"></i>
           <span>G-Mail</span>
         </div>
       </div>
 
+      <!-- SIGNUP (SATU SAJA) -->
       <div class="signup">
         Don't have an account?
-        <a href="#">Signup Now</a>
+        <a href="register.html">Signup Now</a>
       </div>
-
-      <div class="facebook" onclick="loginSocial('facebook')">
-        <div class="gmail" onclick="loginSocial('gmail')">
 
     </div>
   </div>
 
-      <a href="register.html">Signup Now</a>
-
-  <script>
-function loginSocial(type){
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  let username = type + "_user";
-
-  if(!users.find(u => u.username === username)){
-    users.push({
-      username: username,
-      password: "-",
-      role: "siswa"
-    });
-    localStorage.setItem("users", JSON.stringify(users));
-  }
-
-  localStorage.setItem("role","siswa");
-  localStorage.setItem("loginUser",username);
-  window.location.href = "siswa.html";
-}
-  </script>
-
-  <!-- SHOW PASSWORD SCRIPT -->
+  <!-- SHOW / HIDE PASSWORD -->
   <script>
     const passField = document.querySelector(".pass-key");
     const showBtn = document.querySelector(".show");
@@ -105,9 +83,31 @@ function loginSocial(type){
       }
     };
   </script>
-  <script src="auth.js"></script>
+
+  <!-- SOCIAL LOGIN SCRIPT -->
+  <script>
+    function loginSocial(type) {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let username = type + "_user";
+
+      if (!users.find(u => u.username === username)) {
+        users.push({
+          username: username,
+          password: "-",
+          role: "siswa"
+        });
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+
+      localStorage.setItem("role", "siswa");
+      localStorage.setItem("loginUser", username);
+      window.location.href = "siswa.html";
+    }
+  </script>
+
+  <!-- USER & AUTH -->
   <script src="users.js"></script>
-<script src="auth.js"></script>
+  <script src="auth.js"></script>
 
 </body>
 </html>
