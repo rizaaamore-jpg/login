@@ -47,12 +47,13 @@
 
 <script>
 /* =====================
-   SETTING JAM (DARI ADMIN)
+   AMBIL JAM DARI ADMIN
 ===================== */
-let settingAbsen = JSON.parse(localStorage.getItem("settingAbsen")) || {
-  open: 21,
-  close: 22
-};
+let setting = JSON.parse(localStorage.getItem("settingAbsen"));
+
+let openHour  = setting ? setting.open : 21;
+let closeHour = setting ? setting.close : 22;
+</script>
 
 const openHour  = settingAbsen.open;
 const closeHour = settingAbsen.close;
