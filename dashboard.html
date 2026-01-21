@@ -1,0 +1,10 @@
+<script>
+  if(localStorage.getItem('login') !== 'true'){
+    window.location.href = 'login.html';
+  }
+</script>
+
+<h1>Dashboard Admin</h1>
+<button onclick="logout()">Logout</button>
+
+<script src="assets/js/dashboard.js"></script>
