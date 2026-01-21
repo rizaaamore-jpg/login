@@ -32,16 +32,16 @@
 
       <header>Login Here</header>
 
-      <form>
-
+      <!-- LOGIN FORM -->
+      <form onsubmit="login(event)">
         <div class="field">
           <i class="fa fa-user"></i>
-          <input type="text" placeholder="Enter Email or Phone" required>
+          <input type="text" id="username" placeholder="Enter Email or Phone" required>
         </div>
 
         <div class="field space">
           <i class="fa fa-lock"></i>
-          <input type="password" class="pass-key" placeholder="Enter Password" required>
+          <input type="password" id="password" class="pass-key" placeholder="Enter Password" required>
           <span class="show">SHOW</span>
         </div>
 
@@ -52,31 +52,32 @@
         <div class="field">
           <input type="submit" value="LOGIN">
         </div>
-
       </form>
 
       <div class="login">Or login with</div>
 
-<div class="links">
-  <button type="button" class="facebook" onclick="socialLogin('facebook')">
-    <i class="fa fa-facebook"></i> Facebook
-  </button>
+      <!-- SOCIAL LOGIN -->
+      <div class="links">
+        <button type="button" class="facebook" onclick="socialLogin('facebook')">
+          <i class="fa fa-facebook"></i> Facebook
+        </button>
 
-  <button type="button" class="gmail" onclick="socialLogin('gmail')">
-    <i class="fa fa-envelope"></i> G-Mail
-  </button>
-</div>
+        <button type="button" class="gmail" onclick="socialLogin('gmail')">
+          <i class="fa fa-envelope"></i> G-Mail
+        </button>
+      </div>
 
       <div class="signup">
         Don't have an account?
-        <a href="#">Signup Now</a>
+        <a href="register.html">Signup Now</a>
       </div>
 
     </div>
   </div>
 
-  <!-- SHOW / HIDE PASSWORD -->
+  <!-- SCRIPT -->
   <script>
+    // SHOW / HIDE PASSWORD
     const passField = document.querySelector(".pass-key");
     const showBtn = document.querySelector(".show");
 
@@ -90,8 +91,48 @@
       }
     };
 
-    function loginSocial(type){
-      alert("Login dengan " + type + " (demo)");
+    // LOGIN NORMAL
+    function login(e){
+      e.preventDefault();
+
+      let username = document.getElementById("username").value;
+      let password = document.getElementById("password").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let user = users.find(u => u.username === username && u.password === password);
+
+      if(!user){
+        alert("Login gagal");
+        return;
+      }
+
+      localStorage.setItem("loginUser", user.username);
+      localStorage.setItem("role", user.role);
+
+      window.location.href = user.role === "admin" ? "admin.html" : "siswa.html";
+    }
+
+    // SOCIAL LOGIN (DUMMY)
+    function socialLogin(type){
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let username = type + "_user";
+
+      let user = users.find(u => u.username === username);
+
+      if(!user){
+        user = {
+          username: username,
+          password: "-",
+          role: "siswa"
+        };
+        users.push(user);
+        localStorage.setItem("users", JSON.stringify(users));
+      }
+
+      localStorage.setItem("loginUser", user.username);
+      localStorage.setItem("role", user.role);
+
+      window.location.href = "siswa.html";
     }
   </script>
 
