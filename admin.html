@@ -3,6 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard Admin - Absen</title>
+  <h3>⏰ Atur Waktu Absen</h3>
+
+<label>Jam Buka:</label>
+<input type="number" id="openHour" min="0" max="23">
+
+<label>Jam Tutup:</label>
+<input type="number" id="closeHour" min="0" max="23">
+
+<button onclick="simpanJam()">Simpan Jam</button>
   <style>
     body{
       font-family: Arial, sans-serif;
