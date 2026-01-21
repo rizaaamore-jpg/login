@@ -46,5 +46,60 @@
 
 <script src="data.js"></script>
 <script src="logout.js"></script>
+  <script>
+const openHour = 6;   // jam buka absen
+const closeHour = 8;  // jam tutup absen
+
+function updateClock(){
+  const now = new Date();
+
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+
+  const days = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+  const months = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+
+  document.getElementById("clock").innerText = `${h}:${m}:${s}`;
+  document.getElementById("date").innerText =
+    `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+  checkAbsenTime(now.getHours());
+}
+
+function checkAbsenTime(hour){
+  const btn = document.getElementById("absenBtn");
+  const status = document.getElementById("absenStatus");
+
+  if(hour >= openHour && hour < closeHour){
+    btn.disabled = false;
+    status.innerText = "⏰ Waktu absen dibuka";
+    status.style.color = "#16a34a";
+  }else{
+    btn.disabled = true;
+    status.innerText = "❌ Absen ditutup (06:00 - 08:00)";
+    status.style.color = "#dc2626";
+  }
+}
+
+function absen(){
+  const user = localStorage.getItem("loginUser");
+  const time = new Date().toLocaleTimeString();
+
+  let data = JSON.parse(localStorage.getItem("absen")) || [];
+  data.push({
+    user: user,
+    waktu: time,
+    tanggal: new Date().toLocaleDateString()
+  });
+
+  localStorage.setItem("absen", JSON.stringify(data));
+  document.getElementById("absenStatus").innerText = "✅ Absen berhasil";
+}
+
+setInterval(updateClock,1000);
+updateClock();
+                 </script>
+  
 </body>
 </html>
