@@ -108,15 +108,17 @@ header{
 .links{
   display:flex;
   gap:12px;
+  margin-top:15px;
 }
 
-.facebook,
-.gmail{
+.links button{
   flex:1;
-  padding:12px;
+  border:none;
+  padding:14px;
   border-radius:12px;
-  color:#fff;
   font-weight:600;
+  font-size:15px;
+  color:white;
   cursor:pointer;
 }
 
@@ -128,27 +130,6 @@ header{
   background:#ea4335;
 }
 
-.signup{
-  margin-top:20px;
-  font-size:14px;
-}
-
-.signup a{
-  color:#16a34a;
-  font-weight:600;
-  text-decoration:none;
-}
-
-.links {
-  display:flex;
-  gap:12px;
-  position: relative;
-  z-index: 10;
-}
-
-.facebook,
-.gmail{
-  pointer-events: auto;
-  cursor: pointer;
-  z-index: 10;
+.links button:active{
+  transform:scale(0.97);
 }
