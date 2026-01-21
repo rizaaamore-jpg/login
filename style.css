@@ -1,191 +1,130 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  user-select: none;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
 }
 
-/* BACKGROUND */
-.bg-img {
-  background: url('images/background.jpeg');
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#166534,#22c55e);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.bg-img::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.2);
+/* CARD */
+.content{
+  width:350px;
+  background:#ffffff;
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
 
-/* LOGIN BOX */
-.content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
-  width: 370px;
-  padding: 60px 30px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 1px 4px 28px 8px rgba(0, 0, 0, 0.75);
+/* JUDUL */
+.content header{
+  font-size:28px;
+  font-weight:700;
+  color:#16a34a;
+  text-align:center;
+  margin-bottom:25px;
 }
 
-/* HEADER */
-.content header {
-  font-size: 35px;
-  font-weight: 600;
-  color: rgb(39, 243, 243);
-  margin-bottom: 35px;
-  font-family: 'Montserrat', sans-serif;
+/* INPUT */
+.field{
+  position:relative;
+  margin-bottom:15px;
 }
 
-/* INPUT FIELD */
-.field {
-  position: relative;
-  height: 45px;
-  width: 100%;
-  display: flex;
-  background: rgba(255, 255, 255, 0.9);
+.field input{
+  width:100%;
+  padding:12px 40px;
+  border-radius:10px;
+  border:1px solid #d1fae5;
+  background:#f0fdf4;
+  outline:none;
 }
 
-.field i {
-  width: 40px;
-  line-height: 45px;
-  color: #222;
+.field i{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#16a34a;
 }
 
-.field input {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 16px;
-  color: #222;
-  font-family: 'Poppins', sans-serif;
+/* PASSWORD SHOW */
+.show{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:12px;
+  color:#166534;
+  cursor:pointer;
 }
 
-.space {
-  margin-top: 15px;
+/* FORGOT */
+.pass a{
+  font-size:13px;
+  color:#16a34a;
+  text-decoration:none;
 }
 
-/* SHOW PASSWORD */
-.show {
-  position: absolute;
-  right: 10px;
-  top: 15px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
-  color: #222;
-  display: none;
+/* LOGIN BUTTON */
+.field input[type="submit"]{
+  background:#16a34a;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.pass-key:valid ~ .show {
-  display: block;
+.field input[type="submit"]:hover{
+  background:#166534;
 }
 
-/* FORGOT PASSWORD */
-.pass {
-  text-align: left;
-  margin: 10px 0;
+/* OR */
+.login{
+  text-align:center;
+  margin:20px 0 10px;
+  color:#166534;
+  font-weight:500;
 }
 
-.pass a {
-  font-size: 13px;
-  color: white;
-  text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+/* SOSIAL */
+.links{
+  display:flex;
+  gap:10px;
 }
 
-.pass a:hover {
-  text-decoration: underline;
+.links div{
+  flex:1;
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  color:white;
+  cursor:pointer;
 }
 
-/* SUBMIT BUTTON */
-.field input[type="submit"] {
-  background: #063ea6;
-  border: 1px solid #041e4e;
-  color: white;
-  font-size: 18px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
+.facebook{
+  background:#1877f2;
 }
 
-.field input[type="submit"]:hover {
-  background: #5885da;
-}
-
-/* SOCIAL LOGIN */
-.links {
-  display: flex;
-  margin-bottom: 20px;
-  color: white;
-}
-
-.facebook,
-.gmail {
-  width: 100%;
-  height: 45px;
-  line-height: 45px;
-  cursor: pointer;
-}
-
-.facebook {
-  background: #043495;
-  border: 1px solid #477dea;
-  margin-right: 10px;
-}
-
-.gmail {
-  background: #e63f3f;
-  border: 1px solid #570808;
-}
-
-.facebook:hover {
-  background: #3c77ec;
-}
-
-.gmail:hover {
-  background: #c73e3e;
-}
-
-.links i {
-  font-size: 17px;
-}
-
-.links span {
-  margin-left: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  font-family: 'Poppins', sans-serif;
+.gmail{
+  background:#ef4444;
 }
 
 /* SIGNUP */
-.signup {
-  font-size: 15px;
-  color: white;
-  font-family: 'Poppins', sans-serif;
+.signup{
+  margin-top:20px;
+  text-align:center;
+  font-size:14px;
 }
 
-.signup a {
-  color: #200eec;
-  text-decoration: none;
-}
-
-.signup a:hover {
-  text-decoration: underline;
+.signup a{
+  color:#16a34a;
+  font-weight:600;
+  text-decoration:none;
 }
