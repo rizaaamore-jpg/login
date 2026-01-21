@@ -110,17 +110,5 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
   <script src="users.js"></script>
   <script src="auth.js"></script>
 
-  <script>
-document.addEventListener('gesturestart', function (e) {
-  e.preventDefault();
-});
-
-document.addEventListener('touchmove', function(e) {
-  if (e.scale !== 1) {
-    e.preventDefault();
-  }
-}, { passive: false });
-  </script>
-
 </body>
 </html>
