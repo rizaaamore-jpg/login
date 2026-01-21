@@ -66,3 +66,41 @@ button{
   font-size:14px;
   color:#166534;
 }
+
+.clock-box{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+#clock{
+  font-size:36px;
+  font-weight:700;
+  color:#16a34a;
+}
+
+#date{
+  font-size:14px;
+  color:#166534;
+}
+
+#absenBtn{
+  width:100%;
+  padding:12px;
+  background:#16a34a;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+#absenBtn:disabled{
+  background:#9ca3af;
+  cursor:not-allowed;
+}
+
+#absenStatus{
+  text-align:center;
+  margin-top:10px;
+  font-size:14px;
+}
