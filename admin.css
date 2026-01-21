@@ -1,0 +1,32 @@
+body{
+  font-family:Poppins,sans-serif;
+  background:#f4f6f9;
+  padding:30px;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.filter{
+  margin-bottom:20px;
+}
+
+select,input,button{
+  padding:8px;
+  margin-right:5px;
+}
+
+table{
+  width:100%;
+  background:white;
+  border-collapse:collapse;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+}
