@@ -9,9 +9,9 @@
 
 <!-- CEK ROLE -->
 <script>
-  if(localStorage.getItem("role") !== "siswa"){
-    window.location.href = "index.html";
-  }
+if(localStorage.getItem("role") !== "siswa"){
+  window.location.href = "index.html";
+}
 </script>
 
 <h2>Form Absen Siswa</h2>
@@ -49,14 +49,13 @@
 /* =====================
    AMBIL JAM DARI ADMIN
 ===================== */
-let setting = JSON.parse(localStorage.getItem("settingAbsen"));
+let time = JSON.parse(localStorage.getItem("absenTime")) || {
+  open: 7,
+  close: 15
+};
 
-let openHour  = setting ? setting.open : 21;
-let closeHour = setting ? setting.close : 22;
-</script>
-
-const openHour  = settingAbsen.open;
-const closeHour = settingAbsen.close;
+const openHour  = time.open;
+const closeHour = time.close;
 
 /* =====================
    JAM REALTIME
@@ -100,8 +99,8 @@ function checkAbsenTime(hour){
 document.getElementById("absenForm").addEventListener("submit", function(e){
   e.preventDefault();
 
-  const currentHour = new Date().getHours();
-  if(currentHour < openHour || currentHour >= closeHour){
+  const hourNow = new Date().getHours();
+  if(hourNow < openHour || hourNow >= closeHour){
     document.getElementById("absenStatus").innerText =
       "❌ Absen di luar jam";
     return;
@@ -124,9 +123,7 @@ document.getElementById("absenForm").addEventListener("submit", function(e){
   }
 
   data.push({
-    nama: nama,
-    kelas: kelas,
-    status: status,
+    nama, kelas, status,
     waktu: now.toLocaleTimeString(),
     tanggal: today
   });
