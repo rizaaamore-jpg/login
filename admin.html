@@ -80,7 +80,7 @@ if(!localStorage.getItem("absenTime")){
 ===================== */
 function loadAbsenTime(){
   const time = JSON.parse(localStorage.getItem("absenTime"));
-  document.getElementById("openHour").value  = time.open;
+  document.getElementById("openHour").value = time.open;
   document.getElementById("closeHour").value = time.close;
 }
 
@@ -96,11 +96,7 @@ function saveAbsenTime(){
     return;
   }
 
-  localStorage.setItem("absenTime", JSON.stringify({
-    open: open,
-    close: close
-  }));
-
+  localStorage.setItem("absenTime", JSON.stringify({ open, close }));
   document.getElementById("notif").innerText =
     "✅ Waktu absensi berhasil diperbarui";
 }
@@ -109,20 +105,23 @@ function saveAbsenTime(){
    LOAD DATA ABSEN
 ===================== */
 function loadAbsen(){
-  const data = JSON.parse(localStorage.getItem("absen")) || [];
   const table = document.getElementById("absenTable");
+  const data  = JSON.parse(localStorage.getItem("absen")) || [];
+
   table.innerHTML = "";
 
   if(data.length === 0){
-    table.innerHTML =
-      `<tr><td colspan="7">Belum ada data absen</td></tr>`;
+    table.innerHTML = `
+      <tr>
+        <td colspan="7">Belum ada data absen</td>
+      </tr>`;
     return;
   }
 
   data.forEach((item, i) => {
     table.innerHTML += `
       <tr>
-        <td>${i+1}</td>
+        <td>${i + 1}</td>
         <td>${item.nama}</td>
         <td>${item.kelas}</td>
         <td>${item.status}</td>
@@ -131,18 +130,18 @@ function loadAbsen(){
         <td>
           <button class="hapus" onclick="hapusAbsen(${i})">Hapus</button>
         </td>
-      </tr>
-    `;
+      </tr>`;
   });
 }
 
 /* =====================
-   HAPUS ABSEN
+   HAPUS DATA
 ===================== */
-function hapusAbsen(index){
-  if(!confirm("Yakin hapus data ini?")) return;
-  let data = JSON.parse(localStorage.getItem("absen")) || [];
-  data.splice(index,1);
+function hapusAbsen(i){
+  if(!confirm("Hapus data ini?")) return;
+
+  const data = JSON.parse(localStorage.getItem("absen")) || [];
+  data.splice(i,1);
   localStorage.setItem("absen", JSON.stringify(data));
   loadAbsen();
 }
@@ -151,47 +150,13 @@ function hapusAbsen(index){
    LOGOUT
 ===================== */
 function logout(){
-  localStorage.removeItem("loginUser");
-  localStorage.removeItem("role");
+  localStorage.clear();
   window.location.href = "index.html";
 }
 
 /* =====================
-   INIT
+   LOAD SAAT BUKA
 ===================== */
 loadAbsenTime();
 loadAbsen();
 </script>
-
-<h2>Dashboard Admin - Data Absen</h2>
-<button class="logout" onclick="logout()">Logout</button>
-
-<h3>Pengaturan Waktu Absensi</h3>
-<div class="card">
-  <label>Jam Buka</label>
-  <input type="number" id="openHour" min="0" max="23">
-
-  <label>Jam Tutup</label>
-  <input type="number" id="closeHour" min="0" max="23">
-
-  <button class="save" onclick="saveAbsenTime()">Simpan Waktu</button>
-  <p id="notif"></p>
-</div>
-
-<table>
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Nama</th>
-      <th>Kelas</th>
-      <th>Status</th>
-      <th>Waktu</th>
-      <th>Tanggal</th>
-      <th>Aksi</th>
-    </tr>
-  </thead>
-  <tbody id="absenTable"></tbody>
-</table>
-
-</body>
-</html>
