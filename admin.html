@@ -9,9 +9,7 @@
       background:#f0fdf4;
       padding:20px;
     }
-    h2,h3{
-      color:#166534;
-    }
+    h2,h3{ color:#166534; }
     table{
       width:100%;
       border-collapse:collapse;
@@ -27,24 +25,15 @@
       background:#22c55e;
       color:white;
     }
-    tr:nth-child(even){
-      background:#f0fdf4;
-    }
+    tr:nth-child(even){ background:#f0fdf4; }
     button{
       padding:8px 14px;
       border:none;
       border-radius:6px;
       cursor:pointer;
     }
-    .hapus{
-      background:#dc2626;
-      color:white;
-    }
-    .logout{
-      background:#166534;
-      color:white;
-      margin-bottom:15px;
-    }
+    .hapus{ background:#dc2626; color:white; }
+    .logout{ background:#166534; color:white; margin-bottom:15px; }
     .card{
       background:white;
       padding:15px;
@@ -68,32 +57,6 @@
 <body>
 
 <script>
-function simpanJam(){
-  const open = document.getElementById("openHour").value;
-  const close = document.getElementById("closeHour").value;
-
-  if(open === "" || close === ""){
-    alert("Jam tidak boleh kosong");
-    return;
-  }
-
-  localStorage.setItem("settingAbsen", JSON.stringify({
-    open: parseInt(open),
-    close: parseInt(close)
-  }));
-
-  alert("✅ Jam absen berhasil diubah");
-}
-
-/* LOAD JAM SAAT ADMIN BUKA */
-const setting = JSON.parse(localStorage.getItem("settingAbsen"));
-if(setting){
-  document.getElementById("openHour").value = setting.open;
-  document.getElementById("closeHour").value = setting.close;
-}
-</script>
-  
-<script>
 /* =====================
    CEK ROLE ADMIN
 ===================== */
@@ -101,45 +64,7 @@ if(localStorage.getItem("role") !== "admin"){
   alert("Akses ditolak!");
   window.location.href = "index.html";
 }
-</script>
 
-<h2>Dashboard Admin - Data Absen</h2>
-<button class="logout" onclick="logout()">Logout</button>
-
-<!-- =====================
-     PENGATURAN JAM ABSEN
-===================== -->
-<h3>Pengaturan Waktu Absensi</h3>
-<div class="card">
-  <label>Jam Buka Absen</label>
-  <input type="number" id="openHour" min="0" max="23">
-
-  <label>Jam Tutup Absen</label>
-  <input type="number" id="closeHour" min="0" max="23">
-
-  <button class="save" onclick="saveAbsenTime()">Simpan Waktu</button>
-  <p id="notif"></p>
-</div>
-
-<!-- =====================
-     TABEL DATA ABSEN
-===================== -->
-<table>
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>Nama</th>
-      <th>Kelas</th>
-      <th>Status</th>
-      <th>Waktu</th>
-      <th>Tanggal</th>
-      <th>Aksi</th>
-    </tr>
-  </thead>
-  <tbody id="absenTable"></tbody>
-</table>
-
-<script>
 /* =====================
    DEFAULT JAM ABSEN
 ===================== */
@@ -154,8 +79,8 @@ if(!localStorage.getItem("absenTime")){
    LOAD JAM ABSEN
 ===================== */
 function loadAbsenTime(){
-  let time = JSON.parse(localStorage.getItem("absenTime"));
-  document.getElementById("openHour").value = time.open;
+  const time = JSON.parse(localStorage.getItem("absenTime"));
+  document.getElementById("openHour").value  = time.open;
   document.getElementById("closeHour").value = time.close;
 }
 
@@ -163,8 +88,8 @@ function loadAbsenTime(){
    SIMPAN JAM ABSEN
 ===================== */
 function saveAbsenTime(){
-  let open = parseInt(document.getElementById("openHour").value);
-  let close = parseInt(document.getElementById("closeHour").value);
+  const open  = parseInt(document.getElementById("openHour").value);
+  const close = parseInt(document.getElementById("closeHour").value);
 
   if(open >= close){
     alert("Jam buka harus lebih kecil dari jam tutup");
@@ -189,27 +114,22 @@ function loadAbsen(){
   table.innerHTML = "";
 
   if(data.length === 0){
-    table.innerHTML = `
-      <tr>
-        <td colspan="7">Belum ada data absen</td>
-      </tr>
-    `;
+    table.innerHTML =
+      `<tr><td colspan="7">Belum ada data absen</td></tr>`;
     return;
   }
 
-  data.forEach((item, index) => {
+  data.forEach((item, i) => {
     table.innerHTML += `
       <tr>
-        <td>${index + 1}</td>
+        <td>${i+1}</td>
         <td>${item.nama}</td>
         <td>${item.kelas}</td>
         <td>${item.status}</td>
         <td>${item.waktu}</td>
         <td>${item.tanggal}</td>
         <td>
-          <button class="hapus" onclick="hapusAbsen(${index})">
-            Hapus
-          </button>
+          <button class="hapus" onclick="hapusAbsen(${i})">Hapus</button>
         </td>
       </tr>
     `;
@@ -217,11 +137,10 @@ function loadAbsen(){
 }
 
 /* =====================
-   HAPUS DATA ABSEN
+   HAPUS ABSEN
 ===================== */
 function hapusAbsen(index){
-  if(!confirm("Yakin ingin menghapus data ini?")) return;
-
+  if(!confirm("Yakin hapus data ini?")) return;
   let data = JSON.parse(localStorage.getItem("absen")) || [];
   data.splice(index,1);
   localStorage.setItem("absen", JSON.stringify(data));
@@ -238,11 +157,41 @@ function logout(){
 }
 
 /* =====================
-   LOAD SAAT BUKA
+   INIT
 ===================== */
 loadAbsenTime();
 loadAbsen();
 </script>
+
+<h2>Dashboard Admin - Data Absen</h2>
+<button class="logout" onclick="logout()">Logout</button>
+
+<h3>Pengaturan Waktu Absensi</h3>
+<div class="card">
+  <label>Jam Buka</label>
+  <input type="number" id="openHour" min="0" max="23">
+
+  <label>Jam Tutup</label>
+  <input type="number" id="closeHour" min="0" max="23">
+
+  <button class="save" onclick="saveAbsenTime()">Simpan Waktu</button>
+  <p id="notif"></p>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Nama</th>
+      <th>Kelas</th>
+      <th>Status</th>
+      <th>Waktu</th>
+      <th>Tanggal</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="absenTable"></tbody>
+</table>
 
 </body>
 </html>
