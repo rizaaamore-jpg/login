@@ -207,117 +207,152 @@ window.AbsensiApp = {
         console.log('✅ Event listeners setup complete');
     },
     
-    // ================= LOGIN FUNCTIONS =================
-    switchRole: function(role) {
-        console.log('Switching to role:', role);
+    // In AbsensiApp class, replace login methods:
+
+loginSiswa: async function() {
+    const username = document.getElementById('nis').value.trim();
+    const password = document.getElementById('passwordSiswa').value;
+    
+    if (!username || !password) {
+        this.showToast('Harap isi username dan password', 'warning');
+        return;
+    }
+    
+    try {
+        const response = await window.MockAPI.login(username, password);
         
-        // Update tabs
-        document.querySelectorAll('.role-tab').forEach(tab => {
-            tab.classList.remove('active');
-            if (tab.getAttribute('data-role') === role) {
-                tab.classList.add('active');
+        if (response.success) {
+            this.currentUser = response.data;
+            this.currentRole = this.currentUser.role;
+            this.completeLogin();
+        }
+    } catch (error) {
+        this.showToast(error.message || 'Login gagal', 'error');
+    }
+},
+
+loginGuru: async function() {
+    const username = document.getElementById('nip').value.trim();
+    const password = document.getElementById('passwordGuru').value;
+    const mapel = document.getElementById('mapelSelect').value;
+    const kelas = document.getElementById('kelasSelect').value;
+    
+    if (!username || !password || !mapel || !kelas) {
+        this.showToast('Harap isi semua field', 'warning');
+        return;
+    }
+    
+    try {
+        const response = await window.MockAPI.login(username, password);
+        
+        if (response.success) {
+            this.currentUser = response.data;
+            this.currentRole = this.currentUser.role;
+            this.completeLogin();
+        }
+    } catch (error) {
+        this.showToast(error.message || 'Login gagal', 'error');
+    }
+},
+
+loginAdmin: async function() {
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value;
+    
+    if (!username || !password) {
+        this.showToast('Harap isi username dan password', 'warning');
+        return;
+    }
+    
+    try {
+        const response = await window.MockAPI.login(username, password);
+        
+        if (response.success) {
+            this.currentUser = response.data;
+            this.currentRole = this.currentUser.role;
+            this.completeLogin();
+        }
+    } catch (error) {
+        this.showToast(error.message || 'Login gagal', 'error');
+    }
+},
+
+// Update loadData method:
+loadData: async function() {
+    try {
+        // Load mapel from API
+        const mapelResponse = await window.MockAPI.getMapel();
+        if (mapelResponse.success) {
+            this.mapelData = mapelResponse.data;
+        } else {
+            this.mapelData = this.getDefaultMapelData();
+        }
+        
+        // Load presensi
+        const presensiResponse = await window.MockAPI.getPresensi();
+        if (presensiResponse.success) {
+            this.presensiData = presensiResponse.data;
+        }
+        
+        // Load notifications if logged in
+        if (this.currentUser) {
+            const notifResponse = await window.MockAPI.getNotifications(this.currentUser.id);
+            if (notifResponse.success) {
+                this.notifications = notifResponse.data;
+                this.updateNotificationCount();
             }
-        });
-        
-        // Show corresponding form
-        document.querySelectorAll('.login-form').forEach(form => {
-            form.classList.remove('active');
-        });
-        document.getElementById(role + 'Form').classList.add('active');
-    },
-    
-    loginSiswa: function() {
-        const nis = document.getElementById('nis').value.trim();
-        const password = document.getElementById('passwordSiswa').value;
-        
-        if (!nis || !password) {
-            this.showToast('Harap isi NIS dan password', 'warning');
-            return;
         }
         
-        // SIMULASI LOGIN SUKSES
-        this.currentUser = {
-            id: 'SIS' + nis,
-            nis: nis,
-            name: 'Arif Suyuti',
-            role: 'siswa',
-            kelas: 'X TKJ 1',
-            avatar: '👨‍🎓'
-        };
-        
-        this.currentRole = 'siswa';
-        this.completeLogin();
-    },
+    } catch (error) {
+        console.log('Using default data');
+        this.mapelData = this.getDefaultMapelData();
+        this.presensiData = [];
+        this.notifications = [];
+    }
+},
+
+// Update submitPresensi method:
+submitPresensi: async function() {
+    if (!this.selectedStatus) {
+        this.showToast('Pilih status kehadiran terlebih dahulu', 'warning');
+        return;
+    }
     
-    loginGuru: function() {
-        const nip = document.getElementById('nip').value.trim();
-        const password = document.getElementById('passwordGuru').value;
-        const mapel = document.getElementById('mapelSelect').value;
-        const kelas = document.getElementById('kelasSelect').value;
-        
-        if (!nip || !password || !mapel || !kelas) {
-            this.showToast('Harap isi semua field', 'warning');
-            return;
-        }
-        
-        // SIMULASI LOGIN SUKSES
-        this.currentUser = {
-            id: 'GUR' + nip,
-            nip: nip,
-            name: 'Sutrisno, M.Pd',
-            role: 'guru',
-            mapel: mapel,
-            kelas: kelas,
-            avatar: '👨‍🏫'
-        };
-        
-        this.currentRole = 'guru';
-        this.completeLogin();
-    },
+    const catatan = document.getElementById('presensiCatatan').value;
+    const now = new Date();
     
-    loginAdmin: function() {
-        const username = document.getElementById('adminUsername').value.trim();
-        const password = document.getElementById('adminPassword').value;
-        
-        if (!username || !password) {
-            this.showToast('Harap isi username dan password', 'warning');
-            return;
-        }
-        
-        // SIMULASI LOGIN SUKSES
-        this.currentUser = {
-            id: 'ADM001',
-            username: username,
-            name: 'Administrator Sistem',
-            role: 'admin',
-            avatar: '👨‍💼'
-        };
-        
-        this.currentRole = 'admin';
-        this.completeLogin();
-    },
+    const presensiData = {
+        userId: this.currentUser.id,
+        userName: this.currentUser.name,
+        mapel: this.selectedMapel || 'Umum',
+        status: this.selectedStatus,
+        date: now.toISOString().split('T')[0],
+        time: now.toLocaleTimeString('id-ID'),
+        catatan: catatan
+    };
     
-    completeLogin: function() {
-        // Save session
-        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-        localStorage.setItem('currentRole', this.currentRole);
+    try {
+        const response = await window.MockAPI.submitPresensi(presensiData);
         
-        // Show success
-        this.showToast(`Login berhasil sebagai ${this.currentUser.name}`, 'success');
-        
-        // Switch to dashboard
-        setTimeout(() => {
-            document.querySelector('.login-wrapper').style.display = 'none';
-            document.getElementById('dashboardContainer').style.display = 'block';
+        if (response.success) {
+            this.showToast('Presensi berhasil disimpan!', 'success');
+            this.closeAllModals();
             
-            // Update UI
-            this.updateUserUI();
+            // Reset form
+            this.selectedStatus = null;
+            document.getElementById('presensiCatatan').value = '';
+            document.querySelectorAll('.presensi-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Update data
+            this.loadData();
             this.updateDashboardStats();
-            
-            // Show welcome screen
-            document.getElementById('welcomeScreen').classList.add('active');
-        }, 500);
-    },
+        }
+    } catch (error) {
+        this.showToast('Gagal menyimpan presensi', 'error');
+    }
+},
     
     // ================= UI FUNCTIONS =================
     updateUserUI: function() {
