@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Absensi Digital - SMK ZACKONE</title>
+    <title>Absensi Digital - SMK Jakarta Timur 1</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
-    <meta name="theme-color" content="#10b981">
+    <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-    <!-- Loading Animation -->
+    <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loader">
             <div class="loader-spin">
-                <i class="fas fa-book"></i>
+                <i class="fas fa-school"></i>
             </div>
             <p>Memuat Sistem Absensi Digital...</p>
             <div class="loading-progress">
-                <div class="progress-bar"></div>
+                <div class="progress-bar" id="progressBar"></div>
             </div>
+            <p class="loading-version">SMK Jakarta Timur 1 • v3.0</p>
         </div>
     </div>
 
@@ -34,17 +35,18 @@
         <div class="pattern-circle"></div>
     </div>
 
-    <!-- Floating Login Card -->
+    <!-- Login Screen -->
     <div class="login-wrapper">
         <div class="login-card floating-card">
             <!-- School Header -->
             <div class="school-header">
                 <div class="school-logo">
-                    <i class="fas fa-laptop-code"></i>
+                    <i class="fas fa-graduation-cap"></i>
                 </div>
                 <div class="school-info">
                     <h1>SMK JAKARTA TIMUR 1</h1>
-                    <p class="school-subtitle">Sistem Presensi Digital Berbasis Web</p>
+                    <p class="school-subtitle">Sistem Presensi Digital Terpadu</p>
+                    <p class="school-motto">"Unggul dalam Prestasi, Berkarakter, dan Berdaya Saing"</p>
                 </div>
             </div>
 
@@ -64,113 +66,13 @@
                 </button>
             </div>
 
-            <!-- Admin Panel Page -->
-<div class="admin-panel" id="adminPanel" style="display: none;">
-    <div class="page-header">
-        <h2><i class="fas fa-user-shield"></i> Admin Panel</h2>
-        <p>Kelola sistem absensi digital</p>
-    </div>
-    
-    <!-- Admin Stats -->
-    <div class="admin-stats">
-        <div class="stat-card admin">
-            <i class="fas fa-users"></i>
-            <h3 id="adminStatSiswa">0</h3>
-            <p>Total Siswa</p>
-        </div>
-        <div class="stat-card admin">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <h3 id="adminStatGuru">0</h3>
-            <p>Total Guru</p>
-        </div>
-        <div class="stat-card admin">
-            <i class="fas fa-book"></i>
-            <h3 id="adminStatMapel">0</h3>
-            <p>Total Mapel</p>
-        </div>
-        <div class="stat-card admin">
-            <i class="fas fa-clipboard-check"></i>
-            <h3 id="adminStatPresensi">0</h3>
-            <p>Presensi Hari Ini</p>
-        </div>
-    </div>
-    
-    <!-- User Management -->
-    <div class="admin-section">
-        <div class="section-header">
-            <h3><i class="fas fa-user-cog"></i> Manajemen User</h3>
-            <div class="section-actions">
-                <button class="btn-small" id="refreshUsers">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-                <button class="btn-small" id="exportUsers">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama</th>
-                        <th>Username</th>
-                        <th>Role</th>
-                        <th>Kelas</th>
-                        <th>NIS/NIP</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="adminUsersTable">
-                    <!-- Data will be loaded here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <!-- Mapel Management -->
-    <div class="admin-section">
-        <div class="section-header">
-            <h3><i class="fas fa-book"></i> Manajemen Mata Pelajaran</h3>
-            <div class="section-actions">
-                <button class="btn-small" id="refreshMapel">
-                    <i class="fas fa-sync-alt"></i> Refresh
-                </button>
-                <button class="btn-small" id="exportMapel">
-                    <i class="fas fa-download"></i> Export
-                </button>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Nama</th>
-                        <th>Nama Lengkap</th>
-                        <th>Pengajar</th>
-                        <th>Jadwal</th>
-                        <th>Ruangan</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="adminMapelTable">
-                    <!-- Data will be loaded here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-            <!-- Siswa Login -->
+            <!-- Login Forms -->
             <div class="login-form active" id="siswaForm">
                 <h3><i class="fas fa-sign-in-alt"></i> Login Siswa</h3>
                 <div class="input-group floating-input">
                     <i class="fas fa-id-card"></i>
-                    <input type="text" id="nis" placeholder="NIS (Nomor Induk Siswa)" required>
-                    <label>NIS</label>
+                    <input type="text" id="usernameSiswa" placeholder="Username" required>
+                    <label>Username</label>
                 </div>
                 <div class="input-group floating-input">
                     <i class="fas fa-lock"></i>
@@ -193,13 +95,13 @@
                 </div>
             </div>
 
-            <!-- Guru Login -->
+            <!-- Form Guru -->
             <div class="login-form" id="guruForm">
                 <h3><i class="fas fa-chalkboard-teacher"></i> Login Guru</h3>
                 <div class="input-group floating-input">
                     <i class="fas fa-user-tie"></i>
-                    <input type="text" id="nip" placeholder="NIP (Nomor Induk Pegawai)" required>
-                    <label>NIP</label>
+                    <input type="text" id="usernameGuru" placeholder="Username" required>
+                    <label>Username</label>
                 </div>
                 <div class="input-group floating-input">
                     <i class="fas fa-lock"></i>
@@ -209,63 +111,25 @@
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
-                
-                <!-- Mapel Selection -->
-                <div class="input-group select-group">
-                    <i class="fas fa-book"></i>
-                    <select id="mapelSelect" required>
-                        <option value="">Pilih Mata Pelajaran</option>
-                        <option value="pjok">PJOK</option>
-                        <option value="matematika">Matematika</option>
-                        <option value="bahasa_indonesia">Bahasa Indonesia</option>
-                        <option value="bahasa_inggris">Bahasa Inggris</option>
-                        <option value="english_comms">English Communications</option>
-                        <option value="seni_musik">Seni Musik</option>
-                        <option value="ipas">IPAS</option>
-                        <option value="sejarah">Sejarah</option>
-                        <option value="pancasila">Pendidikan Pancasila</option>
-                        <option value="jaringan_dasar">Komputer Jaringan Dasar</option>
-                        <option value="sistem_komputer">Sistem Komputer</option>
-                        <option value="jaringan_luas">Teknik Jaringan Berbasis Luas</option>
-                        <option value="coding_ai">Coding AI</option>
-                        <option value="informatika">Informatika</option>
-                    </select>
-                    <label>Mata Pelajaran</label>
-                </div>
-
-                <div class="input-group select-group">
-                    <i class="fas fa-users"></i>
-                    <select id="kelasSelect" required>
-                        <option value="">Pilih Kelas</option>
-                        <option value="10_tkj">X TKJ</option>
-                        <option value="10_rpl">X RPL</option>
-                        <option value="11_tkj">XI TKJ</option>
-                        <option value="11_rpl">XI RPL</option>
-                        <option value="12_tkj">XII TKJ</option>
-                        <option value="12_rpl">XII RPL</option>
-                    </select>
-                    <label>Kelas</label>
-                </div>
-
                 <button class="btn-login guru" type="button" id="loginGuru">
                     <i class="fas fa-chalkboard-teacher"></i>
                     Masuk Sebagai Guru
                 </button>
             </div>
 
-            <!-- Admin Login -->
+            <!-- Form Admin -->
             <div class="login-form" id="adminForm">
                 <h3><i class="fas fa-user-shield"></i> Login Admin</h3>
                 <div class="input-group floating-input">
                     <i class="fas fa-user-cog"></i>
-                    <input type="text" id="adminUsername" placeholder="Username Admin" required>
+                    <input type="text" id="usernameAdmin" placeholder="Username" required>
                     <label>Username</label>
                 </div>
                 <div class="input-group floating-input">
                     <i class="fas fa-key"></i>
-                    <input type="password" id="adminPassword" placeholder="Password Admin" required>
+                    <input type="password" id="passwordAdmin" placeholder="Password" required>
                     <label>Password</label>
-                    <button type="button" class="toggle-password" data-target="adminPassword">
+                    <button type="button" class="toggle-password" data-target="passwordAdmin">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
@@ -275,21 +139,38 @@
                 </button>
             </div>
 
+            <!-- Demo Credentials -->
+            <div class="demo-credentials">
+                <h4><i class="fas fa-key"></i> Kredensial Demo:</h4>
+                <div class="credential-row">
+                    <span class="role-badge siswa">Siswa</span>
+                    <code>Arip / siswa123</code>
+                </div>
+                <div class="credential-row">
+                    <span class="role-badge guru">Guru</span>
+                    <code>Guru / guru123</code>
+                </div>
+                <div class="credential-row">
+                    <span class="role-badge admin">Admin</span>
+                    <code>admin / admin123</code>
+                </div>
+            </div>
+
             <!-- Footer -->
             <div class="login-footer">
                 <div class="tech-info">
                     <i class="fas fa-microchip"></i>
-                    <span>Sistem Absensi Digital v2.0</span>
+                    <span>Sistem Absensi Digital v3.0</span>
                 </div>
                 <div class="support">
                     <i class="fas fa-headset"></i>
-                    <span>Support: Support - 0819-3299-9602</span>
+                    <span>IT Support: 021-856-7890</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Dashboard (Hidden Initially) -->
+    <!-- Main Dashboard -->
     <div class="dashboard-container" id="dashboardContainer">
         <!-- Top Navigation -->
         <nav class="top-nav">
@@ -299,7 +180,7 @@
                 </button>
                 <div class="nav-brand">
                     <i class="fas fa-school"></i>
-                    <h2>SMK ZACKONE<span class="highlight">Digital</span></h2>
+                    <h2>SMK JAKTIM 1<span class="highlight">Digital</span></h2>
                 </div>
             </div>
             
@@ -318,9 +199,9 @@
                 </button>
                 <button class="nav-btn" id="quickAbsenBtn">
                     <i class="fas fa-fingerprint"></i>
-                    <span>Absen Cepat</span>
+                    <span>Presensi Cepat</span>
                 </button>
-                <div class="user-profile">
+                <div class="user-profile" id="userProfile">
                     <div class="avatar" id="userAvatar">
                         <i class="fas fa-user"></i>
                     </div>
@@ -350,7 +231,7 @@
                 </div>
             </div>
 
-            <nav class="sidebar-menu">
+            <nav class="sidebar-menu" id="sidebarMenu">
                 <!-- Dashboard -->
                 <a href="#dashboard" class="menu-item active" data-page="dashboard">
                     <i class="fas fa-home"></i>
@@ -360,132 +241,47 @@
                 <!-- Absensi -->
                 <a href="#absensi" class="menu-item" data-page="absensi">
                     <i class="fas fa-clipboard-check"></i>
-                    <span>Absensi</span>
+                    <span>Presensi</span>
                     <span class="menu-badge success" id="absenToday">0</span>
                 </a>
 
-                <!-- Mapel Sections -->
+                <!-- Mata Pelajaran -->
                 <div class="menu-section">
                     <h5><i class="fas fa-book-open"></i> Mata Pelajaran</h5>
-                    
-                    <a href="#mapel-pjok" class="menu-item sub" data-page="mapel" data-mapel="pjok">
-                        <i class="fas fa-running"></i>
-                        <span>PJOK</span>
-                    </a>
-                    
-                    <a href="#mapel-matematika" class="menu-item sub" data-page="mapel" data-mapel="matematika">
-                        <i class="fas fa-calculator"></i>
-                        <span>Matematika</span>
-                    </a>
-                    
-                    <a href="#mapel-bahasa-indonesia" class="menu-item sub" data-page="mapel" data-mapel="bahasa_indonesia">
-                        <i class="fas fa-language"></i>
-                        <span>Bahasa Indonesia</span>
-                    </a>
-                    
-                    <a href="#mapel-bahasa-inggris" class="menu-item sub" data-page="mapel" data-mapel="bahasa_inggris">
-                        <i class="fas fa-globe"></i>
-                        <span>Bahasa Inggris</span>
-                    </a>
-                    
-                    <a href="#mapel-english-comms" class="menu-item sub" data-page="mapel" data-mapel="english_comms">
-                        <i class="fas fa-comments"></i>
-                        <span>English Communications</span>
-                    </a>
-                    
-                    <a href="#mapel-seni-musik" class="menu-item sub" data-page="mapel" data-mapel="seni_musik">
-                        <i class="fas fa-music"></i>
-                        <span>Seni Musik</span>
-                    </a>
-                    
-                    <a href="#mapel-ipas" class="menu-item sub" data-page="mapel" data-mapel="ipas">
-                        <i class="fas fa-flask"></i>
-                        <span>IPAS</span>
-                    </a>
-                    
-                    <a href="#mapel-sejarah" class="menu-item sub" data-page="mapel" data-mapel="sejarah">
-                        <i class="fas fa-landmark"></i>
-                        <span>Sejarah</span>
-                    </a>
-                    
-                    <a href="#mapel-pancasila" class="menu-item sub" data-page="mapel" data-mapel="pancasila">
-                        <i class="fas fa-flag"></i>
-                        <span>Pendidikan Pancasila</span>
-                    </a>
-                    
-                    <a href="#mapel-jaringan-dasar" class="menu-item sub" data-page="mapel" data-mapel="jaringan_dasar">
-                        <i class="fas fa-network-wired"></i>
-                        <span>Komputer Jaringan Dasar</span>
-                    </a>
-                    
-                    <a href="#mapel-sistem-komputer" class="menu-item sub" data-page="mapel" data-mapel="sistem_komputer">
-                        <i class="fas fa-desktop"></i>
-                        <span>Sistem Komputer</span>
-                    </a>
-                    
-                    <a href="#mapel-jaringan-luas" class="menu-item sub" data-page="mapel" data-mapel="jaringan_luas">
-                        <i class="fas fa-wifi"></i>
-                        <span>Teknik Jaringan Berbasis Luas</span>
-                    </a>
-                    
-                    <a href="#mapel-coding-ai" class="menu-item sub" data-page="mapel" data-mapel="coding_ai">
-                        <i class="fas fa-robot"></i>
-                        <span>Coding AI</span>
-                    </a>
-                    
-                    <a href="#mapel-informatika" class="menu-item sub" data-page="mapel" data-mapel="informatika">
-                        <i class="fas fa-code"></i>
-                        <span>Informatika</span>
-                    </a>
+                    <!-- Mapel items akan di-generate oleh JavaScript -->
                 </div>
 
                 <!-- Tools -->
                 <div class="menu-section">
                     <h5><i class="fas fa-tools"></i> Tools</h5>
-                    
                     <a href="#jadwal" class="menu-item" data-page="jadwal">
                         <i class="fas fa-calendar-alt"></i>
-                        <span>Jadwal Pelajaran</span>
+                        <span>Jadwal</span>
                     </a>
-                    
-                    <a href="#presensi" class="menu-item" data-page="presensi">
-                        <i class="fas fa-qrcode"></i>
-                        <span>Presensi QR</span>
-                    </a>
-                    
                     <a href="#laporan" class="menu-item" data-page="laporan">
                         <i class="fas fa-chart-bar"></i>
-                        <span>Laporan Absensi</span>
+                        <span>Laporan</span>
                     </a>
-                    
                     <a href="#rekap" class="menu-item" data-page="rekap">
                         <i class="fas fa-file-alt"></i>
-                        <span>Rekap Harian</span>
+                        <span>Rekap</span>
                     </a>
                 </div>
 
                 <!-- Admin Only -->
-                <div class="menu-section admin-only">
+                <div class="menu-section admin-only" id="adminSection">
                     <h5><i class="fas fa-user-shield"></i> Admin Panel</h5>
-                    
-                    <a href="#data-siswa" class="menu-item" data-page="dataSiswa">
-                        <i class="fas fa-users"></i>
-                        <span>Data Siswa</span>
-                    </a>
-                    
-                    <a href="#data-guru" class="menu-item" data-page="dataGuru">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span>Data Guru</span>
-                    </a>
-                    
-                    <a href="#kelola-mapel" class="menu-item" data-page="kelolaMapel">
-                        <i class="fas fa-book"></i>
-                        <span>Kelola Mapel</span>
-                    </a>
-                    
-                    <a href="#settings" class="menu-item" data-page="settings">
+                    <a href="#admin" class="menu-item" data-page="admin">
                         <i class="fas fa-cogs"></i>
-                        <span>Pengaturan Sistem</span>
+                        <span>Dashboard Admin</span>
+                    </a>
+                    <a href="#users" class="menu-item" data-page="users">
+                        <i class="fas fa-users"></i>
+                        <span>Manajemen User</span>
+                    </a>
+                    <a href="#mapel-admin" class="menu-item" data-page="mapel-admin">
+                        <i class="fas fa-book"></i>
+                        <span>Manajemen Mapel</span>
                     </a>
                 </div>
             </nav>
@@ -504,14 +300,14 @@
 
         <!-- Main Content -->
         <main class="main-content" id="mainContent">
-            <!-- Content will be dynamically loaded here -->
+            <!-- Welcome Dashboard -->
             <div class="welcome-screen active" id="welcomeScreen">
                 <div class="welcome-card">
                     <div class="welcome-icon">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h2>Selamat Datang di Sistem Absensi Digital</h2>
-                    <p class="welcome-sub">SMK Jakarta Timur</p>
+                    <h2>Selamat Datang di SMK Jakarta Timur 1</h2>
+                    <p class="welcome-sub">Sistem Absensi Digital Terpadu</p>
                     
                     <div class="quick-stats">
                         <div class="stat-card">
@@ -529,6 +325,11 @@
                             <h3 id="statPersen">0%</h3>
                             <p>Kehadiran Bulan Ini</p>
                         </div>
+                        <div class="stat-card">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3 id="statHari">Senin</h3>
+                            <p>Hari Ini</p>
+                        </div>
                     </div>
 
                     <div class="welcome-actions">
@@ -544,60 +345,35 @@
                 </div>
             </div>
 
-            <!-- Mapel Content (Will be loaded dynamically) -->
-            <div class="mapel-content" id="mapelContent"></div>
-            
-            <!-- Other Content Areas -->
+            <!-- Content Areas (Will be populated by JS) -->
             <div class="content-area" id="contentArea"></div>
+            <div class="admin-content" id="adminContent"></div>
         </main>
 
-        <!-- Quick Actions Bar (Mobile) -->
+        <!-- Quick Actions Bar -->
         <div class="quick-actions-bar">
             <button class="quick-action" data-action="absen">
                 <i class="fas fa-check-circle"></i>
-                <span>Absen</span>
+                <span>Presensi</span>
             </button>
             <button class="quick-action" data-action="qr">
                 <i class="fas fa-qrcode"></i>
                 <span>QR</span>
             </button>
-            <button class="quick-action" data-action="camera">
-                <i class="fas fa-camera"></i>
-                <span>Foto</span>
+            <button class="quick-action" data-action="jadwal">
+                <i class="fas fa-clock"></i>
+                <span>Jadwal</span>
             </button>
-            <button class="quick-action" data-action="location">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Lokasi</span>
-            </button>
-            <button class="quick-action" data-action="emergency">
-                <i class="fas fa-first-aid"></i>
-                <span>Izin</span>
+            <button class="quick-action" data-action="profile">
+                <i class="fas fa-user"></i>
+                <span>Profil</span>
             </button>
         </div>
     </div>
 
-    <!-- QR Scanner Modal -->
-    <div class="modal-overlay" id="qrModalOverlay"></div>
-    <div class="modal" id="qrModal">
-        <div class="modal-header">
-            <h3><i class="fas fa-qrcode"></i> Scanner QR Code</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="qr-scanner-area">
-                <div class="qr-frame"></div>
-                <div class="qr-instruction">
-                    <i class="fas fa-camera"></i>
-                    <p>Arahkan kamera ke QR Code presensi</p>
-                </div>
-            </div>
-            <div class="qr-manual">
-                <input type="text" placeholder="Masukkan kode presensi manual" id="manualCode">
-                <button class="btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalOverlay"></div>
+    
     <!-- Presensi Modal -->
     <div class="modal" id="presensiModal">
         <div class="modal-header">
@@ -637,10 +413,6 @@
                     <i class="fas fa-head-side-cough"></i>
                     <span>Sakit</span>
                 </button>
-                <button class="presensi-option dark" data-status="alfa">
-                    <i class="fas fa-times"></i>
-                    <span>Alfa</span>
-                </button>
             </div>
             
             <div class="presensi-note">
@@ -654,11 +426,32 @@
         </div>
     </div>
 
+    <!-- QR Scanner Modal -->
+    <div class="modal" id="qrModal">
+        <div class="modal-header">
+            <h3><i class="fas fa-qrcode"></i> Scanner QR Code</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="qr-scanner-area">
+                <div class="qr-frame"></div>
+                <div class="qr-instruction">
+                    <i class="fas fa-camera"></i>
+                    <p>Arahkan kamera ke QR Code presensi</p>
+                </div>
+            </div>
+            <div class="qr-manual">
+                <input type="text" placeholder="Masukkan kode presensi manual" id="manualCode">
+                <button class="btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notifications Panel -->
     <div class="notifications-panel" id="notificationsPanel">
         <div class="panel-header">
             <h3><i class="fas fa-bell"></i> Notifikasi</h3>
-            <button class="clear-all">Bersihkan Semua</button>
+            <button class="clear-all" id="clearNotifications">Bersihkan</button>
         </div>
         <div class="notifications-list" id="notificationsList">
             <!-- Notifications will be loaded here -->
@@ -690,18 +483,19 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Scripts -->
+    <script src="mock-api.js"></script>
+    <script src="admin.js"></script>
     <script src="script.js"></script>
-    <script src="mapel-data.js"></script>
     
     <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .then(reg => console.log('Service Worker registered'))
                     .catch(err => console.log('Service Worker error:', err));
             });
         }
     </script>
 </body>
-  </html>
+    </html>
