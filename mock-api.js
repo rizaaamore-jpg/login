@@ -1,11 +1,13 @@
 // ============================================
 // MOCK API BACKEND - SMK JAKARTA TIMUR 1
 // Simulasi database dengan localStorage
+// Versi kompatibel dengan aplikasi yang ada
 // ============================================
 
 class MockAPI {
     constructor() {
         this.initializeData();
+        console.log('🗄️ Mock API initialized with localStorage');
     }
     
     initializeData() {
@@ -35,14 +37,36 @@ class MockAPI {
                     createdAt: new Date().toISOString()
                 },
                 {
+                    id: 'SIS003',
+                    username: 'budi_siswa',
+                    password: 'siswa123',
+                    name: 'Budi Santoso',
+                    nis: '2023003',
+                    role: 'siswa',
+                    kelas: 'XI RPL 1',
+                    avatar: '👨‍🎓',
+                    createdAt: new Date().toISOString()
+                },
+                {
                     id: 'GUR001',
-                    username: 'budi',
+                    username: 'Guru',
                     password: 'guru123',
-                    name: 'Budi Santoso, M.Pd',
+                    name: 'Bpk. Sutrisno, M.Pd',
                     nip: '198011022005011001',
                     role: 'guru',
-                    mapel: ['matematika', 'informatika'],
+                    mapel: ['Matematika', 'Pemrograman Dasar'],
                     avatar: '👨‍🏫',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'GUR002',
+                    username: 'rina_guru',
+                    password: 'guru123',
+                    name: 'Retno, S.Kom',
+                    nip: '198512032006042001',
+                    role: 'guru',
+                    mapel: ['Pemrograman Web', 'Basis Data'],
+                    avatar: '👩‍🏫',
                     createdAt: new Date().toISOString()
                 },
                 {
@@ -61,145 +85,77 @@ class MockAPI {
         // Initialize mapel if not exists
         if (!localStorage.getItem('mapelData')) {
             const defaultMapel = {
-                pjok: {
-                    id: 'pjok',
-                    name: "PJOK",
-                    fullName: "Pendidikan Jasmani, Olahraga, dan Kesehatan",
-                    teacher: "Bpk. Dudi",
-                    teacherId: "GUR002",
-                    schedule: "Senin, 07:30 - 09:00",
-                    room: "Lapangan Olahraga",
-                    color: "#10b981",
-                    icon: "fas fa-running",
-                    kelas: ["X", "XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
+                'pemrograman_web': {
+                    id: 'pemrograman_web',
+                    name: 'Pemrograman Web',
+                    teacher: 'Bu Rina, S.Kom',
+                    teacherId: 'GUR002',
+                    schedule: 'Senin, 07:30 - 09:00',
+                    room: 'Lab. Komputer 1',
+                    kelas: ['XII TKJ 1', 'XII TKJ 2', 'XII RPL 1'],
+                    color: '#3b82f6',
+                    icon: 'fas fa-code',
+                    active: true
                 },
-                matematika: {
+                'basis_data': {
+                    id: 'basis_data',
+                    name: 'Basis Data',
+                    teacher: 'Bu Rina, S.Kom',
+                    teacherId: 'GUR002',
+                    schedule: 'Selasa, 09:30 - 11:00',
+                    room: 'Lab. Komputer 2',
+                    kelas: ['XI TKJ 1', 'XI TKJ 2'],
+                    color: '#10b981',
+                    icon: 'fas fa-database',
+                    active: true
+                },
+                'jaringan_komputer': {
+                    id: 'jaringan_komputer',
+                    name: 'Jaringan Komputer',
+                    teacher: 'Pak Andi, M.Kom',
+                    teacherId: 'GUR003',
+                    schedule: 'Rabu, 08:00 - 10:00',
+                    room: 'Lab. Jaringan',
+                    kelas: ['X TKJ 1', 'X TKJ 2'],
+                    color: '#6366f1',
+                    icon: 'fas fa-network-wired',
+                    active: true
+                },
+                'pemrograman_dasar': {
+                    id: 'pemrograman_dasar',
+                    name: 'Pemrograman Dasar',
+                    teacher: 'Pak Budi, M.Pd',
+                    teacherId: 'GUR001',
+                    schedule: 'Kamis, 07:30 - 09:00',
+                    room: 'Lab. Komputer A',
+                    kelas: ['X RPL 1', 'X RPL 2'],
+                    color: '#8b5cf6',
+                    icon: 'fas fa-laptop-code',
+                    active: true
+                },
+                'matematika': {
                     id: 'matematika',
-                    name: "Matematika",
-                    fullName: "Matematika",
-                    teacher: "Bpk.Sutrisno",
-                    teacherId: "GUR001",
-                    schedule: "Senin, 09:30 - 11:00",
-                    room: "Lab. Matematika",
-                    color: "#3b82f6",
-                    icon: "fas fa-calculator",
-                    kelas: ["X", "XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
+                    name: 'Matematika',
+                    teacher: 'Pak Sutrisno, S.Pd',
+                    teacherId: 'GUR004',
+                    schedule: 'Jumat, 09:30 - 11:00',
+                    room: 'Ruang 301',
+                    kelas: ['X', 'XI', 'XII'],
+                    color: '#ef4444',
+                    icon: 'fas fa-calculator',
+                    active: true
                 },
-                bahasa_indonesia: {
-                    id: 'bahasa_indonesia',
-                    name: "Bahasa Indonesia",
-                    fullName: "Bahasa Indonesia",
-                    teacher: "Ibu Kesih",
-                    teacherId: "GUR003",
-                    schedule: "Selasa, 07:30 - 09:00",
-                    room: "Ruang 201",
-                    color: "#8b5cf6",
-                    icon: "fas fa-language",
-                    kelas: ["X", "XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                bahasa_inggris: {
+                'bahasa_inggris': {
                     id: 'bahasa_inggris',
-                    name: "Bahasa Inggris",
-                    fullName: "Bahasa Inggris",
-                    teacher: "Ms.Nada",
-                    teacherId: "GUR004",
-                    schedule: "Selasa, 09:30 - 11:00",
-                    room: "Lab. Bahasa",
-                    color: "#ec4899",
-                    icon: "fas fa-globe",
-                    kelas: ["X", "XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                ipas: {
-                    id: 'ipas',
-                    name: "IPAS",
-                    fullName: "Ilmu Pengetahuan Alam dan Sosial",
-                    teacher: "Ibu Rahayu",
-                    teacherId: "GUR005",
-                    schedule: "Rabu, 07:30 - 09:00",
-                    room: "Lab. IPA",
-                    color: "#06b6d4",
-                    icon: "fas fa-flask",
-                    kelas: ["X"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                sejarah: {
-                    id: 'sejarah',
-                    name: "Sejarah",
-                    fullName: "Sejarah Indonesia",
-                    teacher: "Ibu Rahayu",
-                    teacherId: "GUR006",
-                    schedule: "Rabu, 09:30 - 11:00",
-                    room: "Ruang 202",
-                    color: "#f97316",
-                    icon: "fas fa-landmark",
-                    kelas: ["XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                pancasila: {
-                    id: 'pancasila',
-                    name: "Pancasila",
-                    fullName: "Pendidikan Pancasila",
-                    teacher: "Ibu Manda",
-                    teacherId: "GUR007",
-                    schedule: "Kamis, 07:30 - 09:00",
-                    room: "Ruang 203",
-                    color: "#84cc16",
-                    icon: "fas fa-flag",
-                    kelas: ["X", "XI", "XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                jaringan_dasar: {
-                    id: 'jaringan_dasar',
-                    name: "Jaringan Dasar",
-                    fullName: "Komputer Jaringan Dasar",
-                    teacher: "Bpk. Okeu",
-                    teacherId: "GUR008",
-                    schedule: "Kamis, 09:30 - 11:00",
-                    room: "Lab. Jaringan",
-                    color: "#6366f1",
-                    icon: "fas fa-network-wired",
-                    kelas: ["X"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                sistem_komputer: {
-                    id: 'sistem_komputer',
-                    name: "Sistem Komputer",
-                    fullName: "Sistem Komputer",
-                    teacher: "Bpk. Adi",
-                    teacherId: "GUR009",
-                    schedule: "Jumat, 07:30 - 09:00",
-                    room: "Lab. Komputer A",
-                    color: "#8b5cf6",
-                    icon: "fas fa-desktop",
-                    kelas: ["XI"],
-                    active: true,
-                    createdAt: new Date().toISOString()
-                },
-                coding_ai: {
-                    id: 'coding_ai',
-                    name: "Coding AI",
-                    fullName: "Coding Artificial Intelligence",
-                    teacher: "Bpk.Rama",
-                    teacherId: "GUR010",
-                    schedule: "Jumat, 09:30 - 11:00",
-                    room: "Lab. AI",
-                    color: "#06b6d4",
-                    icon: "fas fa-robot",
-                    kelas: ["XII"],
-                    active: true,
-                    createdAt: new Date().toISOString()
+                    name: 'Bahasa Inggris',
+                    teacher: 'Ms. Nada, S.Pd',
+                    teacherId: 'GUR005',
+                    schedule: 'Senin, 09:30 - 11:00',
+                    room: 'Lab. Bahasa',
+                    kelas: ['X', 'XI', 'XII'],
+                    color: '#ec4899',
+                    icon: 'fas fa-language',
+                    active: true
                 }
             };
             localStorage.setItem('mapelData', JSON.stringify(defaultMapel));
@@ -212,12 +168,12 @@ class MockAPI {
                 {
                     id: 'PRS001',
                     userId: 'SIS001',
-                    userName: 'Ahmad Fauzi',
-                    mapel: 'Matematika',
+                    userName: 'Arip Suyuti',
+                    mapel: 'Pemrograman Web',
                     status: 'hadir',
                     date: today,
                     time: '07:45',
-                    catatan: '',
+                    catatan: 'Hadir tepat waktu',
                     timestamp: new Date().toISOString(),
                     verified: true
                 },
@@ -225,11 +181,23 @@ class MockAPI {
                     id: 'PRS002',
                     userId: 'SIS002',
                     userName: 'Siti Nurhaliza',
-                    mapel: 'Bahasa Indonesia',
+                    mapel: 'Basis Data',
                     status: 'hadir',
                     date: today,
-                    time: '08:00',
+                    time: '09:35',
                     catatan: '',
+                    timestamp: new Date().toISOString(),
+                    verified: true
+                },
+                {
+                    id: 'PRS003',
+                    userId: 'SIS003',
+                    userName: 'Budi Santoso',
+                    mapel: 'Matematika',
+                    status: 'izin',
+                    date: today,
+                    time: '09:40',
+                    catatan: 'Izin sakit',
                     timestamp: new Date().toISOString(),
                     verified: true
                 }
@@ -252,9 +220,18 @@ class MockAPI {
                 {
                     id: 'NOT002',
                     title: 'Presensi Berhasil',
-                    message: 'Ahmad melakukan presensi di Matematika',
+                    message: 'Arip melakukan presensi di Pemrograman Web',
                     type: 'success',
                     userId: 'ADM001',
+                    read: false,
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'NOT003',
+                    title: 'Reminder',
+                    message: 'Jangan lupa presensi sebelum jam 10:00',
+                    type: 'warning',
+                    userId: null,
                     read: false,
                     createdAt: new Date().toISOString()
                 }
@@ -273,12 +250,14 @@ class MockAPI {
                     const user = users.find(u => u.username === username && u.password === password);
                     
                     if (user) {
-                        // Remove password from response
-                        const { password, ...userWithoutPass } = user;
+                        // Clone user object and remove password
+                        const userResponse = { ...user };
+                        delete userResponse.password;
+                        
                         resolve({
                             success: true,
                             message: 'Login berhasil',
-                            data: userWithoutPass,
+                            data: userResponse,
                             token: 'mock-jwt-token-' + Date.now()
                         });
                     } else {
@@ -290,10 +269,67 @@ class MockAPI {
                 } catch (error) {
                     reject({
                         success: false,
-                        message: 'Error saat login'
+                        message: 'Error saat login: ' + error.message
                     });
                 }
-            }, 500);
+            }, 800); // Simulate network delay
+        });
+    }
+    
+    async register(userData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    
+                    // Check if username already exists
+                    if (users.some(u => u.username === userData.username)) {
+                        resolve({
+                            success: false,
+                            message: 'Username sudah digunakan'
+                        });
+                        return;
+                    }
+                    
+                    // Check if NIS already exists (for students)
+                    if (userData.nis && users.some(u => u.nis === userData.nis)) {
+                        resolve({
+                            success: false,
+                            message: 'NIS sudah terdaftar'
+                        });
+                        return;
+                    }
+                    
+                    // Generate ID
+                    const id = userData.role === 'siswa' ? 'SIS' + (users.filter(u => u.role === 'siswa').length + 1).toString().padStart(3, '0') :
+                              userData.role === 'guru' ? 'GUR' + (users.filter(u => u.role === 'guru').length + 1).toString().padStart(3, '0') :
+                              'ADM' + (users.filter(u => u.role === 'admin').length + 1).toString().padStart(3, '0');
+                    
+                    const newUser = {
+                        id,
+                        ...userData,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    users.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Clone user object and remove password for response
+                    const userResponse = { ...newUser };
+                    delete userResponse.password;
+                    
+                    resolve({
+                        success: true,
+                        message: 'Registrasi berhasil',
+                        data: userResponse
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal melakukan registrasi: ' + error.message
+                    });
+                }
+            }, 1000);
         });
     }
     
@@ -308,79 +344,169 @@ class MockAPI {
                         filteredUsers = users.filter(u => u.role === role);
                     }
                     
-                    // Remove passwords for security
-                    const safeUsers = filteredUsers.map(({ password, ...user }) => user);
+                    // Remove passwords from response
+                    const safeUsers = filteredUsers.map(user => {
+                        const { password, ...userWithoutPass } = user;
+                        return userWithoutPass;
+                    });
                     
                     resolve({
                         success: true,
-                        data: safeUsers
+                        data: safeUsers,
+                        total: safeUsers.length
                     });
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal memuat data user'
-                    });
-                }
-            }, 200);
-        });
-    }
-    
-    async addUser(userData) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                try {
-                    const users = JSON.parse(localStorage.getItem('users') || '[]');
-                    
-                    // Generate ID
-                    const prefix = userData.role === 'siswa' ? 'SIS' :
-                                  userData.role === 'guru' ? 'GUR' : 'ADM';
-                    const id = prefix + (users.length + 1).toString().padStart(3, '0');
-                    
-                    const newUser = {
-                        id,
-                        ...userData,
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    users.push(newUser);
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    // Remove password from response
-                    const { password, ...userWithoutPass } = newUser;
-                    
-                    resolve({
-                        success: true,
-                        message: 'User berhasil ditambahkan',
-                        data: userWithoutPass
-                    });
-                } catch (error) {
-                    resolve({
-                        success: false,
-                        message: 'Gagal menambahkan user'
+                        message: 'Gagal memuat data pengguna',
+                        data: []
                     });
                 }
             }, 300);
         });
     }
     
+    async getUserById(userId) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const user = users.find(u => u.id === userId);
+                    
+                    if (user) {
+                        const { password, ...userWithoutPass } = user;
+                        resolve({
+                            success: true,
+                            data: userWithoutPass
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            message: 'Pengguna tidak ditemukan'
+                        });
+                    }
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal memuat data pengguna'
+                    });
+                }
+            }, 200);
+        });
+    }
+    
     // ================= MAPEL MANAGEMENT =================
     
-    async getMapel() {
+    async getMapel(activeOnly = true) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 try {
                     const mapelData = JSON.parse(localStorage.getItem('mapelData') || '{}');
+                    
+                    // Convert object to array
+                    let mapelArray = Object.values(mapelData);
+                    
+                    // Filter active mapel if requested
+                    if (activeOnly) {
+                        mapelArray = mapelArray.filter(mapel => mapel.active !== false);
+                    }
+                    
+                    // Sort by name
+                    mapelArray.sort((a, b) => a.name.localeCompare(b.name));
+                    
                     resolve({
                         success: true,
-                        data: mapelData
+                        data: mapelArray,
+                        total: mapelArray.length
                     });
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal memuat data mapel'
+                        message: 'Gagal memuat data mata pelajaran',
+                        data: []
                     });
                 }
-            }, 150);
+            }, 200);
+        });
+    }
+    
+    async getMapelById(mapelId) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const mapelData = JSON.parse(localStorage.getItem('mapelData') || '{}');
+                    const mapel = mapelData[mapelId];
+                    
+                    if (mapel) {
+                        resolve({
+                            success: true,
+                            data: mapel
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            message: 'Mata pelajaran tidak ditemukan'
+                        });
+                    }
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal memuat data mata pelajaran'
+                    });
+                }
+            }, 200);
+        });
+    }
+    
+    async addMapel(mapelData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const allMapel = JSON.parse(localStorage.getItem('mapelData') || '{}');
+                    
+                    // Generate ID from name
+                    const id = mapelData.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+                    
+                    // Check if mapel already exists
+                    if (allMapel[id]) {
+                        resolve({
+                            success: false,
+                            message: 'Mata pelajaran sudah ada'
+                        });
+                        return;
+                    }
+                    
+                    const newMapel = {
+                        id,
+                        ...mapelData,
+                        active: true,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    allMapel[id] = newMapel;
+                    localStorage.setItem('mapelData', JSON.stringify(allMapel));
+                    
+                    // Add notification
+                    this.addNotification({
+                        title: 'Mata Pelajaran Baru',
+                        message: `${mapelData.name} telah ditambahkan`,
+                        type: 'info',
+                        userId: 'ADM001'
+                    });
+                    
+                    resolve({
+                        success: true,
+                        message: 'Mata pelajaran berhasil ditambahkan',
+                        data: newMapel
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal menambahkan mata pelajaran: ' + error.message
+                    });
+                }
+            }, 500);
         });
     }
     
@@ -401,55 +527,22 @@ class MockAPI {
                         
                         resolve({
                             success: true,
-                            message: 'Mapel berhasil diupdate',
+                            message: 'Mata pelajaran berhasil diupdate',
                             data: mapelData[mapelId]
                         });
                     } else {
                         resolve({
                             success: false,
-                            message: 'Mapel tidak ditemukan'
+                            message: 'Mata pelajaran tidak ditemukan'
                         });
                     }
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal mengupdate mapel'
+                        message: 'Gagal mengupdate mata pelajaran'
                     });
                 }
-            }, 300);
-        });
-    }
-    
-    async addMapel(mapelData) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                try {
-                    const allMapel = JSON.parse(localStorage.getItem('mapelData') || '{}');
-                    
-                    // Generate ID from name
-                    const id = mapelData.name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-                    
-                    const newMapel = {
-                        id,
-                        ...mapelData,
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    allMapel[id] = newMapel;
-                    localStorage.setItem('mapelData', JSON.stringify(allMapel));
-                    
-                    resolve({
-                        success: true,
-                        message: 'Mapel berhasil ditambahkan',
-                        data: newMapel
-                    });
-                } catch (error) {
-                    resolve({
-                        success: false,
-                        message: 'Gagal menambahkan mapel'
-                    });
-                }
-            }, 300);
+            }, 400);
         });
     }
     
@@ -465,21 +558,21 @@ class MockAPI {
                         
                         resolve({
                             success: true,
-                            message: 'Mapel berhasil dihapus'
+                            message: 'Mata pelajaran berhasil dihapus'
                         });
                     } else {
                         resolve({
                             success: false,
-                            message: 'Mapel tidak ditemukan'
+                            message: 'Mata pelajaran tidak ditemukan'
                         });
                     }
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal menghapus mapel'
+                        message: 'Gagal menghapus mata pelajaran'
                     });
                 }
-            }, 300);
+            }, 400);
         });
     }
     
@@ -490,10 +583,28 @@ class MockAPI {
             setTimeout(() => {
                 try {
                     const allPresensi = JSON.parse(localStorage.getItem('presensiData') || '[]');
+                    const today = new Date().toISOString().split('T')[0];
+                    
+                    // Check if user already has presensi for this mapel today
+                    const existingPresensi = allPresensi.find(p => 
+                        p.userId === presensiData.userId && 
+                        p.mapel === presensiData.mapel &&
+                        p.date === today
+                    );
+                    
+                    if (existingPresensi) {
+                        resolve({
+                            success: false,
+                            message: 'Anda sudah melakukan presensi untuk mata pelajaran ini hari ini'
+                        });
+                        return;
+                    }
                     
                     const newPresensi = {
                         id: 'PRS' + Date.now(),
                         ...presensiData,
+                        date: today,
+                        time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
                         timestamp: new Date().toISOString(),
                         verified: false
                     };
@@ -504,10 +615,22 @@ class MockAPI {
                     // Add notification for admin
                     this.addNotification({
                         title: 'Presensi Baru',
-                        message: `${presensiData.userName} melakukan presensi sebagai ${presensiData.status}`,
+                        message: `${presensiData.userName} melakukan presensi di ${presensiData.mapel} sebagai ${presensiData.status}`,
                         type: 'info',
                         userId: 'ADM001'
                     });
+                    
+                    // Add notification for teacher
+                    const mapelData = JSON.parse(localStorage.getItem('mapelData') || '{}');
+                    const mapel = Object.values(mapelData).find(m => m.name === presensiData.mapel);
+                    if (mapel && mapel.teacherId) {
+                        this.addNotification({
+                            title: 'Siswa Presensi',
+                            message: `${presensiData.userName} melakukan presensi di ${presensiData.mapel}`,
+                            type: 'info',
+                            userId: mapel.teacherId
+                        });
+                    }
                     
                     resolve({
                         success: true,
@@ -517,27 +640,30 @@ class MockAPI {
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal menyimpan presensi'
+                        message: 'Gagal menyimpan presensi: ' + error.message
                     });
                 }
-            }, 400);
+            }, 600);
         });
     }
     
-    async getPresensi(userId = null, date = null) {
+    async getPresensi(userId = null, date = null, mapel = null) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 try {
                     let allPresensi = JSON.parse(localStorage.getItem('presensiData') || '[]');
                     
-                    // Filter by userId if provided
+                    // Apply filters
                     if (userId) {
                         allPresensi = allPresensi.filter(p => p.userId === userId);
                     }
                     
-                    // Filter by date if provided
                     if (date) {
                         allPresensi = allPresensi.filter(p => p.date === date);
+                    }
+                    
+                    if (mapel) {
+                        allPresensi = allPresensi.filter(p => p.mapel === mapel);
                     }
                     
                     // Sort by timestamp (newest first)
@@ -545,19 +671,101 @@ class MockAPI {
                     
                     resolve({
                         success: true,
-                        data: allPresensi
+                        data: allPresensi,
+                        total: allPresensi.length
                     });
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal memuat data presensi'
+                        message: 'Gagal memuat data presensi',
+                        data: []
                     });
                 }
-            }, 200);
+            }, 300);
+        });
+    }
+    
+    async getTodayPresensi() {
+        const today = new Date().toISOString().split('T')[0];
+        return this.getPresensi(null, today);
+    }
+    
+    async verifyPresensi(presensiId) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const allPresensi = JSON.parse(localStorage.getItem('presensiData') || '[]');
+                    const presensi = allPresensi.find(p => p.id === presensiId);
+                    
+                    if (presensi) {
+                        presensi.verified = true;
+                        presensi.verifiedAt = new Date().toISOString();
+                        localStorage.setItem('presensiData', JSON.stringify(allPresensi));
+                        
+                        resolve({
+                            success: true,
+                            message: 'Presensi telah diverifikasi',
+                            data: presensi
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            message: 'Data presensi tidak ditemukan'
+                        });
+                    }
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal memverifikasi presensi'
+                    });
+                }
+            }, 400);
         });
     }
     
     // ================= NOTIFICATIONS =================
+    
+    async getNotifications(userId) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                    
+                    // Filter notifications: admin gets all, others get global or their own
+                    if (userId !== 'ADM001') {
+                        notifications = notifications.filter(n => 
+                            n.userId === null || n.userId === userId || userId.startsWith('GUR') && n.type === 'teacher'
+                        );
+                    }
+                    
+                    // Sort by date (newest first)
+                    notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    
+                    // Mark as read if they were unread and belong to this user
+                    notifications.forEach(notif => {
+                        if (!notif.read && (notif.userId === userId || notif.userId === null)) {
+                            notif.read = true;
+                        }
+                    });
+                    
+                    // Save updated notifications
+                    localStorage.setItem('notifications', JSON.stringify(notifications));
+                    
+                    resolve({
+                        success: true,
+                        data: notifications,
+                        unread: notifications.filter(n => !n.read).length
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal memuat notifikasi',
+                        data: []
+                    });
+                }
+            }, 250);
+        });
+    }
     
     addNotification(notification) {
         try {
@@ -571,40 +779,52 @@ class MockAPI {
             };
             
             notifications.unshift(newNotif);
+            
+            // Keep only last 100 notifications
+            if (notifications.length > 100) {
+                notifications.length = 100;
+            }
+            
             localStorage.setItem('notifications', JSON.stringify(notifications));
+            
+            // Trigger notification event for real-time update
+            if (window.dispatchEvent) {
+                const event = new CustomEvent('newNotification', { detail: newNotif });
+                window.dispatchEvent(event);
+            }
         } catch (error) {
             console.error('Error adding notification:', error);
         }
     }
     
-    async getNotifications(userId) {
+    async markNotificationAsRead(notificationId) {
         return new Promise((resolve) => {
             setTimeout(() => {
                 try {
-                    let notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                    const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                    const notification = notifications.find(n => n.id === notificationId);
                     
-                    // Admin gets all notifications
-                    // Others get only global notifications or their own
-                    if (userId !== 'ADM001') {
-                        notifications = notifications.filter(n => 
-                            !n.userId || n.userId === userId
-                        );
+                    if (notification) {
+                        notification.read = true;
+                        localStorage.setItem('notifications', JSON.stringify(notifications));
+                        
+                        resolve({
+                            success: true,
+                            message: 'Notifikasi ditandai sebagai telah dibaca'
+                        });
+                    } else {
+                        resolve({
+                            success: false,
+                            message: 'Notifikasi tidak ditemukan'
+                        });
                     }
-                    
-                    // Sort by date (newest first)
-                    notifications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                    
-                    resolve({
-                        success: true,
-                        data: notifications
-                    });
                 } catch (error) {
                     resolve({
                         success: false,
-                        message: 'Gagal memuat notifikasi'
+                        message: 'Gagal memperbarui notifikasi'
                     });
                 }
-            }, 150);
+            }, 200);
         });
     }
     
@@ -619,40 +839,71 @@ class MockAPI {
                     const presensiData = JSON.parse(localStorage.getItem('presensiData') || '[]');
                     
                     const today = new Date().toISOString().split('T')[0];
-                    const currentMonth = new Date().getMonth();
+                    const currentMonth = new Date().getMonth() + 1;
+                    const currentYear = new Date().getFullYear();
                     
                     let stats = {};
                     
                     if (userRole === 'siswa') {
                         const userPresensi = presensiData.filter(p => p.userId === userId);
                         const todayPresensi = userPresensi.filter(p => p.date === today);
-                        const monthlyPresensi = userPresensi.filter(p => 
-                            new Date(p.date).getMonth() === currentMonth
-                        );
+                        const monthlyPresensi = userPresensi.filter(p => {
+                            const presensiDate = new Date(p.date);
+                            return presensiDate.getMonth() + 1 === currentMonth && 
+                                   presensiDate.getFullYear() === currentYear;
+                        });
+                        
+                        const totalMapelForStudent = Object.values(mapelData).filter(mapel => 
+                            mapel.kelas.some(kelas => {
+                                const user = users.find(u => u.id === userId);
+                                return user && user.kelas && user.kelas.includes(kelas);
+                            })
+                        ).length;
                         
                         stats = {
                             hadirHariIni: todayPresensi.filter(p => p.status === 'hadir').length,
-                            totalMapel: Object.keys(mapelData).length,
-                            persenBulanIni: monthlyPresensi.length > 0 ? 
+                            totalMapel: totalMapelForStudent,
+                            presensiBulanIni: monthlyPresensi.length,
+                            persenKehadiran: monthlyPresensi.length > 0 ? 
                                 Math.round((monthlyPresensi.filter(p => p.status === 'hadir').length / monthlyPresensi.length) * 100) : 0,
-                            totalPresensi: userPresensi.length
+                            totalPresensi: userPresensi.length,
+                            izinHariIni: todayPresensi.filter(p => p.status === 'izin').length,
+                            alphaHariIni: todayPresensi.filter(p => p.status === 'alpha').length
                         };
                     } else if (userRole === 'guru') {
                         const guru = users.find(u => u.id === userId);
                         const guruMapel = guru?.mapel || [];
                         const mapelCount = guruMapel.length;
                         
+                        const todayPresensi = presensiData.filter(p => 
+                            p.date === today && guruMapel.includes(p.mapel)
+                        );
+                        
                         stats = {
                             totalMapel: mapelCount,
                             siswaTotal: users.filter(u => u.role === 'siswa').length,
-                            presensiHariIni: presensiData.filter(p => p.date === today).length
+                            presensiHariIni: todayPresensi.length,
+                            kehadiranHariIni: todayPresensi.filter(p => p.status === 'hadir').length,
+                            persenKehadiran: todayPresensi.length > 0 ? 
+                                Math.round((todayPresensi.filter(p => p.status === 'hadir').length / todayPresensi.length) * 100) : 0,
+                            totalPresensiBulanIni: presensiData.filter(p => 
+                                guruMapel.includes(p.mapel) && 
+                                new Date(p.date).getMonth() + 1 === currentMonth
+                            ).length
                         };
                     } else if (userRole === 'admin') {
+                        const todayPresensi = presensiData.filter(p => p.date === today);
+                        
                         stats = {
                             totalSiswa: users.filter(u => u.role === 'siswa').length,
                             totalGuru: users.filter(u => u.role === 'guru').length,
-                            totalMapel: Object.keys(mapelData).length,
-                            presensiHariIni: presensiData.filter(p => p.date === today).length
+                            totalMapel: Object.values(mapelData).length,
+                            presensiHariIni: todayPresensi.length,
+                            kehadiranHariIni: todayPresensi.filter(p => p.status === 'hadir').length,
+                            izinHariIni: todayPresensi.filter(p => p.status === 'izin').length,
+                            alphaHariIni: todayPresensi.filter(p => p.status === 'alpha').length,
+                            persenKehadiran: todayPresensi.length > 0 ? 
+                                Math.round((todayPresensi.filter(p => p.status === 'hadir').length / todayPresensi.length) * 100) : 0
                         };
                     }
                     
@@ -661,16 +912,110 @@ class MockAPI {
                         data: stats
                     });
                 } catch (error) {
+                    console.error('Error getting dashboard stats:', error);
                     resolve({
                         success: false,
                         message: 'Gagal memuat statistik',
                         data: {}
                     });
                 }
-            }, 250);
+            }, 350);
+        });
+    }
+    
+    // ================= UTILITY METHODS =================
+    
+    async clearAllData() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    localStorage.removeItem('users');
+                    localStorage.removeItem('mapelData');
+                    localStorage.removeItem('presensiData');
+                    localStorage.removeItem('notifications');
+                    
+                    // Reinitialize with default data
+                    this.initializeData();
+                    
+                    resolve({
+                        success: true,
+                        message: 'Semua data telah direset ke default'
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal mereset data'
+                    });
+                }
+            }, 1000);
+        });
+    }
+    
+    async exportData() {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    const data = {
+                        users: JSON.parse(localStorage.getItem('users') || '[]'),
+                        mapelData: JSON.parse(localStorage.getItem('mapelData') || '{}'),
+                        presensiData: JSON.parse(localStorage.getItem('presensiData') || '[]'),
+                        notifications: JSON.parse(localStorage.getItem('notifications') || '[]'),
+                        exportedAt: new Date().toISOString()
+                    };
+                    
+                    resolve({
+                        success: true,
+                        data: data,
+                        message: 'Data berhasil diekspor'
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal mengekspor data'
+                    });
+                }
+            }, 500);
+        });
+    }
+    
+    async importData(importData) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                try {
+                    if (importData.users) {
+                        localStorage.setItem('users', JSON.stringify(importData.users));
+                    }
+                    if (importData.mapelData) {
+                        localStorage.setItem('mapelData', JSON.stringify(importData.mapelData));
+                    }
+                    if (importData.presensiData) {
+                        localStorage.setItem('presensiData', JSON.stringify(importData.presensiData));
+                    }
+                    if (importData.notifications) {
+                        localStorage.setItem('notifications', JSON.stringify(importData.notifications));
+                    }
+                    
+                    resolve({
+                        success: true,
+                        message: 'Data berhasil diimpor'
+                    });
+                } catch (error) {
+                    resolve({
+                        success: false,
+                        message: 'Gagal mengimpor data'
+                    });
+                }
+            }, 800);
         });
     }
 }
 
 // Create global instance
-window.MockAPI = new MockAPI();
+if (!window.MockAPI) {
+    window.MockAPI = new MockAPI();
+}
+
+// Export for Node.js/ES6 modules if needed
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MockAPI;
+                           }
