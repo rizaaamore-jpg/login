@@ -1,156 +1,351 @@
-<!-- ADD THIS TO YOUR EXISTING HTML FILE -->
-
-<!-- In the auth-forms section, add register form -->
-<div class="auth-form" id="registerForm">
-    <h2 class="form-title">Buat Akun Baru</h2>
-    <p class="form-subtitle">Daftar sebagai siswa SMK Jakarta Timur 1</p>
-    
-    <form id="registerForm">
-        <div class="input-group">
-            <i class="fas fa-user input-icon"></i>
-            <input type="text" id="regName" class="input-field" placeholder=" " required>
-            <label class="input-label">Nama Lengkap</label>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMK Jakarta Timur 1 - Presensi Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="school-name">SMK JAKARTA TIMUR 1</h1>
+            <div class="system-title">Sistem Presensi Digital Terpadu</div>
+            <div class="motto">"Unggul dalam Prestasi, Berkarakter, dan Berdaya Saing"</div>
         </div>
         
-        <div class="input-group">
-            <i class="fas fa-id-card input-icon"></i>
-            <input type="text" id="regNis" class="input-field" placeholder=" " required>
-            <label class="input-label">NIS</label>
+        <!-- Navigation Menu -->
+        <div class="nav-menu">
+            <a href="#" class="nav-item" data-target="login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="#" class="nav-item active" data-target="register"><i class="fas fa-user-plus"></i> Daftar Siswa</a>
+            <a href="#" class="nav-item" data-target="admin"><i class="fas fa-user-shield"></i> Admin Panel</a>
         </div>
         
-        <div class="input-group">
-            <i class="fas fa-users input-icon"></i>
-            <select id="regKelas" class="input-field" required>
-                <option value="">Pilih Kelas</option>
-                <option value="X TKJ 1">X TKJ 1</option>
-                <option value="X TKJ 2">X TKJ 2</option>
-                <option value="XI TKJ 1">XI TKJ 1</option>
-                <option value="XI TKJ 2">XI TKJ 2</option>
-                <option value="XII TKJ 1">XII TKJ 1</option>
-                <option value="XII TKJ 2">XII TKJ 2</option>
-                <option value="X RPL 1">X RPL 1</option>
-                <option value="X RPL 2">X RPL 2</option>
-            </select>
-            <label class="input-label">Kelas</label>
-        </div>
-        
-        <div class="input-group">
-            <i class="fas fa-at input-icon"></i>
-            <input type="text" id="regUsername" class="input-field" placeholder=" " required>
-            <label class="input-label">Username</label>
-        </div>
-        
-        <div class="input-group">
-            <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="regPassword" class="input-field" placeholder=" " required>
-            <label class="input-label">Password</label>
-            <button type="button" class="toggle-password" data-target="regPassword">
-                <i class="fas fa-eye"></i>
-            </button>
-        </div>
-        
-        <div class="input-group">
-            <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="regConfirmPassword" class="input-field" placeholder=" " required>
-            <label class="input-label">Konfirmasi Password</label>
-            <button type="button" class="toggle-password" data-target="regConfirmPassword">
-                <i class="fas fa-eye"></i>
-            </button>
-        </div>
-        
-        <div class="form-footer">
-            <button type="button" id="registerBtn" class="btn btn-primary btn-block btn-lg">
-                <i class="fas fa-user-plus"></i>
-                Daftar Sekarang
-            </button>
+        <!-- Login Cards Container -->
+        <div class="cards-container" id="loginSection">
+            <!-- Student Login Card -->
+            <div class="login-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-user-graduate card-icon"></i> Login Siswa</h2>
+                    <div class="card-subtitle">Masuk ke sistem presensi siswa</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="student-username">Username</label>
+                        <input type="text" id="student-username" class="form-input" placeholder="Masukkan username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="student-password">Password</label>
+                        <input type="password" id="student-password" class="form-input" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn-login" data-type="student"><i class="fas fa-sign-in-alt"></i> Masuk Sebagai Siswa</button>
+                    
+                    <div class="qr-section">
+                        <a href="#" class="qr-btn"><i class="fas fa-qrcode"></i> Scan QR Code</a>
+                    </div>
+                    
+                    <a href="#" class="forgot-password">Lupa Password?</a>
+                </div>
+            </div>
             
-            <div class="auth-switch">
-                <p>Sudah punya akun? <a href="#" id="showLogin">Login disini</a></p>
+            <!-- Teacher Login Card -->
+            <div class="login-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-chalkboard-teacher card-icon"></i> Login Guru</h2>
+                    <div class="card-subtitle">Masuk ke sistem presensi guru</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="teacher-username">Username</label>
+                        <input type="text" id="teacher-username" class="form-input" placeholder="Masukkan username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="teacher-password">Password</label>
+                        <input type="password" id="teacher-password" class="form-input" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn-login" data-type="teacher"><i class="fas fa-sign-in-alt"></i> Masuk Sebagai Guru</button>
+                    
+                    <a href="#" class="forgot-password">Lupa Password?</a>
+                </div>
+            </div>
+            
+            <!-- Admin Login Card -->
+            <div class="login-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-user-shield card-icon"></i> Login Admin</h2>
+                    <div class="card-subtitle">Masuk ke sistem administrasi</div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="admin-username">Username</label>
+                        <input type="text" id="admin-username" class="form-input" placeholder="Masukkan username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="admin-password">Password</label>
+                        <input type="password" id="admin-password" class="form-input" placeholder="Masukkan password">
+                    </div>
+                    <button class="btn-login" data-type="admin"><i class="fas fa-sign-in-alt"></i> Masuk Sebagai Admin</button>
+                    
+                    <a href="#" class="forgot-password">Lupa Password?</a>
+                </div>
             </div>
         </div>
-    </form>
-</div>
-
-<!-- In admin panel, add schedule controls -->
-<div class="admin-section">
-    <div class="section-header">
-        <h3><i class="fas fa-clock"></i> Kontrol Presensi</h3>
-        <span id="presensiStatusBadge" class="realtime-badge">
-            <i class="fas fa-lock"></i> Presensi Tertutup
-        </span>
+        
+        <!-- Register Form Section (Hidden by default) -->
+        <div class="auth-form-container" id="registerSection" style="display: none;">
+            <div class="auth-form-card">
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-user-plus card-icon"></i> Buat Akun Baru</h2>
+                    <div class="card-subtitle">Daftar sebagai siswa SMK Jakarta Timur 1</div>
+                </div>
+                <div class="card-body">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label class="form-label" for="regName">Nama Lengkap</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="regName" class="form-input" placeholder="Masukkan nama lengkap" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="regNis">NIS</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-id-card input-icon"></i>
+                                <input type="text" id="regNis" class="form-input" placeholder="Masukkan NIS" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="regKelas">Kelas</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-users input-icon"></i>
+                                <select id="regKelas" class="form-input" required>
+                                    <option value="">Pilih Kelas</option>
+                                    <option value="X TKJ 1">X TKJ 1</option>
+                                    <option value="X TKJ 2">X TKJ 2</option>
+                                    <option value="XI TKJ 1">XI TKJ 1</option>
+                                    <option value="XI TKJ 2">XI TKJ 2</option>
+                                    <option value="XII TKJ 1">XII TKJ 1</option>
+                                    <option value="XII TKJ 2">XII TKJ 2</option>
+                                    <option value="X RPL 1">X RPL 1</option>
+                                    <option value="X RPL 2">X RPL 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="regUsername">Username</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-at input-icon"></i>
+                                <input type="text" id="regUsername" class="form-input" placeholder="Buat username" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="regPassword">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="regPassword" class="form-input" placeholder="Buat password" required>
+                                <button type="button" class="toggle-password" data-target="regPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="regConfirmPassword">Konfirmasi Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock input-icon"></i>
+                                <input type="password" id="regConfirmPassword" class="form-input" placeholder="Ulangi password" required>
+                                <button type="button" class="toggle-password" data-target="regConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-footer">
+                            <button type="button" id="registerBtn" class="btn-login btn-block">
+                                <i class="fas fa-user-plus"></i> Daftar Sekarang
+                            </button>
+                            
+                            <div class="auth-switch">
+                                <p>Sudah punya akun? <a href="#" id="showLoginFromReg">Login disini</a></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Admin Panel Section (Hidden by default) -->
+        <div class="admin-panel-container" id="adminSection" style="display: none;">
+            <!-- Schedule Controls -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-clock"></i> Kontrol Presensi</h3>
+                    <span id="presensiStatusBadge" class="realtime-badge">
+                        <i class="fas fa-lock"></i> Presensi Tertutup
+                    </span>
+                </div>
+                
+                <div class="control-panel">
+                    <div class="control-group">
+                        <label class="form-label">Durasi Presensi (menit):</label>
+                        <input type="number" id="presensiDuration" value="30" min="5" max="120" class="form-input">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="openPresensiSession" class="btn-admin btn-success">
+                            <i class="fas fa-unlock"></i> Buka Sesi Presensi
+                        </button>
+                        <button id="closePresensiSession" class="btn-admin btn-danger" disabled>
+                            <i class="fas fa-lock"></i> Tutup Sesi
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Schedule Editor -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-calendar-alt"></i> Kelola Jadwal</h3>
+                    <button id="openScheduleModal" class="btn-admin btn-primary">
+                        <i class="fas fa-plus"></i> Tambah Jadwal
+                    </button>
+                </div>
+                
+                <div class="schedule-table" id="scheduleTable">
+                    <!-- Schedule will be populated by JavaScript -->
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <p>Belum ada jadwal. Tambah jadwal baru!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Real-time Activities -->
+            <div class="admin-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-history"></i> Aktivitas Real-time</h3>
+                </div>
+                <div class="activities-list" id="adminActivities">
+                    <div class="activity-item">
+                        <i class="fas fa-info-circle activity-icon"></i>
+                        <div class="activity-content">
+                            <div class="activity-title">Sistem siap</div>
+                            <div class="activity-time">Baru saja</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Schedule Editor Modal (Hidden by default) -->
+        <div class="modal-overlay" id="scheduleModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-edit"></i> Edit Jadwal</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="scheduleForm">
+                        <div class="form-group">
+                            <label class="form-label">Mata Pelajaran</label>
+                            <select id="scheduleMapel" class="form-input" required>
+                                <option value="">Pilih Mata Pelajaran</option>
+                                <option value="Pemrograman Web">Pemrograman Web</option>
+                                <option value="Basis Data">Basis Data</option>
+                                <option value="Jaringan Komputer">Jaringan Komputer</option>
+                                <option value="Pemrograman Dasar">Pemrograman Dasar</option>
+                                <option value="Matematika">Matematika</option>
+                                <option value="Bahasa Inggris">Bahasa Inggris</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Hari</label>
+                            <select id="scheduleDay" class="form-input" required>
+                                <option value="Senin">Senin</option>
+                                <option value="Selasa">Selasa</option>
+                                <option value="Rabu">Rabu</option>
+                                <option value="Kamis">Kamis</option>
+                                <option value="Jumat">Jumat</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Waktu</label>
+                            <input type="text" id="scheduleTime" class="form-input" placeholder="07:30 - 09:00" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Pengajar</label>
+                            <input type="text" id="scheduleTeacher" class="form-input" placeholder="Nama guru" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Ruangan</label>
+                            <input type="text" id="scheduleRoom" class="form-input" placeholder="Lab. Komputer 1" required>
+                        </div>
+                        
+                        <button type="button" id="saveSchedule" class="btn-login btn-block">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Demo Credentials -->
+        <div class="demo-credentials">
+            <h3 class="demo-title"><i class="fas fa-key"></i> Kredensial Demo</h3>
+            <div class="credential-list">
+                <div class="credential-item">
+                    <div class="credential-role">Siswa</div>
+                    <div class="credential-detail">Username: Arip</div>
+                    <div class="credential-detail">Password: siswa123</div>
+                </div>
+                <div class="credential-item">
+                    <div class="credential-role">Guru</div>
+                    <div class="credential-detail">Username: Guru</div>
+                    <div class="credential-detail">Password: guru123</div>
+                </div>
+                <div class="credential-item">
+                    <div class="credential-role">Admin</div>
+                    <div class="credential-detail">Username: admin</div>
+                    <div class="credential-detail">Password: admin123</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notifications -->
+        <div class="notifications">
+            <div class="notifications-header">
+                <h3 class="notifications-title"><i class="fas fa-bell"></i> Notifikasi</h3>
+                <button class="clear-btn">Bersihkan</button>
+            </div>
+            <ul class="notification-list">
+                <li class="notification-item"><i class="fas fa-info-circle notification-icon"></i> Sistem presensi digital v3.0 telah aktif</li>
+                <li class="notification-item"><i class="fas fa-exclamation-triangle notification-icon"></i> Ujian tengah semester dimulai minggu depan</li>
+                <li class="notification-item"><i class="fas fa-check-circle notification-icon"></i> Pembaruan sistem selesai pada 15 Januari 2023</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="system-version">Sistem Absensi Digital v3.0</div>
+            <div class="support-info">
+                <span>IT Support:</span>
+                <a href="tel:0819-3299-9602" class="support-link">
+                    <i class="fas fa-phone-alt"></i> 0819-3299-9602
+                </a>
+            </div>
+        </div>
     </div>
     
-    <div class="control-panel">
-        <div class="control-group">
-            <label>Durasi Presensi (menit):</label>
-            <input type="number" id="presensiDuration" value="30" min="5" max="120" class="input-field">
-        </div>
-        
-        <div class="button-group">
-            <button id="openPresensiSession" class="btn btn-success">
-                <i class="fas fa-unlock"></i> Buka Sesi Presensi
-            </button>
-            <button id="closePresensiSession" class="btn btn-danger" disabled>
-                <i class="fas fa-lock"></i> Tutup Sesi
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Schedule Editor Modal -->
-<div class="modal" id="scheduleModal">
-    <div class="modal-header">
-        <h3><i class="fas fa-edit"></i> Edit Jadwal</h3>
-        <button class="modal-close">&times;</button>
-    </div>
-    <div class="modal-body">
-        <form id="scheduleForm">
-            <div class="input-group">
-                <label>Mata Pelajaran</label>
-                <select id="scheduleMapel" class="input-field" required>
-                    <!-- Filled by JavaScript -->
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label>Hari</label>
-                <select id="scheduleDay" class="input-field" required>
-                    <option value="Senin">Senin</option>
-                    <option value="Selasa">Selasa</option>
-                    <option value="Rabu">Rabu</option>
-                    <option value="Kamis">Kamis</option>
-                    <option value="Jumat">Jumat</option>
-                </select>
-            </div>
-            
-            <div class="input-group">
-                <label>Waktu</label>
-                <input type="text" id="scheduleTime" class="input-field" placeholder="07:30 - 09:00" required>
-            </div>
-            
-            <div class="input-group">
-                <label>Pengajar</label>
-                <input type="text" id="scheduleTeacher" class="input-field" required>
-            </div>
-            
-            <div class="input-group">
-                <label>Ruangan</label>
-                <input type="text" id="scheduleRoom" class="input-field" required>
-            </div>
-            
-            <button type="button" id="saveSchedule" class="btn btn-primary btn-block">
-                <i class="fas fa-save"></i> Simpan Perubahan
-            </button>
-        </form>
-    </div>
-</div>
-
-<!-- Real-time Activities -->
-<div class="admin-section">
-    <div class="section-header">
-        <h3><i class="fas fa-history"></i> Aktivitas Real-time</h3>
-    </div>
-    <div class="activities-list" id="adminActivities">
-        <!-- Filled by JavaScript -->
-    </div>
-</div>
+    <script src="script.js"></script>
+</body>
+                            </html>
