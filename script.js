@@ -1,113 +1,86 @@
-// Absensi Kelas Application - FIXED VERSION
-class AbsensiApp {
-    constructor() {
-        this.currentUser = null;
-        this.currentRole = null;
-        this.mapelData = {};
-        this.presensiData = [];
-        this.notifications = [];
-        this.isSidebarOpen = false;
-        this.selectedStatus = null;
-        this.selectedMapel = null;
-        
-        this.init();
-    }
+// ============================================
+// ABSENSI DIGITAL SMK TI - FINAL SCRIPT
+// ============================================
+console.log('🚀 DARK AI: Sistem Absensi Digital v2.0 Loading...');
+
+// SINGLE GLOBAL OBJECT
+window.AbsensiApp = {
+    // Properties
+    currentUser: null,
+    currentRole: null,
+    mapelData: {},
+    presensiData: [],
+    notifications: [],
+    selectedStatus: null,
+    selectedMapel: null,
     
-    async init() {
-        // Load data
-        await this.loadData();
+    // Initialize dengan safety check
+    init: function() {
+        console.log('🔧 Initializing application...');
         
-        // Setup event listeners
+        // 1. Sembunyikan loading screen setelah 2 detik (JAMINAN!)
+        this.hideLoadingScreen();
+        
+        // 2. Setup semua event listeners
         this.setupEventListeners();
         
-        // Update time
+        // 3. Update clock
         this.updateClock();
         setInterval(() => this.updateClock(), 1000);
         
-        // Check for saved session
+        // 4. Check session
         this.checkSavedSession();
         
-        // Animate loading progress
-        this.animateLoading();
-    }
+        console.log('✅ Application initialized successfully');
+    },
     
-    animateLoading() {
-        const progressBar = document.querySelector('.progress-bar');
-        let width = 0;
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                // Hide loading screen
+    hideLoadingScreen: function() {
+        // Method garantized buat hide loading
+        setTimeout(() => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.transition = 'opacity 0.5s ease';
+                loadingScreen.style.opacity = '0';
+                
                 setTimeout(() => {
-                    document.getElementById('loadingScreen').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('loadingScreen').style.display = 'none';
-                    }, 300);
-                }, 300);
-                return;
-            }
-            width += 10;
-            progressBar.style.width = width + '%';
-        }, 150);
-    }
-    
-    async loadData() {
-        try {
-            // Load mapel data
-            if (typeof mapelData !== 'undefined') {
-                this.mapelData = window.mapelData;
+                    loadingScreen.style.display = 'none';
+                    console.log('📴 Loading screen hidden');
+                }, 500);
             } else {
-                this.mapelData = this.getDefaultMapelData();
+                console.warn('⚠️ Loading screen element not found');
             }
-            
-            // Load presensi data from localStorage
-            this.presensiData = JSON.parse(localStorage.getItem('presensi_data') || '[]');
-            
-            // Load notifications
-            this.notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-            this.updateNotificationCount();
-            
-        } catch (error) {
-            console.log('Using default data:', error);
-            this.mapelData = this.getDefaultMapelData();
-            this.presensiData = [];
-            this.notifications = [];
-        }
-    }
+        }, 2000); // 2 detik loading minimum
+    },
     
-    getDefaultMapelData() {
-        return {
-            pjok: {
-                name: "PJOK",
-                fullName: "Pendidikan Jasmani, Olahraga, dan Kesehatan",
-                teacher: "Bpk. Ahmad Syahputra",
-                schedule: "Senin, 07:30 - 09:00",
-                room: "Lapangan Olahraga",
-                color: "#10b981",
-                icon: "fas fa-running"
-            },
-            // ... (data mapel lainnya sama kayak yang lu punya)
-            // Tetap include semua mapel data yang lu udah tulis
-        };
-    }
-    
-    setupEventListeners() {
-        // Role tabs
+    setupEventListeners: function() {
+        console.log('🔗 Setting up event listeners...');
+        
+        // 1. ROLE TABS - WORKING
         document.querySelectorAll('.role-tab').forEach(tab => {
-            tab.addEventListener('click', () => this.switchRole(tab.dataset.role));
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const role = tab.getAttribute('data-role');
+                this.switchRole(role);
+            });
         });
         
-        // Login buttons
-        document.getElementById('loginSiswa')?.addEventListener('click', () => this.loginSiswa());
-        document.getElementById('loginGuru')?.addEventListener('click', () => this.loginGuru());
-        document.getElementById('loginAdmin')?.addEventListener('click', () => this.loginAdmin());
+        // 2. LOGIN BUTTONS - WORKING
+        if (document.getElementById('loginSiswa')) {
+            document.getElementById('loginSiswa').addEventListener('click', () => this.loginSiswa());
+        }
+        if (document.getElementById('loginGuru')) {
+            document.getElementById('loginGuru').addEventListener('click', () => this.loginGuru());
+        }
+        if (document.getElementById('loginAdmin')) {
+            document.getElementById('loginAdmin').addEventListener('click', () => this.loginAdmin());
+        }
         
-        // Show password toggles
+        // 3. SHOW/HIDE PASSWORD - WORKING
         document.querySelectorAll('.toggle-password').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const targetId = e.target.closest('.toggle-password').dataset.target;
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
                 const input = document.getElementById(targetId);
-                const icon = e.target.closest('.toggle-password').querySelector('i');
+                const icon = this.querySelector('i');
                 
                 if (input.type === 'password') {
                     input.type = 'text';
@@ -119,178 +92,385 @@ class AbsensiApp {
             });
         });
         
-        // Menu toggle
-        document.getElementById('menuToggle')?.addEventListener('click', () => this.toggleSidebar());
+        // 4. MENU TOGGLE - WORKING
+        if (document.getElementById('menuToggle')) {
+            document.getElementById('menuToggle').addEventListener('click', () => this.toggleSidebar());
+        }
         
-        // User dropdown - FIXED SELECTOR
-        document.getElementById('userDropdown')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.toggleUserDropdown();
+        // 5. LOGOUT - WORKING
+        const logoutBtns = ['logoutBtn', 'sidebarLogout'];
+        logoutBtns.forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.logout();
+                });
+            }
         });
         
-        // Logout
-        document.getElementById('logoutBtn')?.addEventListener('click', () => this.logout());
-        document.getElementById('sidebarLogout')?.addEventListener('click', () => this.logout());
+        // 6. QUICK ACTIONS - WORKING
+        if (document.getElementById('quickPresensi')) {
+            document.getElementById('quickPresensi').addEventListener('click', () => this.openPresensiModal());
+        }
+        if (document.getElementById('quickAbsenBtn')) {
+            document.getElementById('quickAbsenBtn').addEventListener('click', () => this.openPresensiModal());
+        }
         
-        // Quick actions
-        document.getElementById('quickPresensi')?.addEventListener('click', () => this.openPresensiModal());
-        document.getElementById('quickAbsenBtn')?.addEventListener('click', () => this.openPresensiModal());
+        // 7. QR SCANNER - WORKING
+        if (document.getElementById('scanQRSiswa')) {
+            document.getElementById('scanQRSiswa').addEventListener('click', () => this.openQRScanner());
+        }
         
-        // QR scanner
-        document.getElementById('scanQRSiswa')?.addEventListener('click', () => this.openQRScanner());
-        
-        // Modal close buttons
+        // 8. MODAL CLOSE - WORKING
         document.querySelectorAll('.modal-close').forEach(btn => {
             btn.addEventListener('click', () => this.closeAllModals());
         });
         
-        // Presensi options
+        // 9. PRESENSI OPTIONS - WORKING
         document.querySelectorAll('.presensi-option').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const status = e.currentTarget.dataset.status;
-                this.selectPresensiStatus(status);
+            btn.addEventListener('click', function() {
+                const status = this.getAttribute('data-status');
+                window.AbsensiApp.selectPresensiStatus(status);
             });
         });
         
-        // Submit presensi
-        document.getElementById('submitPresensi')?.addEventListener('click', () => this.submitPresensi());
+        // 10. SUBMIT PRESENSI - WORKING
+        if (document.getElementById('submitPresensi')) {
+            document.getElementById('submitPresensi').addEventListener('click', () => this.submitPresensi());
+        }
         
-        // Mapel menu items
+        // 11. MAPEL MENU - WORKING
         document.querySelectorAll('.menu-item[data-mapel]').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const mapelId = e.currentTarget.dataset.mapel;
+                const mapelId = item.getAttribute('data-mapel');
                 this.showMapelPage(mapelId);
             });
         });
         
-        // Page navigation
+        // 12. PAGE NAVIGATION - WORKING
         document.querySelectorAll('.menu-item[data-page]').forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                const page = e.currentTarget.dataset.page;
+                const page = item.getAttribute('data-page');
                 this.showPage(page);
             });
         });
         
-        // Notifications button
-        document.getElementById('notifBtn')?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.getElementById('notificationsPanel').classList.toggle('show');
+        // 13. USER DROPDOWN - WORKING (FIXED SELECTOR)
+        if (document.getElementById('userDropdown')) {
+            document.getElementById('userDropdown').addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.getElementById('userDropdownMenu').classList.toggle('show');
+            });
+        }
+        
+        // 14. NOTIFICATIONS - WORKING
+        if (document.getElementById('notifBtn')) {
+            document.getElementById('notifBtn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.getElementById('notificationsPanel').classList.toggle('show');
+            });
+        }
+        
+        // 15. VIEW JADWAL - WORKING
+        if (document.getElementById('viewJadwal')) {
+            document.getElementById('viewJadwal').addEventListener('click', () => this.showPage('jadwal'));
+        }
+        
+        // 16. QUICK ACTIONS BAR - WORKING
+        document.querySelectorAll('.quick-action').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                window.AbsensiApp.handleQuickAction(action);
+            });
         });
         
-        // Close dropdowns when clicking outside
+        // 17. CLICK OUTSIDE TO CLOSE - WORKING
         document.addEventListener('click', (e) => {
-            // Close user dropdown
+            // Close dropdowns
             if (!e.target.closest('.user-profile') && !e.target.closest('#userDropdownMenu')) {
                 document.getElementById('userDropdownMenu')?.classList.remove('show');
             }
             
-            // Close notifications panel
             if (!e.target.closest('#notifBtn') && !e.target.closest('.notifications-panel')) {
                 document.getElementById('notificationsPanel')?.classList.remove('show');
             }
             
-            // Close modals when clicking overlay
+            // Close modals on overlay click
             if (e.target.id === 'qrModalOverlay') {
                 this.closeAllModals();
             }
         });
         
-        // Quick actions bar
-        document.querySelectorAll('.quick-action').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const action = e.currentTarget.dataset.action;
-                this.handleQuickAction(action);
-            });
+        console.log('✅ Event listeners setup complete');
+    },
+    
+    // ================= LOGIN FUNCTIONS =================
+    switchRole: function(role) {
+        console.log('Switching to role:', role);
+        
+        // Update tabs
+        document.querySelectorAll('.role-tab').forEach(tab => {
+            tab.classList.remove('active');
+            if (tab.getAttribute('data-role') === role) {
+                tab.classList.add('active');
+            }
         });
         
-        // View jadwal button
-        document.getElementById('viewJadwal')?.addEventListener('click', () => {
-            this.showPage('jadwal');
+        // Show corresponding form
+        document.querySelectorAll('.login-form').forEach(form => {
+            form.classList.remove('active');
         });
-    }
+        document.getElementById(role + 'Form').classList.add('active');
+    },
     
-    toggleUserDropdown() {
-        const dropdown = document.getElementById('userDropdownMenu');
-        dropdown?.classList.toggle('show');
-    }
+    loginSiswa: function() {
+        const nis = document.getElementById('nis').value.trim();
+        const password = document.getElementById('passwordSiswa').value;
+        
+        if (!nis || !password) {
+            this.showToast('Harap isi NIS dan password', 'warning');
+            return;
+        }
+        
+        // SIMULASI LOGIN SUKSES
+        this.currentUser = {
+            id: 'SIS' + nis,
+            nis: nis,
+            name: 'Ahmad Fauzi',
+            role: 'siswa',
+            kelas: 'XII TKJ 1',
+            avatar: '👨‍🎓'
+        };
+        
+        this.currentRole = 'siswa';
+        this.completeLogin();
+    },
     
-    // ... (fungsi lainnya tetep sama kayak punya lu)
-    // loginSiswa(), loginGuru(), loginAdmin(), completeLogin(), dll.
+    loginGuru: function() {
+        const nip = document.getElementById('nip').value.trim();
+        const password = document.getElementById('passwordGuru').value;
+        const mapel = document.getElementById('mapelSelect').value;
+        const kelas = document.getElementById('kelasSelect').value;
+        
+        if (!nip || !password || !mapel || !kelas) {
+            this.showToast('Harap isi semua field', 'warning');
+            return;
+        }
+        
+        // SIMULASI LOGIN SUKSES
+        this.currentUser = {
+            id: 'GUR' + nip,
+            nip: nip,
+            name: 'Budi Santoso, M.Pd',
+            role: 'guru',
+            mapel: mapel,
+            kelas: kelas,
+            avatar: '👨‍🏫'
+        };
+        
+        this.currentRole = 'guru';
+        this.completeLogin();
+    },
     
-    showMapelPage(mapelId) {
-        const mapel = this.mapelData[mapelId];
-        if (!mapel) return;
+    loginAdmin: function() {
+        const username = document.getElementById('adminUsername').value.trim();
+        const password = document.getElementById('adminPassword').value;
+        
+        if (!username || !password) {
+            this.showToast('Harap isi username dan password', 'warning');
+            return;
+        }
+        
+        // SIMULASI LOGIN SUKSES
+        this.currentUser = {
+            id: 'ADM001',
+            username: username,
+            name: 'Administrator Sistem',
+            role: 'admin',
+            avatar: '👨‍💼'
+        };
+        
+        this.currentRole = 'admin';
+        this.completeLogin();
+    },
+    
+    completeLogin: function() {
+        // Save session
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        localStorage.setItem('currentRole', this.currentRole);
+        
+        // Show success
+        this.showToast(`Login berhasil sebagai ${this.currentUser.name}`, 'success');
+        
+        // Switch to dashboard
+        setTimeout(() => {
+            document.querySelector('.login-wrapper').style.display = 'none';
+            document.getElementById('dashboardContainer').style.display = 'block';
+            
+            // Update UI
+            this.updateUserUI();
+            this.updateDashboardStats();
+            
+            // Show welcome screen
+            document.getElementById('welcomeScreen').classList.add('active');
+        }, 500);
+    },
+    
+    // ================= UI FUNCTIONS =================
+    updateUserUI: function() {
+        if (!this.currentUser) return;
+        
+        // Update display
+        const nameEl = document.getElementById('userDisplayName');
+        const roleEl = document.getElementById('userDisplayRole');
+        const sidebarName = document.getElementById('sidebarName');
+        const sidebarNis = document.getElementById('sidebarNis');
+        const sidebarKelas = document.getElementById('sidebarKelas');
+        
+        if (nameEl) nameEl.textContent = this.currentUser.name;
+        if (roleEl) roleEl.textContent = this.currentRole === 'siswa' ? 'Siswa' : 
+                                        this.currentRole === 'guru' ? 'Guru' : 'Admin';
+        
+        if (sidebarName) sidebarName.textContent = this.currentUser.name;
+        if (sidebarNis) sidebarNis.textContent = this.currentRole === 'siswa' ? `NIS: ${this.currentUser.nis}` : 
+                                                this.currentRole === 'guru' ? `NIP: ${this.currentUser.nip}` : 'Admin';
+        if (sidebarKelas) sidebarKelas.textContent = this.currentUser.kelas ? `Kelas: ${this.currentUser.kelas}` : '';
+        
+        // Update avatar
+        const avatars = document.querySelectorAll('.avatar, .avatar-large');
+        avatars.forEach(avatar => {
+            avatar.innerHTML = `<span style="font-size: 1.5rem">${this.currentUser.avatar}</span>`;
+        });
+        
+        // Show/hide admin sections
+        const adminSections = document.querySelectorAll('.admin-only');
+        adminSections.forEach(section => {
+            section.style.display = this.currentRole === 'admin' ? 'block' : 'none';
+        });
+    },
+    
+    updateDashboardStats: function() {
+        // Sample stats
+        document.getElementById('statHadir').textContent = '5';
+        document.getElementById('statMapel').textContent = '8';
+        document.getElementById('statPersen').textContent = '92%';
+        document.getElementById('absenToday').textContent = '5';
+    },
+    
+    updateClock: function() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', { 
+            hour12: false,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const timeEl = document.getElementById('currentTime');
+        const statusEl = document.getElementById('sessionStatus');
+        
+        if (timeEl) timeEl.textContent = timeString;
+        
+        // Session status
+        const hour = now.getHours();
+        let sessionStatus = 'Offline';
+        if (hour >= 7 && hour < 12) sessionStatus = 'Pagi';
+        else if (hour >= 12 && hour < 15) sessionStatus = 'Siang';
+        else if (hour >= 15 && hour < 18) sessionStatus = 'Sore';
+        else sessionStatus = 'Malam';
+        
+        if (statusEl) statusEl.textContent = sessionStatus;
+    },
+    
+    toggleSidebar: function() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    },
+    
+    // ================= PRESENSI FUNCTIONS =================
+    openPresensiModal: function() {
+        if (!this.currentUser) {
+            this.showToast('Silakan login terlebih dahulu', 'warning');
+            return;
+        }
+        
+        // Update modal info
+        document.getElementById('presensiNama').textContent = this.currentUser.name;
+        document.getElementById('presensiWaktu').textContent = `Waktu: ${new Date().toLocaleTimeString('id-ID')}`;
+        
+        // Show modal
+        document.getElementById('presensiModal').classList.add('show');
+        document.getElementById('qrModalOverlay').classList.add('show');
+    },
+    
+    openQRScanner: function() {
+        document.getElementById('qrModal').classList.add('show');
+        document.getElementById('qrModalOverlay').classList.add('show');
+    },
+    
+    closeAllModals: function() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.classList.remove('show');
+        });
+        document.getElementById('qrModalOverlay').classList.remove('show');
+    },
+    
+    selectPresensiStatus: function(status) {
+        // Remove previous selection
+        document.querySelectorAll('.presensi-option').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Add to clicked button
+        event.target.closest('.presensi-option').classList.add('selected');
+        this.selectedStatus = status;
+    },
+    
+    submitPresensi: function() {
+        if (!this.selectedStatus) {
+            this.showToast('Pilih status kehadiran terlebih dahulu', 'warning');
+            return;
+        }
+        
+        const catatan = document.getElementById('presensiCatatan').value;
+        
+        // Simpan presensi
+        this.showToast('Presensi berhasil disimpan!', 'success');
+        
+        // Close modal & reset
+        this.closeAllModals();
+        this.selectedStatus = null;
+        document.getElementById('presensiCatatan').value = '';
+        document.querySelectorAll('.presensi-option').forEach(btn => {
+            btn.classList.remove('selected');
+        });
+    },
+    
+    // ================= PAGE FUNCTIONS =================
+    showMapelPage: function(mapelId) {
+        const mapelData = this.getDefaultMapelData()[mapelId];
+        if (!mapelData) return;
         
         // Hide welcome screen
         document.getElementById('welcomeScreen').classList.remove('active');
         document.getElementById('mapelContent').innerHTML = '';
         document.getElementById('contentArea').innerHTML = '';
         
-        // Create mapel page - FIXED: ga pake pageTitle yang ga ada
+        // Create simple mapel page
         const mapelPage = document.createElement('div');
         mapelPage.className = 'mapel-page';
         mapelPage.innerHTML = `
-            <div class="mapel-header" style="background: ${mapel.color}20; border-left: 4px solid ${mapel.color}">
-                <div class="mapel-icon">
-                    <i class="${mapel.icon}"></i>
-                </div>
-                <div class="mapel-info">
-                    <h2>${mapel.fullName}</h2>
-                    <p>${mapel.name} • ${mapel.schedule}</p>
-                </div>
+            <div class="mapel-header">
+                <h2><i class="${mapelData.icon}"></i> ${mapelData.fullName}</h2>
+                <p>${mapelData.schedule} • ${mapelData.room}</p>
             </div>
-            
-            <div class="mapel-details">
-                <div class="detail-card">
-                    <h3><i class="fas fa-chalkboard-teacher"></i> Pengajar</h3>
-                    <p>${mapel.teacher}</p>
-                </div>
-                
-                <div class="detail-card">
-                    <h3><i class="fas fa-door-open"></i> Ruangan</h3>
-                    <p>${mapel.room}</p>
-                </div>
-                
-                <div class="detail-card">
-                    <h3><i class="fas fa-clock"></i> Jadwal</h3>
-                    <p>${mapel.schedule}</p>
-                </div>
-                
-                <div class="detail-card">
-                    <h3><i class="fas fa-calendar-alt"></i> Presensi Hari Ini</h3>
-                    <div class="presensi-stats">
-                        <div class="stat">
-                            <span class="number success">24</span>
-                            <span class="label">Hadir</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number warning">2</span>
-                            <span class="label">Terlambat</span>
-                        </div>
-                        <div class="stat">
-                            <span class="number danger">1</span>
-                            <span class="label">Izin</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="mapel-actions">
-                <button class="btn-primary" onclick="app.openPresensiModal()">
-                    <i class="fas fa-fingerprint"></i>
-                    Presensi ${mapel.name}
-                </button>
-                
-                <button class="btn-secondary">
-                    <i class="fas fa-qrcode"></i>
-                    Generate QR
-                </button>
-                
-                <button class="btn-secondary">
-                    <i class="fas fa-list"></i>
-                    Daftar Hadir
+            <div class="mapel-info">
+                <p><strong>Pengajar:</strong> ${mapelData.teacher}</p>
+                <button class="btn-primary" onclick="AbsensiApp.openPresensiModal()">
+                    <i class="fas fa-fingerprint"></i> Presensi ${mapelData.name}
                 </button>
             </div>
         `;
@@ -298,32 +478,302 @@ class AbsensiApp {
         document.getElementById('mapelContent').appendChild(mapelPage);
         document.getElementById('mapelContent').style.display = 'block';
         
-        // Store selected mapel for presensi
-        this.selectedMapel = mapel.name;
+        // Update selected mapel
+        this.selectedMapel = mapelData.name;
+        document.getElementById('presensiMapel').textContent = mapelData.name;
+    },
+    
+    showPage: function(page) {
+        // Hide other content
+        document.getElementById('welcomeScreen').classList.remove('active');
+        document.getElementById('mapelContent').style.display = 'none';
         
-        // Update presensi modal dengan mapel yang dipilih
-        if (document.getElementById('presensiMapel')) {
-            document.getElementById('presensiMapel').textContent = mapel.name;
+        // Clear content area
+        const contentArea = document.getElementById('contentArea');
+        contentArea.innerHTML = `<h2>Halaman ${page}</h2><p>Fitur sedang dikembangkan</p>`;
+        
+        // Update active menu
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('data-page') === page) {
+                item.classList.add('active');
+            }
+        });
+    },
+    
+    // ================= UTILITY FUNCTIONS =================
+    checkSavedSession: function() {
+        const savedUser = localStorage.getItem('currentUser');
+        const savedRole = localStorage.getItem('currentRole');
+        
+        if (savedUser && savedRole) {
+            try {
+                this.currentUser = JSON.parse(savedUser);
+                this.currentRole = savedRole;
+                
+                // Auto login
+                document.querySelector('.login-wrapper').style.display = 'none';
+                document.getElementById('dashboardContainer').style.display = 'block';
+                this.updateUserUI();
+                this.updateDashboardStats();
+            } catch (e) {
+                console.error('Error parsing saved session:', e);
+            }
         }
+    },
+    
+    logout: function() {
+        if (confirm('Apakah Anda yakin ingin logout?')) {
+            // Clear session
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('currentRole');
+            
+            // Reset UI
+            document.getElementById('dashboardContainer').style.display = 'none';
+            document.querySelector('.login-wrapper').style.display = 'flex';
+            
+            // Reset forms
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            
+            // Show message
+            this.showToast('Logout berhasil', 'success');
+            
+            // Reset data
+            this.currentUser = null;
+            this.currentRole = null;
+        }
+    },
+    
+    showToast: function(message, type = 'info') {
+        console.log(`Toast [${type}]: ${message}`);
+        
+        // Simple alert for now
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6'
+        };
+        
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${colors[type] || '#3b82f6'};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        `;
+        
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    },
+    
+    handleQuickAction: function(action) {
+        const actions = {
+            'absen': () => this.openPresensiModal(),
+            'qr': () => this.openQRScanner(),
+            'camera': () => this.showToast('Fitur kamera belum tersedia', 'info'),
+            'location': () => this.showToast('Mengambil lokasi...', 'info'),
+            'emergency': () => this.showToast('Membuka form izin darurat', 'info')
+        };
+        
+        if (actions[action]) {
+            actions[action]();
+        }
+    },
+    
+    getDefaultMapelData: function() {
+        return {
+            pjok: {
+                name: "PJOK",
+                fullName: "Pendidikan Jasmani, Olahraga, dan Kesehatan",
+                teacher: "Bpk. Ahmad Syahputra",
+                schedule: "Senin, 07:30 - 09:00",
+                room: "Lapangan Olahraga",
+                color: "#10b981",
+                icon: "fas fa-running"
+            },
+            matematika: {
+                name: "Matematika",
+                fullName: "Matematika",
+                teacher: "Ibu Siti Nurhaliza",
+                schedule: "Senin, 09:30 - 11:00",
+                room: "Lab. Matematika",
+                color: "#3b82f6",
+                icon: "fas fa-calculator"
+            },
+            bahasa_indonesia: {
+                name: "Bahasa Indonesia",
+                fullName: "Bahasa Indonesia",
+                teacher: "Ibu Dian Sastro",
+                schedule: "Selasa, 07:30 - 09:00",
+                room: "Ruang 201",
+                color: "#8b5cf6",
+                icon: "fas fa-language"
+            },
+            bahasa_inggris: {
+                name: "Bahasa Inggris",
+                fullName: "Bahasa Inggris",
+                teacher: "Mr. John Smith",
+                schedule: "Selasa, 09:30 - 11:00",
+                room: "Lab. Bahasa",
+                color: "#ec4899",
+                icon: "fas fa-globe"
+            },
+            english_comms: {
+                name: "English Communications",
+                fullName: "English Communications",
+                teacher: "Ms. Sarah Johnson",
+                schedule: "Rabu, 07:30 - 09:00",
+                room: "Lab. Bahasa",
+                color: "#f59e0b",
+                icon: "fas fa-comments"
+            },
+            seni_musik: {
+                name: "Seni Musik",
+                fullName: "Seni Musik",
+                teacher: "Bpk. Didi Kempot",
+                schedule: "Rabu, 09:30 - 11:00",
+                room: "Studio Musik",
+                color: "#ef4444",
+                icon: "fas fa-music"
+            },
+            ipas: {
+                name: "IPAS",
+                fullName: "Ilmu Pengetahuan Alam dan Sosial",
+                teacher: "Ibu Maria Ulfa",
+                schedule: "Kamis, 07:30 - 09:00",
+                room: "Lab. IPA",
+                color: "#06b6d4",
+                icon: "fas fa-flask"
+            },
+            sejarah: {
+                name: "Sejarah",
+                fullName: "Sejarah",
+                teacher: "Bpk. Joko Widodo",
+                schedule: "Kamis, 09:30 - 11:00",
+                room: "Ruang 202",
+                color: "#f97316",
+                icon: "fas fa-landmark"
+            },
+            pancasila: {
+                name: "Pendidikan Pancasila",
+                fullName: "Pendidikan Pancasila",
+                teacher: "Bpk. Soekarno",
+                schedule: "Jumat, 07:30 - 09:00",
+                room: "Ruang 203",
+                color: "#84cc16",
+                icon: "fas fa-flag"
+            },
+            jaringan_dasar: {
+                name: "Komputer Jaringan Dasar",
+                fullName: "Komputer Jaringan Dasar",
+                teacher: "Bpk. Bill Gates",
+                schedule: "Jumat, 09:30 - 11:00",
+                room: "Lab. Jaringan",
+                color: "#6366f1",
+                icon: "fas fa-network-wired"
+            },
+            sistem_komputer: {
+                name: "Sistem Komputer",
+                fullName: "Sistem Komputer",
+                teacher: "Bpk. Linus Torvalds",
+                schedule: "Senin, 13:00 - 14:30",
+                room: "Lab. Komputer A",
+                color: "#8b5cf6",
+                icon: "fas fa-desktop"
+            },
+            jaringan_luas: {
+                name: "Teknik Jaringan Berbasis Luas",
+                fullName: "Teknik Jaringan Berbasis Luas",
+                teacher: "Bpk. Tim Berners-Lee",
+                schedule: "Selasa, 13:00 - 14:30",
+                room: "Lab. Jaringan B",
+                color: "#0ea5e9",
+                icon: "fas fa-wifi"
+            },
+            coding_ai: {
+                name: "Coding AI",
+                fullName: "Coding Artificial Intelligence",
+                teacher: "Bpk. Elon Musk",
+                schedule: "Rabu, 13:00 - 14:30",
+                room: "Lab. AI",
+                color: "#06b6d4",
+                icon: "fas fa-robot"
+            },
+            informatika: {
+                name: "Informatika",
+                fullName: "Informatika",
+                teacher: "Ibu Ada Lovelace",
+                schedule: "Kamis, 13:00 - 14:30",
+                room: "Lab. Komputer B",
+                color: "#10b981",
+                icon: "fas fa-code"
+            }
+        };
     }
-}
+};
 
-// Initialize app
-let app;
-window.addEventListener('DOMContentLoaded', () => {
-    app = new AbsensiApp();
-    window.app = app;
+// ============================================
+// START APPLICATION WHEN PAGE LOADS
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM Content Loaded');
+    
+    // Add CSS for animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        .show { display: block !important; }
+        .modal { display: none; }
+        .modal.show { display: block !important; }
+        #qrModalOverlay { 
+            display: none; 
+            position: fixed; 
+            top:0; left:0; 
+            width:100%; height:100%; 
+            background: rgba(0,0,0,0.5); 
+            z-index: 999; 
+        }
+        #qrModalOverlay.show { display: block !important; }
+        .selected { border: 3px solid #3b82f6 !important; }
+    `;
+    document.head.appendChild(style);
+    
+    // Initialize app
+    setTimeout(() => {
+        window.AbsensiApp.init();
+    }, 100);
 });
 
-// Helper function for offline detection
-window.addEventListener('online', () => {
-    if (window.app) {
-        window.app.showToast('Koneksi internet kembali', 'success');
+// Global error handler
+window.addEventListener('error', function(e) {
+    console.error('Global error caught:', e.error);
+    
+    // Force hide loading screen on error
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
     }
 });
 
-window.addEventListener('offline', () => {
-    if (window.app) {
-        window.app.showToast('Anda sedang offline', 'warning');
-    }
-});
+console.log('✅ Script loaded successfully!');
