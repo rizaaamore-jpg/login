@@ -6,80 +6,19 @@
     <title>SMK Jakarta Timur 1 - Presensi Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Absensi SMK">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1e3c72">
+    <meta name="msapplication-TileColor" content="#1e3c72">
 </head>
-
-<head>
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.json">
-  
-  <!-- iOS Safari -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Absensi SMK">
-  <link rel="apple-touch-icon" href="icon-192x192.png">
-  
-  <!-- Theme Color -->
-  <meta name="theme-color" content="#1e3c72">
-  <meta name="msapplication-TileColor" content="#1e3c72">
-</head>
-
-<body>
-  <!-- ... existing content ... -->
-  
-  <script>
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('✅ Service Worker registered:', registration);
-            
-            // Check for updates
-            registration.addEventListener('updatefound', () => {
-              const newWorker = registration.installing;
-              console.log('🔄 Service Worker update found!');
-              
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('🔄 New content is available, please refresh!');
-                  // Show update notification to user
-                  if (confirm('Update tersedia! Refresh sekarang?')) {
-                    window.location.reload();
-                  }
-                }
-              });
-            });
-          })
-          .catch(error => {
-            console.log('❌ Service Worker registration failed:', error);
-          });
-      });
-    }
-    
-    // Check if app is installed
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('📱 App install prompt available');
-      // You can save the event and show install button later
-      window.deferredPrompt = e;
-    });
-    
-    // Detect online/offline
-    window.addEventListener('online', () => {
-      console.log('🌐 Online');
-      document.body.classList.remove('offline');
-    });
-    
-    window.addEventListener('offline', () => {
-      console.log('📴 Offline');
-      document.body.classList.add('offline');
-      // Show offline notification
-      if (window.app) {
-        window.app.showToast('Anda sedang offline', 'warning');
-      }
-    });
-  </script>
-</body>
-    
 <body>
     <div class="container">
         <!-- Header -->
@@ -316,7 +255,446 @@
             </div>
         </div>
         
-        <!-- Schedule Editor Modal (Hidden by default) -->
+        <!-- DASHBOARD SISWA -->
+        <div class="dashboard-container" id="dashboardSiswa" style="display: none;">
+            <div class="dashboard-header">
+                <div class="header-left">
+                    <h1><i class="fas fa-user-graduate"></i> Dashboard Siswa</h1>
+                    <p class="subtitle">Selamat belajar, <span id="siswaName">Siswa</span>!</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-time">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="currentDateSiswa">Hari, Tanggal</span>
+                    </div>
+                    <button class="btn-logout" onclick="app.logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card stat-primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="presensiHariIni">0</h3>
+                            <p>Presensi Hari Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-success">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="persenKehadiran">0%</h3>
+                            <p>Kehadiran Bulan Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalMapel">0</h3>
+                            <p>Total Mapel</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-info">
+                        <div class="stat-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalPresensi">0</h3>
+                            <p>Total Presensi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presensi Sekarang Section -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-fingerprint"></i> Presensi Sekarang</h2>
+                        <div class="session-status" id="sessionStatusSiswa">
+                            <span class="status-badge status-closed">
+                                <i class="fas fa-lock"></i> Sesi Tertutup
+                            </span>
+                        </div>
+                    </div>
+                    <div class="presensi-controls">
+                        <div class="mapel-selector">
+                            <label for="selectMapelSiswa"><i class="fas fa-book"></i> Mata Pelajaran</label>
+                            <select id="selectMapelSiswa" class="form-input">
+                                <option value="">Pilih Mapel</option>
+                                <!-- Diisi oleh JavaScript -->
+                            </select>
+                        </div>
+                        <div class="status-selector">
+                            <label><i class="fas fa-user-check"></i> Status</label>
+                            <div class="status-options">
+                                <button class="status-option active" data-status="hadir">
+                                    <i class="fas fa-check-circle"></i> Hadir
+                                </button>
+                                <button class="status-option" data-status="terlambat">
+                                    <i class="fas fa-clock"></i> Terlambat
+                                </button>
+                                <button class="status-option" data-status="izin">
+                                    <i class="fas fa-envelope"></i> Izin
+                                </button>
+                                <button class="status-option" data-status="sakit">
+                                    <i class="fas fa-thermometer"></i> Sakit
+                                </button>
+                            </div>
+                        </div>
+                        <button class="btn-presensi" id="btnSubmitPresensi">
+                            <i class="fas fa-paper-plane"></i> Kirim Presensi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Jadwal Hari Ini -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-calendar-day"></i> Jadwal Hari Ini</h2>
+                        <span class="section-badge" id="totalJadwalHariIni">0 Jadwal</span>
+                    </div>
+                    <div class="schedule-list" id="jadwalHariIniList">
+                        <div class="empty-state">
+                            <i class="fas fa-calendar"></i>
+                            <p>Tidak ada jadwal hari ini</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat Presensi Terbaru -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-history"></i> Riwayat Presensi</h2>
+                        <a href="#" class="view-all">Lihat Semua</a>
+                    </div>
+                    <div class="presensi-history" id="riwayatPresensi">
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>Belum ada riwayat presensi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD GURU -->
+        <div class="dashboard-container" id="dashboardGuru" style="display: none;">
+            <div class="dashboard-header">
+                <div class="header-left">
+                    <h1><i class="fas fa-chalkboard-teacher"></i> Dashboard Guru</h1>
+                    <p class="subtitle">Selamat mengajar, <span id="guruName">Guru</span>!</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-time">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="currentDateGuru">Hari, Tanggal</span>
+                    </div>
+                    <button class="btn-logout" onclick="app.logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card stat-primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalSiswaGuru">0</h3>
+                            <p>Total Siswa</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-success">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="presensiHariIniGuru">0</h3>
+                            <p>Presensi Hari Ini</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalMapelGuru">0</h3>
+                            <p>Mapel Diajar</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-info">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="persenKehadiranGuru">0%</h3>
+                            <p>Rata-rata Kehadiran</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kontrol Kelas -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tasks"></i> Kelola Kelas</h2>
+                        <div class="section-actions">
+                            <button class="btn-action" id="btnOpenClass">
+                                <i class="fas fa-door-open"></i> Buka Kelas
+                            </button>
+                            <button class="btn-action btn-secondary" id="btnCloseClass">
+                                <i class="fas fa-door-closed"></i> Tutup Kelas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="class-controls">
+                        <div class="class-selector">
+                            <label><i class="fas fa-school"></i> Pilih Kelas</label>
+                            <select id="selectKelasGuru" class="form-input">
+                                <option value="">Pilih Kelas</option>
+                                <!-- Diisi oleh JavaScript -->
+                            </select>
+                        </div>
+                        <div class="class-selector">
+                            <label><i class="fas fa-book"></i> Mata Pelajaran</label>
+                            <select id="selectMapelGuru" class="form-input">
+                                <option value="">Pilih Mapel</option>
+                                <!-- Diisi oleh JavaScript -->
+                            </select>
+                        </div>
+                        <div class="class-status">
+                            <span class="status-badge status-closed">
+                                <i class="fas fa-lock"></i> Kelas Ditutup
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Siswa dalam Kelas -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-user-graduate"></i> Daftar Siswa</h2>
+                        <div class="class-info">
+                            <span id="currentClassInfo">Belum memilih kelas</span>
+                        </div>
+                    </div>
+                    <div class="student-list" id="daftarSiswa">
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>Pilih kelas untuk melihat daftar siswa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presensi Real-time -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-bolt"></i> Presensi Real-time</h2>
+                        <button class="btn-action btn-refresh" id="btnRefreshPresensi">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="realtime-presensi" id="realtimePresensi">
+                        <div class="empty-state">
+                            <i class="fas fa-bolt"></i>
+                            <p>Tidak ada presensi real-time saat ini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD ADMIN -->
+        <div class="dashboard-container" id="dashboardAdmin" style="display: none;">
+            <div class="dashboard-header">
+                <div class="header-left">
+                    <h1><i class="fas fa-user-shield"></i> Dashboard Admin</h1>
+                    <p class="subtitle">Administrator Sistem</p>
+                </div>
+                <div class="header-right">
+                    <div class="date-time">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="currentDateAdmin">Hari, Tanggal</span>
+                    </div>
+                    <div class="admin-controls">
+                        <button class="btn-admin-control" onclick="app.switchSection('adminPanel')">
+                            <i class="fas fa-cog"></i> Admin Panel
+                        </button>
+                        <button class="btn-logout" onclick="app.logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- System Overview -->
+                <div class="dashboard-section full-width">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> System Overview</h2>
+                        <div class="last-update">
+                            <i class="fas fa-clock"></i>
+                            <span>Diperbarui: <span id="lastUpdateTime">Baru saja</span></span>
+                        </div>
+                    </div>
+                    <div class="system-stats">
+                        <div class="system-stat">
+                            <div class="stat-header">
+                                <i class="fas fa-users"></i>
+                                <h3>Users</h3>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Siswa</span>
+                                    <span class="stat-value" id="totalSiswaAdmin">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Guru</span>
+                                    <span class="stat-value" id="totalGuruAdmin">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Admin</span>
+                                    <span class="stat-value" id="totalAdmin">1</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="system-stat">
+                            <div class="stat-header">
+                                <i class="fas fa-calendar-alt"></i>
+                                <h3>Presensi Hari Ini</h3>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Hadir</span>
+                                    <span class="stat-value stat-success" id="presensiHadir">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Terlambat</span>
+                                    <span class="stat-value stat-warning" id="presensiTerlambat">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Izin/Sakit</span>
+                                    <span class="stat-value stat-info" id="presensiIzin">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Alpha</span>
+                                    <span class="stat-value stat-danger" id="presensiAlpha">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="system-stat">
+                            <div class="stat-header">
+                                <i class="fas fa-chart-pie"></i>
+                                <h3>Statistik</h3>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Total Presensi</span>
+                                    <span class="stat-value" id="totalPresensiAdmin">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Mapel</span>
+                                    <span class="stat-value" id="totalMapelAdmin">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Kehadiran</span>
+                                    <span class="stat-value stat-success" id="rataKehadiran">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="system-stat">
+                            <div class="stat-header">
+                                <i class="fas fa-network-wired"></i>
+                                <h3>System Status</h3>
+                            </div>
+                            <div class="stat-details">
+                                <div class="stat-item">
+                                    <span class="stat-label">Presensi Session</span>
+                                    <span class="stat-value" id="presensiSessionStatus">Closed</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Online Users</span>
+                                    <span class="stat-value stat-success" id="onlineUsers">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Server Load</span>
+                                    <span class="stat-value" id="serverLoad">Normal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action" onclick="adminPanel.openPresensiSession()">
+                            <i class="fas fa-unlock"></i>
+                            <span>Buka Presensi</span>
+                        </button>
+                        <button class="quick-action" onclick="adminPanel.closePresensiSession()">
+                            <i class="fas fa-lock"></i>
+                            <span>Tutup Presensi</span>
+                        </button>
+                        <button class="quick-action" onclick="app.openScheduleModal()">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Tambah Jadwal</span>
+                        </button>
+                        <button class="quick-action" onclick="app.openUserManagement()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Tambah User</span>
+                        </button>
+                        <button class="quick-action" onclick="app.generateReport()">
+                            <i class="fas fa-file-export"></i>
+                            <span>Export Report</span>
+                        </button>
+                        <button class="quick-action" onclick="app.openSettings()">
+                            <i class="fas fa-cogs"></i>
+                            <span>System Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-history"></i> Recent Activities</h2>
+                        <button class="btn-action" onclick="adminPanel.loadAdminActivities()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="activities-timeline" id="adminActivitiesTimeline">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">System initialized</div>
+                                <div class="activity-time">Baru saja</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schedule Editor Modal -->
         <div class="modal-overlay" id="scheduleModal" style="display: none;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -423,5 +801,54 @@
     <script src="mock-api.js"></script>
     <script src="admin.js"></script>
     <script src="realtime.js"></script>
+    
+    <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration);
+                        
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🔄 Service Worker update found!');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🔄 New content is available, please refresh!');
+                                    if (confirm('Update tersedia! Refresh sekarang?')) {
+                                        window.location.reload();
+                                    }
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // PWA Install Prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 App install prompt available');
+            window.deferredPrompt = e;
+        });
+        
+        // Online/Offline Detection
+        window.addEventListener('online', () => {
+            console.log('🌐 Online');
+            document.body.classList.remove('offline');
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('📴 Offline');
+            document.body.classList.add('offline');
+            if (window.app) {
+                window.app.showToast('Anda sedang offline', 'warning');
+            }
+        });
+    </script>
 </body>
-                            </html>
+    </html>
