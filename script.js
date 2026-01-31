@@ -1,7 +1,7 @@
 // ============================================
 // ABSENSI DIGITAL SMK TI - FINAL SCRIPT
 // ============================================
-console.log('🚀 DARK AI: Sistem Absensi Digital v2.0 Loading...');
+console.log('🚀 DARK : Sistem Absensi Digital v2.0 Loading...');
 
 // SINGLE GLOBAL OBJECT
 window.AbsensiApp = {
@@ -239,9 +239,9 @@ window.AbsensiApp = {
         this.currentUser = {
             id: 'SIS' + nis,
             nis: nis,
-            name: 'Ahmad Fauzi',
+            name: 'Arif Suyuti',
             role: 'siswa',
-            kelas: 'XII TKJ 1',
+            kelas: 'X TKJ 1',
             avatar: '👨‍🎓'
         };
         
@@ -264,7 +264,7 @@ window.AbsensiApp = {
         this.currentUser = {
             id: 'GUR' + nip,
             nip: nip,
-            name: 'Budi Santoso, M.Pd',
+            name: 'Sutrisno, M.Pd',
             role: 'guru',
             mapel: mapel,
             kelas: kelas,
@@ -599,8 +599,8 @@ window.AbsensiApp = {
             pjok: {
                 name: "PJOK",
                 fullName: "Pendidikan Jasmani, Olahraga, dan Kesehatan",
-                teacher: "Bpk. Ahmad Syahputra",
-                schedule: "Senin, 07:30 - 09:00",
+                teacher: "Bpk. Dudi",
+                schedule: "Senin, 06:30 - 07:50",
                 room: "Lapangan Olahraga",
                 color: "#10b981",
                 icon: "fas fa-running"
@@ -608,7 +608,7 @@ window.AbsensiApp = {
             matematika: {
                 name: "Matematika",
                 fullName: "Matematika",
-                teacher: "Ibu Siti Nurhaliza",
+                teacher: "Bpk. Sutrisno",
                 schedule: "Senin, 09:30 - 11:00",
                 room: "Lab. Matematika",
                 color: "#3b82f6",
@@ -617,7 +617,7 @@ window.AbsensiApp = {
             bahasa_indonesia: {
                 name: "Bahasa Indonesia",
                 fullName: "Bahasa Indonesia",
-                teacher: "Ibu Dian Sastro",
+                teacher: "Ibu Kesih",
                 schedule: "Selasa, 07:30 - 09:00",
                 room: "Ruang 201",
                 color: "#8b5cf6",
@@ -626,7 +626,7 @@ window.AbsensiApp = {
             bahasa_inggris: {
                 name: "Bahasa Inggris",
                 fullName: "Bahasa Inggris",
-                teacher: "Mr. John Smith",
+                teacher: "Ms.Nada",
                 schedule: "Selasa, 09:30 - 11:00",
                 room: "Lab. Bahasa",
                 color: "#ec4899",
@@ -635,7 +635,7 @@ window.AbsensiApp = {
             english_comms: {
                 name: "English Communications",
                 fullName: "English Communications",
-                teacher: "Ms. Sarah Johnson",
+                teacher: "Ms. Nada",
                 schedule: "Rabu, 07:30 - 09:00",
                 room: "Lab. Bahasa",
                 color: "#f59e0b",
@@ -644,7 +644,7 @@ window.AbsensiApp = {
             seni_musik: {
                 name: "Seni Musik",
                 fullName: "Seni Musik",
-                teacher: "Bpk. Didi Kempot",
+                teacher: "Bpk. Hendar",
                 schedule: "Rabu, 09:30 - 11:00",
                 room: "Studio Musik",
                 color: "#ef4444",
@@ -653,7 +653,7 @@ window.AbsensiApp = {
             ipas: {
                 name: "IPAS",
                 fullName: "Ilmu Pengetahuan Alam dan Sosial",
-                teacher: "Ibu Maria Ulfa",
+                teacher: "Ibu Rahayu",
                 schedule: "Kamis, 07:30 - 09:00",
                 room: "Lab. IPA",
                 color: "#06b6d4",
@@ -662,7 +662,7 @@ window.AbsensiApp = {
             sejarah: {
                 name: "Sejarah",
                 fullName: "Sejarah",
-                teacher: "Bpk. Joko Widodo",
+                teacher: "Ibu. Rahayu",
                 schedule: "Kamis, 09:30 - 11:00",
                 room: "Ruang 202",
                 color: "#f97316",
@@ -671,7 +671,7 @@ window.AbsensiApp = {
             pancasila: {
                 name: "Pendidikan Pancasila",
                 fullName: "Pendidikan Pancasila",
-                teacher: "Bpk. Soekarno",
+                teacher: "Sensei",
                 schedule: "Jumat, 07:30 - 09:00",
                 room: "Ruang 203",
                 color: "#84cc16",
@@ -680,7 +680,7 @@ window.AbsensiApp = {
             jaringan_dasar: {
                 name: "Komputer Jaringan Dasar",
                 fullName: "Komputer Jaringan Dasar",
-                teacher: "Bpk. Bill Gates",
+                teacher: "Bpk. Okeu",
                 schedule: "Jumat, 09:30 - 11:00",
                 room: "Lab. Jaringan",
                 color: "#6366f1",
@@ -689,7 +689,7 @@ window.AbsensiApp = {
             sistem_komputer: {
                 name: "Sistem Komputer",
                 fullName: "Sistem Komputer",
-                teacher: "Bpk. Linus Torvalds",
+                teacher: "Bpk. Adi",
                 schedule: "Senin, 13:00 - 14:30",
                 room: "Lab. Komputer A",
                 color: "#8b5cf6",
@@ -698,7 +698,7 @@ window.AbsensiApp = {
             jaringan_luas: {
                 name: "Teknik Jaringan Berbasis Luas",
                 fullName: "Teknik Jaringan Berbasis Luas",
-                teacher: "Bpk. Tim Berners-Lee",
+                teacher: "Bpk. Fahrul",
                 schedule: "Selasa, 13:00 - 14:30",
                 room: "Lab. Jaringan B",
                 color: "#0ea5e9",
@@ -707,7 +707,7 @@ window.AbsensiApp = {
             coding_ai: {
                 name: "Coding AI",
                 fullName: "Coding Artificial Intelligence",
-                teacher: "Bpk. Elon Musk",
+                teacher: "Bpk. Rama",
                 schedule: "Rabu, 13:00 - 14:30",
                 room: "Lab. AI",
                 color: "#06b6d4",
@@ -716,7 +716,7 @@ window.AbsensiApp = {
             informatika: {
                 name: "Informatika",
                 fullName: "Informatika",
-                teacher: "Ibu Ada Lovelace",
+                teacher: "Ibu. Retno",
                 schedule: "Kamis, 13:00 - 14:30",
                 room: "Lab. Komputer B",
                 color: "#10b981",
