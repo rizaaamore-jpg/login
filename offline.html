@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mode Offline - SMK Jakarta Timur 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .offline-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .offline-icon {
+            font-size: 80px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        
+        p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .offline-features {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .offline-features h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+        
+        .feature-item i {
+            color: #2ecc71;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .retry-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .retry-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .retry-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .connection-status {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+        
+        .connection-status.online {
+            color: #2ecc71;
+        }
+        
+        @media (max-width: 480px) {
+            .offline-container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            <i class="fas fa-wifi-slash"></i>
+        </div>
+        
+        <h1>Anda Sedang Offline</h1>
+        <p>Koneksi internet terputus. Beberapa fitur mungkin tidak tersedia.</p>
+        
+        <div class="offline-features">
+            <h3>Fitur yang tetap tersedia:</h3>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Lihat riwayat absensi</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Input absensi offline</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Akses data yang sudah di-cache</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Notifikasi lokal</span>
+            </div>
+        </div>
+        
+        <button class="retry-btn" onclick="checkConnection()">
+            <i class="fas fa-sync-alt"></i>
+            Coba Koneksi Ulang
+        </button>
+        
+        <div id="connectionStatus" class="connection-status">
+            <i class="fas fa-circle"></i>
+            <span>Menunggu koneksi...</span>
+        </div>
+    </div>
+
+    <script>
+        function checkConnection() {
+            const statusElement = document.getElementById('connectionStatus');
+            const icon = statusElement.querySelector('i');
+            const text = statusElement.querySelector('span');
+            
+            // Show checking status
+            icon.style.color = '#f39c12';
+            icon.className = 'fas fa-sync fa-spin';
+            text.textContent = 'Memeriksa koneksi...';
+            
+            // Simulate connection check
+            setTimeout(() => {
+                if (navigator.onLine) {
+                    // Online
+                    icon.style.color = '#2ecc71';
+                    icon.className = 'fas fa-check-circle';
+                    text.textContent = 'Koneksi tersedia!';
+                    statusElement.classList.add('online');
+                    
+                    // Redirect back to app after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 2000);
+                } else {
+                    // Still offline
+                    icon.style.color = '#e74c3c';
+                    icon.className = 'fas fa-times-circle';
+                    text.textContent = 'Masih offline';
+                    statusElement.classList.remove('online');
+                }
+            }, 2000);
+        }
+        
+        // Check connection status periodically
+        setInterval(() => {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            }
+        }, 5000);
+        
+        // Initial check
+        checkConnection();
+        
+        // Listen for online/offline events
+        window.addEventListener('online', () => {
+            checkConnection();
+        });
+        
+        window.addEventListener('offline', () => {
+            const statusElement = document.getElementById('connectionStatus');
+            const icon = statusElement.querySelector('i');
+            const text = statusElement.querySelector('span');
+            
+            icon.style.color = '#e74c3c';
+            icon.className = 'fas fa-times-circle';
+            text.textContent = 'Koneksi terputus';
+            statusElement.classList.remove('online');
+        });
+    </script>
+</body>
+</html>
