@@ -2,538 +2,154 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Absensi Digital - SMK Jakarta Timur 1</title>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SMK Jaktim 1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏫</text></svg>">
-    <meta name="theme-color" content="#4f46e5">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="login-style.css">
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loader">
-            <div class="loader-spin">
-                <i class="fas fa-school"></i>
-            </div>
-            <p>Memuat Sistem Absensi Digital...</p>
-            <div class="loading-progress">
-                <div class="progress-bar" id="progressBar"></div>
-            </div>
-            <p class="loading-version">SMK Jakarta Timur 1 • v3.5</p>
-        </div>
-    </div>
-
-    <!-- Background Pattern -->
-    <div class="bg-pattern">
-        <div class="pattern-circle"></div>
-        <div class="pattern-circle"></div>
-        <div class="pattern-circle"></div>
-    </div>
-
-    <!-- Auth Wrapper (Login/Register) -->
-    <div class="auth-wrapper" id="authWrapper">
-        <div class="auth-container">
-            <!-- Left Side - Branding -->
-            <div class="auth-brand">
-                <div class="brand-logo">
-                    <i class="fas fa-graduation-cap"></i>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Header -->
+            <div class="login-header">
+                <div class="school-logo">
+                    <i class="fas fa-school"></i>
                 </div>
-                <div class="brand-title">SMK JAKARTA TIMUR 1</div>
-                <div class="brand-subtitle">Sistem Absensi Digital Terpadu</div>
-                <div class="brand-motto">Unggul dalam Prestasi, Berkarakter, dan Berdaya Saing</div>
-                
-                <ul class="brand-features">
-                    <li><i class="fas fa-check"></i> Presensi Real-time</li>
-                    <li><i class="fas fa-check"></i> Laporan Otomatis</li>
-                    <li><i class="fas fa-check"></i> Notifikasi Instant</li>
-                    <li><i class="fas fa-check"></i> Multi-device Sync</li>
-                    <li><i class="fas fa-check"></i> Dark Mode Premium</li>
-                </ul>
-                
-                <div class="brand-stats">
-                    <div class="stat">
-                        <span class="number">1,200+</span>
-                        <span class="label">Siswa Aktif</span>
-                    </div>
-                    <div class="stat">
-                        <span class="number">98.5%</span>
-                        <span class="label">Akurasi</span>
-                    </div>
-                </div>
+                <h1>SMK Jakarta Timur 1</h1>
+                <p>Sistem Absensi Digital</p>
             </div>
-            
-            <!-- Right Side - Forms -->
-            <div class="auth-forms">
-                <!-- Tabs -->
-                <div class="auth-tabs">
-                    <button class="auth-tab active" data-form="login">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Login</span>
+
+            <!-- Login Form -->
+            <div class="login-body">
+                <!-- Role Selector -->
+                <div class="role-selector">
+                    <button class="role-btn active" data-role="siswa">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Siswa</span>
                     </button>
-                    <button class="auth-tab" data-form="register">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Daftar Baru</span>
+                    <button class="role-btn" data-role="guru">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Guru</span>
+                    </button>
+                    <button class="role-btn" data-role="admin">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Admin</span>
                     </button>
                 </div>
-                
+
                 <!-- Login Form -->
-                <div class="auth-form active" id="loginForm">
-                    <h2 class="form-title">Selamat Datang Kembali</h2>
-                    <p class="form-subtitle">Login untuk mengakses sistem</p>
-                    
-                    <form id="loginForm">
-                        <div class="input-group floating-label">
-                            <div class="input-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <input type="text" id="loginUsername" class="input-field" placeholder="Username" required>
-                            <label for="loginUsername">Username</label>
-                        </div>
-                        
-                        <div class="input-group floating-label">
-                            <div class="input-icon">
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <input type="password" id="loginPassword" class="input-field" placeholder="Password" required>
-                            <label for="loginPassword">Password</label>
-                            <button type="button" class="toggle-password" data-target="loginPassword">
+                <form id="loginForm" class="login-form">
+                    <!-- Siswa Fields -->
+                    <div class="form-group" id="nisnGroup">
+                        <label for="nisn">
+                            <i class="fas fa-id-card"></i>
+                            NISN
+                        </label>
+                        <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+                    </div>
+
+                    <!-- Guru Fields -->
+                    <div class="form-group" id="nipGroup" style="display: none;">
+                        <label for="nip">
+                            <i class="fas fa-id-badge"></i>
+                            NIP
+                        </label>
+                        <input type="text" id="nip" placeholder="Masukkan NIP" required>
+                    </div>
+
+                    <!-- Admin Fields -->
+                    <div class="form-group" id="usernameGroup" style="display: none;">
+                        <label for="username">
+                            <i class="fas fa-user"></i>
+                            Username
+                        </label>
+                        <input type="text" id="username" placeholder="Masukkan username" required>
+                    </div>
+
+                    <!-- Common Fields -->
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" placeholder="Masukkan password" required>
+                            <button type="button" class="toggle-password" id="togglePassword">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </div>
-                        
-                        <div class="form-options">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="rememberMe">
-                                <span class="checkmark"></span>
-                                Ingat saya
-                            </label>
-                            <a href="#" class="forgot-link">Lupa password?</a>
-                        </div>
-                        
-                        <button type="button" id="loginBtn" class="btn btn-primary btn-block btn-lg">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Masuk ke Sistem
-                        </button>
-                        
-                        <div class="demo-credentials">
-                            <h4><i class="fas fa-key"></i> Demo Accounts:</h4>
-                            <div class="credential-row">
-                                <span class="role-badge siswa">Siswa</span>
-                                <code>ahmad / siswa123</code>
-                            </div>
-                            <div class="credential-row">
-                                <span class="role-badge guru">Guru</span>
-                                <code>budi / guru123</code>
-                            </div>
-                            <div class="credential-row">
-                                <span class="role-badge admin">Admin</span>
-                                <code>admin / admin123</code>
-                            </div>
-                        </div>
-                    </form>
-                    
-                    <div class="auth-switch">
-                        <p>Belum punya akun? 
-                            <a href="#" id="showRegister" class="switch-link">
-                                <i class="fas fa-user-plus"></i> Daftar disini
-                            </a>
-                        </p>
                     </div>
-                </div>
-                
-                <!-- Register Form (Included but hidden by default) -->
-                <div class="auth-form" id="registerForm">
-                    <!-- Registration form content from previous message -->
-                    <!-- [Registration form HTML content here] -->
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Main Dashboard (Hidden Initially) -->
-    <div class="dashboard-container" id="dashboardContainer">
-        <!-- Top Navigation -->
-        <nav class="top-nav">
-            <div class="nav-left">
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="nav-brand">
-                    <div class="nav-logo">
-                        <i class="fas fa-school"></i>
+                    <!-- Siswa Specific -->
+                    <div class="form-group" id="kelasGroup">
+                        <label for="kelas">
+                            <i class="fas fa-graduation-cap"></i>
+                            Kelas
+                        </label>
+                        <select id="kelas" required>
+                            <option value="">Pilih Kelas</option>
+                            <option value="X TKJ 1">X TKJ 1</option>
+                            <option value="X TKJ 2">X TKJ 2</option>
+                            <option value="XI TKJ 1">XI TKJ 1</option>
+                            <option value="XI TKJ 2">XI TKJ 2</option>
+                            <option value="XII TKJ 1">XII TKJ 1</option>
+                            <option value="XII TKJ 2">XII TKJ 2</option>
+                        </select>
                     </div>
-                    <div class="nav-title">
-                        SMK JAKTIM 1<span>Digital</span>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="rememberMe">
+                            <span>Ingat saya</span>
+                        </label>
+                        <a href="#" class="forgot-password" id="forgotPassword">
+                            Lupa password?
+                        </a>
                     </div>
-                </div>
-            </div>
-            
-            <div class="nav-center">
-                <div class="current-session">
-                    <i class="fas fa-clock"></i>
-                    <span id="currentTime">00:00:00</span>
-                    <span class="session-badge" id="sessionStatus">Offline</span>
-                </div>
-            </div>
-            
-            <div class="nav-right">
-                <!-- Dark Mode Toggle Button (Auto-added by dark-mode.js) -->
-                <!-- Will be added dynamically -->
-                
-                <button class="nav-btn" id="notifBtn">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge" id="notifCount">0</span>
-                </button>
-                
-                <button class="nav-btn" id="quickAbsenBtn">
-                    <i class="fas fa-fingerprint"></i>
-                    <span>Presensi Cepat</span>
-                </button>
-                
-                <div class="user-profile" id="userProfile">
-                    <div class="avatar" id="userAvatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-info">
-                        <span class="user-name" id="userDisplayName">Guest</span>
-                        <span class="user-role" id="userDisplayRole">Siswa</span>
-                    </div>
-                    <button class="dropdown-toggle" id="userDropdown">
-                        <i class="fas fa-chevron-down"></i>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span id="loginBtnText">Masuk sebagai Siswa</span>
                     </button>
-                </div>
-            </div>
-        </nav>
+                </form>
 
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="user-detail">
-                    <div class="avatar-large" id="sidebarAvatar">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <div class="user-detail-info">
-                        <h4 id="sidebarName">Nama Siswa</h4>
-                        <p id="sidebarNis">NIS: -</p>
-                        <p id="sidebarKelas">Kelas: -</p>
-                    </div>
-                </div>
-            </div>
-
-            <nav class="sidebar-menu" id="sidebarMenu">
-                <!-- Dashboard -->
-                <a href="#dashboard" class="menu-item active" data-page="dashboard">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <!-- Presensi -->
-                <a href="#presensi" class="menu-item" data-page="presensi">
-                    <i class="fas fa-clipboard-check"></i>
-                    <span>Presensi</span>
-                    <span class="menu-badge success" id="absenToday">0</span>
-                </a>
-
-                <!-- Mata Pelajaran Section -->
-                <div class="menu-section">
-                    <h5><i class="fas fa-book-open"></i> Mata Pelajaran</h5>
-                    <!-- Generated by JavaScript -->
-                </div>
-
-                <!-- Tools Section -->
-                <div class="menu-section">
-                    <h5><i class="fas fa-tools"></i> Tools</h5>
-                    <a href="#jadwal" class="menu-item" data-page="jadwal">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Jadwal</span>
-                    </a>
-                    <a href="#laporan" class="menu-item" data-page="laporan">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Laporan</span>
-                    </a>
-                    <a href="#rekap" class="menu-item" data-page="rekap">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Rekap</span>
-                    </a>
-                </div>
-
-                <!-- Admin Section (Hidden for non-admin) -->
-                <div class="menu-section admin-only" id="adminSection">
-                    <h5><i class="fas fa-user-shield"></i> Admin Panel</h5>
-                    <a href="#admin" class="menu-item" data-page="admin">
-                        <i class="fas fa-cogs"></i>
-                        <span>Dashboard Admin</span>
-                    </a>
-                    <a href="#users" class="menu-item" data-page="users">
-                        <i class="fas fa-users"></i>
-                        <span>Manajemen User</span>
-                    </a>
-                    <a href="#mapel-admin" class="menu-item" data-page="mapel-admin">
-                        <i class="fas fa-book"></i>
-                        <span>Manajemen Mapel</span>
-                    </a>
-                </div>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="system-status">
-                    <div class="status-indicator online"></div>
-                    <span>Sistem Online</span>
-                </div>
-                <button class="logout-btn" id="sidebarLogout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content" id="mainContent">
-            <!-- Welcome Dashboard -->
-            <div class="welcome-screen active" id="welcomeScreen">
-                <div class="welcome-card">
-                    <div class="welcome-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h2>Selamat Datang di SMK Jakarta Timur 1</h2>
-                    <p class="welcome-sub">Sistem Absensi Digital Terpadu</p>
-                    
-                    <div class="quick-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-user-check"></i>
-                            </div>
-                            <h3 class="stat-value" id="statHadir">0</h3>
-                            <p class="stat-label">Hadir Hari Ini</p>
+                <!-- Demo Accounts -->
+                <div class="demo-accounts">
+                    <h4>Akun Demo:</h4>
+                    <div class="demo-list">
+                        <div class="demo-item" data-role="siswa" data-nisn="2024001" data-password="siswa123" data-kelas="X TKJ 1">
+                            <strong>Siswa:</strong> NISN 2024001 / Password: siswa123
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <h3 class="stat-value" id="statMapel">0</h3>
-                            <p class="stat-label">Mapel Hari Ini</p>
+                        <div class="demo-item" data-role="guru" data-nip="101" data-password="guru123">
+                            <strong>Guru:</strong> NIP 101 / Password: guru123
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                            <h3 class="stat-value" id="statPersen">0%</h3>
-                            <p class="stat-label">Kehadiran Bulan Ini</p>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <h3 class="stat-value" id="statHari">Senin</h3>
-                            <p class="stat-label">Hari Ini</p>
-                        </div>
-                    </div>
-
-                    <div class="welcome-actions">
-                        <button class="btn btn-primary btn-lg" id="quickPresensi">
-                            <i class="fas fa-fingerprint"></i>
-                            Presensi Sekarang
-                        </button>
-                        <button class="btn btn-secondary btn-lg" id="viewJadwal">
-                            <i class="fas fa-calendar"></i>
-                            Lihat Jadwal
-                        </button>
-                    </div>
-                    
-                    <!-- Quick Stats Widget -->
-                    <div class="quick-stats-widget">
-                        <div class="stat-item">
-                            <i class="fas fa-fire"></i>
-                            <span class="stat-value" id="currentStreak">0</span>
-                            <span class="stat-label">Hari Streak</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-trophy"></i>
-                            <span class="stat-value" id="achievementCount">0</span>
-                            <span class="stat-label">Pencapaian</span>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fas fa-bolt"></i>
-                            <span class="stat-value" id="rankPosition">-</span>
-                            <span class="stat-label">Ranking Kelas</span>
+                        <div class="demo-item" data-role="admin" data-username="admin" data-password="admin123">
+                            <strong>Admin:</strong> admin / Password: admin123
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Content Areas -->
-            <div class="content-area" id="contentArea"></div>
-            <div class="admin-content" id="adminContent"></div>
-        </main>
-
-        <!-- Quick Actions Bar (Mobile) -->
-        <div class="quick-actions-bar">
-            <button class="quick-action" data-action="absen">
-                <i class="fas fa-check-circle"></i>
-                <span>Presensi</span>
-            </button>
-            <button class="quick-action" data-action="qr">
-                <i class="fas fa-qrcode"></i>
-                <span>QR</span>
-            </button>
-            <button class="quick-action" data-action="jadwal">
-                <i class="fas fa-clock"></i>
-                <span>Jadwal</span>
-            </button>
-            <button class="quick-action" data-action="profile">
-                <i class="fas fa-user"></i>
-                <span>Profil</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Modals Overlay -->
-    <div class="modal-overlay" id="modalOverlay"></div>
-    
-    <!-- Presensi Modal -->
-    <div class="modal" id="presensiModal">
-        <div class="modal-header">
-            <h3><i class="fas fa-fingerprint"></i> Presensi</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="presensi-info">
-                <div class="info-item">
-                    <i class="fas fa-user"></i>
-                    <span id="presensiNama">Nama Siswa</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-book"></i>
-                    <span id="presensiMapel">Mata Pelajaran</span>
-                </div>
-                <div class="info-item">
-                    <i class="fas fa-clock"></i>
-                    <span id="presensiWaktu">Waktu: 00:00</span>
+                <!-- Links -->
+                <div class="login-links">
+                    <p>Tidak punya akun? <a href="#" id="registerLink">Hubungi Administrator</a></p>
+                    <p><a href="#" id="helpLink"><i class="fas fa-question-circle"></i> Butuh bantuan?</a></p>
                 </div>
             </div>
-            
-            <div class="presensi-options">
-                <button class="presensi-option success" data-status="hadir">
-                    <i class="fas fa-check"></i>
-                    <span>Hadir</span>
-                </button>
-                <button class="presensi-option warning" data-status="terlambat">
-                    <i class="fas fa-clock"></i>
-                    <span>Terlambat</span>
-                </button>
-                <button class="presensi-option danger" data-status="izin">
-                    <i class="fas fa-umbrella-beach"></i>
-                    <span>Izin</span>
-                </button>
-                <button class="presensi-option secondary" data-status="sakit">
-                    <i class="fas fa-head-side-cough"></i>
-                    <span>Sakit</span>
-                </button>
-            </div>
-            
-            <div class="presensi-note">
-                <textarea placeholder="Catatan (opsional)" id="presensiCatatan"></textarea>
-            </div>
-            
-            <button class="btn btn-success btn-block" id="submitPresensi">
-                <i class="fas fa-paper-plane"></i>
-                Submit Presensi
-            </button>
-        </div>
-    </div>
 
-    <!-- QR Scanner Modal -->
-    <div class="modal" id="qrModal">
-        <div class="modal-header">
-            <h3><i class="fas fa-qrcode"></i> Scanner QR Code</h3>
-            <button class="modal-close">&times;</button>
-        </div>
-        <div class="modal-body">
-            <div class="qr-scanner-area">
-                <div class="qr-frame"></div>
-                <div class="qr-instruction">
-                    <i class="fas fa-camera"></i>
-                    <p>Arahkan kamera ke QR Code presensi</p>
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>© 2024 SMK Jakarta Timur 1. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#"><i class="fas fa-shield-alt"></i> Keamanan</a>
+                    <a href="#"><i class="fas fa-file-contract"></i> Kebijakan</a>
                 </div>
-            </div>
-            <div class="qr-manual">
-                <input type="text" placeholder="Masukkan kode presensi manual" id="manualCode">
-                <button class="btn btn-primary">Submit</button>
             </div>
         </div>
     </div>
 
-    <!-- Notifications Panel -->
-    <div class="notifications-panel" id="notificationsPanel">
-        <div class="panel-header">
-            <h3><i class="fas fa-bell"></i> Notifikasi</h3>
-            <button class="clear-all" id="clearNotifications">Bersihkan</button>
-        </div>
-        <div class="notifications-list" id="notificationsList">
-            <!-- Notifications will be loaded here -->
-        </div>
-    </div>
-
-    <!-- User Dropdown Menu -->
-    <div class="dropdown-menu" id="userDropdownMenu">
-        <a href="#profile" class="dropdown-item">
-            <i class="fas fa-user-circle"></i>
-            <span>Profil Saya</span>
-        </a>
-        <a href="#settings" class="dropdown-item">
-            <i class="fas fa-cog"></i>
-            <span>Pengaturan</span>
-        </a>
-        <a href="#help" class="dropdown-item">
-            <i class="fas fa-question-circle"></i>
-            <span>Bantuan</span>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item logout" id="logoutBtn">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </a>
-    </div>
-
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Scripts -->
-    <script src="mock-api.js"></script>
-    <script src="realtime.js"></script>
-    <script src="admin.js"></script>
-    <script src="achievements.js"></script>
-    <script src="notifications.js"></script>
-    <script src="dark-mode.js"></script>
-    <script src="script.js"></script>
-    
-    <!-- PWA Service Worker -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
-                    .then(reg => console.log('✅ Service Worker registered:', reg.scope))
-                    .catch(err => console.log('❌ Service Worker error:', err));
-            });
-        }
-        
-        // Initialize Dark Mode immediately
-        document.addEventListener('DOMContentLoaded', function() {
-            // This will be overridden by dark-mode.js but ensures theme is set early
-            const savedTheme = localStorage.getItem('theme') || 
-                              (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            document.body.setAttribute('data-theme', savedTheme);
-        });
-    </script>
+    <!-- Script -->
+    <script src="login-script.js"></script>
 </body>
 </html>
