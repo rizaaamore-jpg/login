@@ -1,0 +1,66 @@
+/* Dark Mode Styles */
+.dark-mode {
+    --bg-color: #1a1a1a;
+    --card-bg: #2d2d2d;
+    --text-color: #e0e0e0;
+    --light-color: #3d3d3d;
+    --dark-color: #cccccc;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .header {
+    border-bottom-color: #3d3d3d;
+}
+
+.dark-mode .stat-card,
+.dark-mode .attendance-card,
+.dark-mode .recent-attendance,
+.dark-mode .login-card,
+.dark-mode .modal-content,
+.dark-mode .user-info {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.dark-mode .form-group input,
+.dark-mode .form-group select,
+.dark-mode .form-group textarea {
+    background-color: #3d3d3d;
+    color: var(--text-color);
+    border-color: #4d4d4d;
+}
+
+.dark-mode .form-group input:focus,
+.dark-mode .form-group select:focus,
+.dark-mode .form-group textarea:focus {
+    border-color: var(--primary-color);
+}
+
+.dark-mode .attendance-item:hover {
+    background-color: #3d3d3d;
+}
+
+.dark-mode .qr-scanner {
+    background-color: #3d3d3d;
+}
+
+.dark-mode .btn-icon {
+    color: var(--text-color);
+}
+
+.dark-mode .btn-icon:hover {
+    background-color: #3d3d3d;
+}
+
+.dark-mode .login-footer a {
+    color: var(--primary-color);
+}
+
+.dark-mode .notification {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+.dark-mode .badge {
+    color: #333;
+}
