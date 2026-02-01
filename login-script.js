@@ -1,4 +1,4 @@
-// JavaScript untuk Halaman Login
+// JavaScript untuk Halaman Login - FIXED
 
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
@@ -39,7 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // Form submission
-        loginForm.addEventListener('submit', handleLogin);
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleLogin();
+        });
         
         // Demo account click
         demoItems.forEach(item => {
@@ -52,6 +55,18 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('forgotPassword').addEventListener('click', function(e) {
             e.preventDefault();
             showForgotPassword();
+        });
+        
+        // Register link
+        document.getElementById('registerLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showRegisterInfo();
+        });
+        
+        // Help link
+        document.getElementById('helpLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            showHelp();
         });
     }
     
@@ -66,16 +81,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update form fields visibility
         switch(role) {
             case 'siswa':
-                nisnGroup.style.display = 'block';
+                nisnGroup.style.display = 'flex';
                 nipGroup.style.display = 'none';
                 usernameGroup.style.display = 'none';
-                kelasGroup.style.display = 'block';
+                kelasGroup.style.display = 'flex';
                 loginBtnText.textContent = 'Masuk sebagai Siswa';
                 break;
                 
             case 'guru':
                 nisnGroup.style.display = 'none';
-                nipGroup.style.display = 'block';
+                nipGroup.style.display = 'flex';
                 usernameGroup.style.display = 'none';
                 kelasGroup.style.display = 'none';
                 loginBtnText.textContent = 'Masuk sebagai Guru';
@@ -84,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'admin':
                 nisnGroup.style.display = 'none';
                 nipGroup.style.display = 'none';
-                usernameGroup.style.display = 'block';
+                usernameGroup.style.display = 'flex';
                 kelasGroup.style.display = 'none';
                 loginBtnText.textContent = 'Masuk sebagai Admin';
                 break;
@@ -126,52 +141,79 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    function handleLogin(e) {
-        e.preventDefault();
-        
+    function handleLogin() {
         // Get form data based on role
         let credentials = {};
+        let isValid = true;
+        let errorMessage = '';
         
         switch(currentRole) {
             case 'siswa':
-                credentials = {
-                    role: 'siswa',
-                    nisn: document.getElementById('nisn').value.trim(),
-                    password: document.getElementById('password').value.trim(),
-                    kelas: document.getElementById('kelas').value
-                };
+                const nisn = document.getElementById('nisn').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const kelas = document.getElementById('kelas').value;
                 
-                if (!credentials.nisn || !credentials.password || !credentials.kelas) {
-                    showError('Harap isi semua field untuk siswa');
-                    return;
+                if (!nisn) {
+                    isValid = false;
+                    errorMessage = 'NISN harus diisi';
+                } else if (!password) {
+                    isValid = false;
+                    errorMessage = 'Password harus diisi';
+                } else if (!kelas) {
+                    isValid = false;
+                    errorMessage = 'Pilih kelas';
+                } else {
+                    credentials = {
+                        role: 'siswa',
+                        nisn: nisn,
+                        password: password,
+                        kelas: kelas
+                    };
                 }
                 break;
                 
             case 'guru':
-                credentials = {
-                    role: 'guru',
-                    nip: document.getElementById('nip').value.trim(),
-                    password: document.getElementById('password').value.trim()
-                };
+                const nip = document.getElementById('nip').value.trim();
+                const guruPassword = document.getElementById('password').value.trim();
                 
-                if (!credentials.nip || !credentials.password) {
-                    showError('Harap isi semua field untuk guru');
-                    return;
+                if (!nip) {
+                    isValid = false;
+                    errorMessage = 'NIP harus diisi';
+                } else if (!guruPassword) {
+                    isValid = false;
+                    errorMessage = 'Password harus diisi';
+                } else {
+                    credentials = {
+                        role: 'guru',
+                        nip: nip,
+                        password: guruPassword
+                    };
                 }
                 break;
                 
             case 'admin':
-                credentials = {
-                    role: 'admin',
-                    username: document.getElementById('username').value.trim(),
-                    password: document.getElementById('password').value.trim()
-                };
+                const username = document.getElementById('username').value.trim();
+                const adminPassword = document.getElementById('password').value.trim();
                 
-                if (!credentials.username || !credentials.password) {
-                    showError('Harap isi semua field untuk admin');
-                    return;
+                if (!username) {
+                    isValid = false;
+                    errorMessage = 'Username harus diisi';
+                } else if (!adminPassword) {
+                    isValid = false;
+                    errorMessage = 'Password harus diisi';
+                } else {
+                    credentials = {
+                        role: 'admin',
+                        username: username,
+                        password: adminPassword
+                    };
                 }
                 break;
+        }
+        
+        if (!isValid) {
+            showError(errorMessage);
+            return;
         }
         
         // Add remember me
@@ -180,11 +222,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading
         showLoading();
         
-        // Simulate API call
+        // Simulate API call with timeout
         setTimeout(() => {
-            const isValid = validateCredentials(credentials);
+            const loginSuccessful = validateLogin(credentials);
             
-            if (isValid) {
+            if (loginSuccessful) {
                 // Save credentials if remember me is checked
                 if (credentials.rememberMe) {
                     localStorage.setItem('savedCredentials', JSON.stringify(credentials));
@@ -193,24 +235,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // Save user data
-                saveUserData(credentials);
+                const userData = getUserDataByCredentials(credentials);
+                localStorage.setItem('userData', JSON.stringify(userData));
+                sessionStorage.setItem('isLoggedIn', 'true');
                 
                 // Show success and redirect
                 showSuccess('Login berhasil! Mengalihkan...');
                 
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    // Redirect based on role
+                    if (credentials.role === 'siswa') {
+                        window.location.href = 'dashboard-siswa.html';
+                    } else if (credentials.role === 'guru') {
+                        window.location.href = 'dashboard-guru.html';
+                    } else if (credentials.role === 'admin') {
+                        window.location.href = 'dashboard-admin.html';
+                    }
                 }, 1500);
             } else {
                 hideLoading();
-                showError('NISN/NIP/Username atau password salah');
+                showError('Login gagal. Periksa kembali NISN/NIP/Username dan password Anda.');
             }
         }, 1500);
     }
     
-    function validateCredentials(credentials) {
-        // Mock validation - in real app, this would be API call
-        
+    function validateLogin(credentials) {
+        // Mock validation - simple check
         if (credentials.role === 'siswa') {
             // Demo siswa: NISN 2024001, password siswa123
             return credentials.nisn === '2024001' && credentials.password === 'siswa123';
@@ -227,8 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
     }
     
-    function saveUserData(credentials) {
-        // Mock user data based on credentials
+    function getUserDataByCredentials(credentials) {
         let userData = {};
         
         switch(credentials.role) {
@@ -264,8 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
         
-        localStorage.setItem('userData', JSON.stringify(userData));
-        sessionStorage.setItem('isLoggedIn', 'true');
+        return userData;
     }
     
     function loadSavedCredentials() {
@@ -278,27 +326,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Fill saved credentials
                 switch(credentials.role) {
                     case 'siswa':
-                        document.getElementById('nisn').value = credentials.nisn;
-                        document.getElementById('password').value = credentials.password;
+                        document.getElementById('nisn').value = credentials.nisn || '';
+                        document.getElementById('password').value = credentials.password || '';
                         if (credentials.kelas) {
                             document.getElementById('kelas').value = credentials.kelas;
                         }
                         break;
                         
                     case 'guru':
-                        document.getElementById('nip').value = credentials.nip;
-                        document.getElementById('password').value = credentials.password;
+                        document.getElementById('nip').value = credentials.nip || '';
+                        document.getElementById('password').value = credentials.password || '';
                         break;
                         
                     case 'admin':
-                        document.getElementById('username').value = credentials.username;
-                        document.getElementById('password').value = credentials.password;
+                        document.getElementById('username').value = credentials.username || '';
+                        document.getElementById('password').value = credentials.password || '';
                         break;
                 }
                 
                 document.getElementById('rememberMe').checked = true;
             } catch (e) {
                 console.error('Error loading saved credentials:', e);
+                localStorage.removeItem('savedCredentials');
             }
         }
     }
@@ -307,7 +356,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const roleName = currentRole === 'siswa' ? 'Siswa' : currentRole === 'guru' ? 'Guru' : 'Admin';
         const contact = currentRole === 'siswa' ? 'Wali Kelas' : 'Administrator Sekolah';
         
-        alert(`Lupa Password - ${roleName}\n\nSilakan hubungi ${contact} untuk reset password:\n\n📞 Telepon: (021) 1234-5678\n📧 Email: admin@smkjaktim1.sch.id\n\nPastikan membawa bukti identitas yang valid.`);
+        alert(`🔐 Lupa Password - ${roleName}\n\nSilakan hubungi ${contact} untuk reset password:\n\n📞 Telepon: (021) 1234-5678\n📧 Email: admin@smkjaktim1.sch.id\n\n📍 Lokasi: Ruang Tata Usaha\n\n⚠️ Pastikan membawa bukti identitas yang valid.`);
+    }
+    
+    function showRegisterInfo() {
+        alert(`📝 Informasi Pendaftaran\n\nUntuk mendaftar sebagai:\n\n👨‍🎓 Siswa: Hubungi bagian Penerimaan Siswa Baru\n👨‍🏫 Guru: Kirim lamaran ke HRD sekolah\n👨‍💼 Admin: Hanya untuk staf IT sekolah\n\n📧 Email: psb@smkjaktim1.sch.id\n📞 Telp: (021) 1234-5678 ext. 101`);
+    }
+    
+    function showHelp() {
+        alert(`❓ Bantuan Login\n\nMasalah yang umum:\n\n1. Lupa password → Klik "Lupa password?"\n2. Akun terkunci → Hubungi admin\n3. NISN/NIP salah → Periksa kartu identitas\n4. Browser error → Coba browser lain\n5. Koneksi internet → Periksa koneksi\n\n🛠️ Support: helpdesk@smkjaktim1.sch.id`);
     }
     
     function showLoading() {
@@ -330,6 +387,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showSuccess(message) {
+        // Remove existing alerts
+        document.querySelectorAll('.alert').forEach(alert => alert.remove());
+        
         // Create success message
         const successMsg = document.createElement('div');
         successMsg.className = 'alert success';
@@ -351,46 +411,23 @@ document.addEventListener('DOMContentLoaded', function() {
             align-items: center;
             gap: 0.75rem;
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
-            z-index: 1000;
-            animation: slideIn 0.3s ease-out;
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
         `;
         
         document.body.appendChild(successMsg);
         
         // Remove after 3 seconds
         setTimeout(() => {
-            successMsg.style.animation = 'slideOut 0.3s ease-out forwards';
+            successMsg.style.animation = 'slideOutRight 0.3s ease-out forwards';
             setTimeout(() => successMsg.remove(), 300);
         }, 3000);
-        
-        // Add animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(100%);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     }
     
     function showError(message) {
+        // Remove existing alerts
+        document.querySelectorAll('.alert').forEach(alert => alert.remove());
+        
         // Create error message
         const errorMsg = document.createElement('div');
         errorMsg.className = 'alert error';
@@ -412,16 +449,76 @@ document.addEventListener('DOMContentLoaded', function() {
             align-items: center;
             gap: 0.75rem;
             box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-            z-index: 1000;
-            animation: slideIn 0.3s ease-out;
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
         `;
         
         document.body.appendChild(errorMsg);
         
-        // Remove after 3 seconds
+        // Remove after 4 seconds
         setTimeout(() => {
-            errorMsg.style.animation = 'slideOut 0.3s ease-out forwards';
+            errorMsg.style.animation = 'slideOutRight 0.3s ease-out forwards';
             setTimeout(() => errorMsg.remove(), 300);
-        }, 3000);
+        }, 4000);
     }
+    
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        /* Additional form group styles */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.25rem;
+        }
+        
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .password-input {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem;
+            z-index: 2;
+        }
+    `;
+    document.head.appendChild(style);
 });
