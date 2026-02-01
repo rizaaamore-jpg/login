@@ -1,29 +1,52 @@
-# 📱 Sistem Absensi Digital - SMK Jakarta Timur 1
+# Sistem Absensi Online - SMK Jakarta Timur 1
 
-Sistem presensi digital berbasis web untuk SMK Jakarta Timur 1 dengan fitur lengkap dan responsif.
+![SMK Jaktim 1](https://via.placeholder.com/800x400/3498db/ffffff?text=SMK+Jakarta+Timur+1+-+Sistem+Absensi+Online)
 
-## 🚀 Fitur Utama
+## 📋 Tentang Proyek
 
-### 👥 Multi-Role Login
-- **Siswa**: Presensi, lihat jadwal, riwayat presensi
-- **Guru**: Kelas mengajar, presensi siswa
-- **Admin**: Manajemen user, mapel, laporan lengkap
+Sistem absensi online berbasis web untuk SMK Jakarta Timur 1. Aplikasi ini memungkinkan siswa, guru, dan admin untuk mengelola kehadiran secara digital dengan fitur real-time dan offline support.
 
-### 📊 Dashboard Lengkap
-- Statistik kehadiran real-time
-- Jadwal pelajaran interaktif
-- Riwayat presensi detail
-- Grafik dan analisis
+## ✨ Fitur Utama
 
-### 🛠️ Admin Panel
-- **Manajemen User**: CRUD siswa, guru, admin
-- **Manajemen Mapel**: Tambah/edit/hapus mata pelajaran
-- **Export Data**: CSV untuk semua data
-- **Statistik Sistem**: Monitoring lengkap
+### 👨‍🎓 Untuk Siswa:
+- Check in/out dengan QR code
+- Absensi manual (sakit, izin)
+- Riwayat kehadiran lengkap
+- Statistik kehadiran personal
+- Pencapaian (achievements)
 
-### 📱 PWA Ready
-- Install sebagai aplikasi native
-- Bekerja offline
-- Responsif di semua device
+### 👩‍🏫 Untuk Guru:
+- Monitoring kehadiran siswa
+- Input absensi manual
+- Generate laporan per kelas
+- Notifikasi keterlambatan
 
-## 🏗️ Struktur File
+### 👨‍💼 Untuk Admin:
+- Kelola data pengguna (siswa/guru)
+- Generate laporan lengkap
+- Pengaturan sistem
+- Backup data
+- Export ke Excel/PDF
+
+### 🌐 Fitur Teknis:
+- Progressive Web App (PWA)
+- Mode offline support
+- Dark mode
+- Real-time updates
+- Notifikasi browser
+- Responsive design
+- Local storage sync
+
+## 🚀 Instalasi & Setup
+
+### Prasyarat:
+- Node.js (versi 14 atau lebih baru)
+- NPM atau Yarn
+- Browser modern
+
+### Langkah Instalasi:
+
+1. **Clone repository:**
+   ```bash
+   git clone https://github.com/smk-jaktim1/absensi-online.git
+   cd absensi-online
