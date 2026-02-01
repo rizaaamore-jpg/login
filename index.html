@@ -3,153 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SMK Jaktim 1</title>
+    <title>Absensi Online - SMK Jakarta Timur 1</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dark-mode.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="login-style.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card">
-            <!-- Header -->
-            <div class="login-header">
-                <div class="school-logo">
-                    <i class="fas fa-school"></i>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <img src="https://via.placeholder.com/50x50/2c3e50/ffffff?text=SMK" alt="Logo SMK" class="logo">
+                <div>
+                    <h1>Sistem Absensi Online</h1>
+                    <p class="subtitle">SMK Jakarta Timur 1</p>
                 </div>
-                <h1>SMK Jakarta Timur 1</h1>
-                <p>Sistem Absensi Digital</p>
             </div>
-
-            <!-- Login Form -->
-            <div class="login-body">
-                <!-- Role Selector -->
-                <div class="role-selector">
-                    <button class="role-btn active" data-role="siswa">
-                        <i class="fas fa-user-graduate"></i>
-                        <span>Siswa</span>
-                    </button>
-                    <button class="role-btn" data-role="guru">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <span>Guru</span>
-                    </button>
-                    <button class="role-btn" data-role="admin">
-                        <i class="fas fa-user-shield"></i>
-                        <span>Admin</span>
-                    </button>
+            <div class="header-right">
+                <button id="darkModeToggle" class="btn-icon" aria-label="Mode Gelap/Terang">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div id="userInfo" class="user-info">
+                    <span id="userName">Guest</span>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
                 </div>
+            </div>
+        </header>
 
-                <!-- Login Form -->
-                <form id="loginForm" class="login-form">
-                    <!-- Siswa Fields -->
-                    <div class="form-group" id="nisnGroup">
-                        <label for="nisn">
-                            <i class="fas fa-id-card"></i>
-                            NISN
-                        </label>
-                        <input type="text" id="nisn" placeholder="Masukkan NISN" required>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Login Section -->
+            <section id="loginSection" class="login-section">
+                <div class="login-card">
+                    <h2>Login ke Sistem</h2>
+                    <div class="role-selector">
+                        <button class="role-btn active" data-role="siswa">Siswa</button>
+                        <button class="role-btn" data-role="guru">Guru</button>
+                        <button class="role-btn" data-role="admin">Admin</button>
                     </div>
-
-                    <!-- Guru Fields -->
-                    <div class="form-group" id="nipGroup" style="display: none;">
-                        <label for="nip">
-                            <i class="fas fa-id-badge"></i>
-                            NIP
-                        </label>
-                        <input type="text" id="nip" placeholder="Masukkan NIP" required>
-                    </div>
-
-                    <!-- Admin Fields -->
-                    <div class="form-group" id="usernameGroup" style="display: none;">
-                        <label for="username">
-                            <i class="fas fa-user"></i>
-                            Username
-                        </label>
-                        <input type="text" id="username" placeholder="Masukkan username" required>
-                    </div>
-
-                    <!-- Common Fields -->
-                    <div class="form-group">
-                        <label for="password">
-                            <i class="fas fa-lock"></i>
-                            Password
-                        </label>
-                        <div class="password-input">
+                    
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="nisn"><i class="fas fa-id-card"></i> NISN / NIP</label>
+                            <input type="text" id="nisn" placeholder="Masukkan NISN/NIP" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password"><i class="fas fa-lock"></i> Password</label>
                             <input type="password" id="password" placeholder="Masukkan password" required>
-                            <button type="button" class="toggle-password" id="togglePassword">
-                                <i class="fas fa-eye"></i>
+                        </div>
+
+                        <div class="form-group" id="kelasGroup" style="display: none;">
+                            <label for="kelas"><i class="fas fa-graduation-cap"></i> Kelas</label>
+                            <select id="kelas">
+                                <option value="">Pilih Kelas</option>
+                                <option value="X TKJ 1">X TKJ 1</option>
+                                <option value="X TKJ 2">X TKJ 2</option>
+                                <option value="XI TKJ 1">XI TKJ 1</option>
+                                <option value="XII TKJ 1">XII TKJ 1</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i> Masuk
+                        </button>
+                    </form>
+
+                    <div class="login-footer">
+                        <p>Belum punya akun? <a href="#" id="registerLink">Daftar di sini</a></p>
+                        <p><a href="#" id="forgotPassword">Lupa password?</a></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section (Hidden by default) -->
+            <section id="dashboardSection" class="dashboard-section" style="display: none;">
+                <!-- Student/Guru Dashboard -->
+                <div id="userDashboard">
+                    <div class="dashboard-header">
+                        <h2>Selamat Datang, <span id="greetingName">User</span>!</h2>
+                        <div class="date-time">
+                            <span id="currentDate"></span>
+                            <span id="currentTime"></span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="quick-stats">
+                        <div class="stat-card present">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3 id="presentCount">0</h3>
+                            <p>Hadir</p>
+                        </div>
+                        <div class="stat-card absent">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3 id="absentCount">0</h3>
+                            <p>Absen</p>
+                        </div>
+                        <div class="stat-card late">
+                            <i class="fas fa-clock"></i>
+                            <h3 id="lateCount">0</h3>
+                            <p>Terlambat</p>
+                        </div>
+                        <div class="stat-card percentage">
+                            <i class="fas fa-chart-line"></i>
+                            <h3 id="attendancePercentage">0%</h3>
+                            <p>Kehadiran</p>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Actions -->
+                    <div class="attendance-card">
+                        <h3><i class="fas fa-fingerprint"></i> Absensi Hari Ini</h3>
+                        <div class="attendance-status">
+                            <p id="todayStatus">Status: Belum absen</p>
+                            <p id="attendanceTime">-</p>
+                        </div>
+                        
+                        <div class="attendance-buttons">
+                            <button id="checkInBtn" class="btn-attendance present">
+                                <i class="fas fa-sign-in-alt"></i> Check In
+                            </button>
+                            <button id="checkOutBtn" class="btn-attendance primary" disabled>
+                                <i class="fas fa-sign-out-alt"></i> Check Out
+                            </button>
+                            <button id="manualAttendanceBtn" class="btn-attendance secondary">
+                                <i class="fas fa-edit"></i> Absen Manual
                             </button>
                         </div>
+
+                        <!-- QR Scanner -->
+                        <div class="qr-section">
+                            <button id="toggleQrBtn" class="btn-qr">
+                                <i class="fas fa-qrcode"></i> Scan QR Code
+                            </button>
+                            <div id="qrScanner" class="qr-scanner" style="display: none;">
+                                <div id="qr-reader" style="width: 300px; margin: 0 auto;"></div>
+                                <p class="qr-note">Arahkan kamera ke QR code yang disediakan</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Siswa Specific -->
-                    <div class="form-group" id="kelasGroup">
-                        <label for="kelas">
-                            <i class="fas fa-graduation-cap"></i>
-                            Kelas
-                        </label>
-                        <select id="kelas" required>
-                            <option value="">Pilih Kelas</option>
-                            <option value="X TKJ 1">X TKJ 1</option>
-                            <option value="X TKJ 2">X TKJ 2</option>
-                            <option value="XI TKJ 1">XI TKJ 1</option>
-                            <option value="XI TKJ 2">XI TKJ 2</option>
-                            <option value="XII TKJ 1">XII TKJ 1</option>
-                            <option value="XII TKJ 2">XII TKJ 2</option>
+                    <!-- Recent Attendance -->
+                    <div class="recent-attendance">
+                        <h3><i class="fas fa-history"></i> Riwayat Terbaru</h3>
+                        <div id="attendanceHistory" class="attendance-list">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard (Hidden by default) -->
+                <div id="adminDashboard" style="display: none;">
+                    <h2>Dashboard Admin</h2>
+                    <div class="admin-controls">
+                        <button class="btn-admin" onclick="showModal('manageUsers')">
+                            <i class="fas fa-users"></i> Kelola Pengguna
+                        </button>
+                        <button class="btn-admin" onclick="showModal('reports')">
+                            <i class="fas fa-file-export"></i> Generate Laporan
+                        </button>
+                        <button class="btn-admin" onclick="showModal('settings')">
+                            <i class="fas fa-cog"></i> Pengaturan
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modals -->
+        <div id="manualAttendanceModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h3>Absen Manual</h3>
+                <form id="manualAttendanceForm">
+                    <div class="form-group">
+                        <label>Jenis Kehadiran</label>
+                        <select id="manualType">
+                            <option value="hadir">Hadir</option>
+                            <option value="sakit">Sakit</option>
+                            <option value="izin">Izin</option>
+                            <option value="alpha">Alpha</option>
                         </select>
                     </div>
-
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="form-options">
-                        <label class="checkbox">
-                            <input type="checkbox" id="rememberMe">
-                            <span>Ingat saya</span>
-                        </label>
-                        <a href="#" class="forgot-password" id="forgotPassword">
-                            Lupa password?
-                        </a>
+                    <div class="form-group">
+                        <label>Tanggal</label>
+                        <input type="date" id="manualDate" required>
                     </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="login-btn">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span id="loginBtnText">Masuk sebagai Siswa</span>
-                    </button>
+                    <div class="form-group">
+                        <label>Keterangan</label>
+                        <textarea id="manualNote" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Simpan</button>
                 </form>
-
-                <!-- Demo Accounts -->
-                <div class="demo-accounts">
-                    <h4>Akun Demo:</h4>
-                    <div class="demo-list">
-                        <div class="demo-item" data-role="siswa" data-nisn="2024001" data-password="siswa123" data-kelas="X TKJ 1">
-                            <strong>Siswa:</strong> NISN 2024001 / Password: siswa123
-                        </div>
-                        <div class="demo-item" data-role="guru" data-nip="101" data-password="guru123">
-                            <strong>Guru:</strong> NIP 101 / Password: guru123
-                        </div>
-                        <div class="demo-item" data-role="admin" data-username="admin" data-password="admin123">
-                            <strong>Admin:</strong> admin / Password: admin123
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Links -->
-                <div class="login-links">
-                    <p>Tidak punya akun? <a href="#" id="registerLink">Hubungi Administrator</a></p>
-                    <p><a href="#" id="helpLink"><i class="fas fa-question-circle"></i> Butuh bantuan?</a></p>
-                </div>
             </div>
+        </div>
 
-            <!-- Footer -->
-            <div class="login-footer">
-                <p>© 2024 SMK Jakarta Timur 1. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#"><i class="fas fa-shield-alt"></i> Keamanan</a>
-                    <a href="#"><i class="fas fa-file-contract"></i> Kebijakan</a>
-                </div>
-            </div>
+        <!-- Notifications Container -->
+        <div id="notificationsContainer" class="notifications-container"></div>
+
+        <!-- Achievements Badge -->
+        <div id="achievementsBadge" class="achievements-badge" style="display: none;">
+            <i class="fas fa-trophy"></i>
+            <span class="badge-count">0</span>
         </div>
     </div>
 
-    <!-- Script -->
-    <script src="login-script.js"></script>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+    <script src="realtime.js"></script>
+    <script src="dark-mode.js"></script>
+    <script src="achievements.js"></script>
+    <script src="notifications.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('Service Worker terdaftar'))
+                .catch(err => console.log('Service Worker gagal:', err));
+        }
+    </script>
 </body>
-</html>
+    </html>
