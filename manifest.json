@@ -1,0 +1,110 @@
+{
+  "name": "Absensi SMK Jakarta Timur 1",
+  "short_name": "Absensi SMK",
+  "description": "Sistem absensi online untuk SMK Jakarta Timur 1",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3498db",
+  "theme_color": "#3498db",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "id-ID",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/72x72/3498db/ffffff?text=A",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/96x96/3498db/ffffff?text=A",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/128x128/3498db/ffffff?text=A",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/144x144/3498db/ffffff?text=A",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/152x152/3498db/ffffff?text=A",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/192x192/3498db/ffffff?text=A",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/384x384/3498db/ffffff?text=A",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/3498db/ffffff?text=A",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/720x1280/2c3e50/ffffff?text=Dashboard",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard Absensi"
+    },
+    {
+      "src": "https://via.placeholder.com/1280x720/2c3e50/ffffff?text=Admin+Panel",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Panel Admin"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Check In",
+      "short_name": "Check In",
+      "description": "Lakukan check in kehadiran",
+      "url": "/?action=checkin",
+      "icons": [
+        {
+          "src": "https://via.placeholder.com/96x96/2ecc71/ffffff?text=✓",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Riwayat Absensi",
+      "short_name": "Riwayat",
+      "description": "Lihat riwayat kehadiran",
+      "url": "/?action=history",
+      "icons": [
+        {
+          "src": "https://via.placeholder.com/96x96/3498db/ffffff?text=📅",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
