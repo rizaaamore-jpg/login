@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SMK Jaktim 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dark-mode.css">
+</head>
+<body>
+    <!-- Isi dashboard seperti file index.html sebelumnya -->
+    
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('userData');
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            
+            if (!userData || !isLoggedIn) {
+                window.location.href = 'login.html';
+            }
+            
+            // Load user data
+            const user = JSON.parse(userData);
+            
+            // Update UI based on user role
+            if (user.role === 'guru') {
+                loadGuruDashboard(user);
+            } else if (user.role === 'admin') {
+                loadAdminDashboard(user);
+            } else {
+                loadSiswaDashboard(user);
+            }
+        });
+        
+        function loadSiswaDashboard(user) {
+            // Dashboard khusus siswa
+            document.title = `Dashboard Siswa - ${user.name}`;
+        }
+        
+        function loadGuruDashboard(user) {
+            // Dashboard khusus guru
+            document.title = `Dashboard Guru - ${user.name}`;
+            
+            // Hide siswa-specific elements
+            document.querySelectorAll('.siswa-only').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show guru features
+            // Add guru-specific content
+        }
+        
+        function loadAdminDashboard(user) {
+            // Dashboard khusus admin
+            document.title = `Dashboard Admin - ${user.name}`;
+            
+            // Show admin panel
+            // Hide regular user features
+        }
+    </script>
+</body>
+</html>
