@@ -176,68 +176,76 @@ class AbsensiApp {
         }
     }
     
-    handleLogin(type) {
-        let username, password;
-        
-        switch(type) {
-            case 'student':
-                username = document.getElementById('student-username').value;
-                password = document.getElementById('student-password').value;
-                break;
-            case 'teacher':
-                username = document.getElementById('teacher-username').value;
-                password = document.getElementById('teacher-password').value;
-                break;
-            case 'admin':
-                username = document.getElementById('admin-username').value;
-                password = document.getElementById('admin-password').value;
-                break;
-            default:
-                return;
-        }
-        
-        if (!username || !password) {
-            this.showToast('Harap isi username dan password', 'warning');
+    // Di bagian handleLogin di script.js, ubah menjadi:
+async handleLogin(type) {
+    let username, password;
+    
+    switch(type) {
+        case 'student':
+            username = document.getElementById('student-username').value;
+            password = document.getElementById('student-password').value;
+            break;
+        case 'teacher':
+            username = document.getElementById('teacher-username').value;
+            password = document.getElementById('teacher-password').value;
+            break;
+        case 'admin':
+            username = document.getElementById('admin-username').value;
+            password = document.getElementById('admin-password').value;
+            break;
+        default:
             return;
-        }
-        
-        // Demo authentication
-        const demoCredentials = {
-            'student': { username: 'Arip', password: 'siswa123', name: 'Arip Siswa', role: 'student' },
-            'teacher': { username: 'Guru', password: 'guru123', name: 'Budi Guru', role: 'teacher' },
-            'admin': { username: 'admin', password: 'admin123', name: 'Admin Sistem', role: 'admin' }
+    }
+    
+    if (!username || !password) {
+        this.showToast('Harap isi username dan password', 'warning');
+        return;
+    }
+    
+    // Demo authentication
+    const demoCredentials = {
+        'student': { username: 'Arip', password: 'siswa123', name: 'Arip Siswa', role: 'student' },
+        'teacher': { username: 'Guru', password: 'guru123', name: 'Budi Guru', role: 'teacher' },
+        'admin': { username: 'admin', password: 'admin123', name: 'Admin Sistem', role: 'admin' }
+    };
+    
+    const credential = demoCredentials[type];
+    
+    if (username === credential.username && password === credential.password) {
+        this.currentUser = {
+            id: Date.now(),
+            username: credential.username,
+            name: credential.name,
+            role: credential.role
         };
         
-        const credential = demoCredentials[type];
+        this.currentRole = credential.role;
         
-        if (username === credential.username && password === credential.password) {
-            this.currentUser = {
-                id: Date.now(),
-                username: credential.username,
-                name: credential.name,
-                role: credential.role
-            };
-            
-            this.currentRole = credential.role;
-            
-            // Save session
-            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-            localStorage.setItem('currentRole', this.currentRole);
-            
-            this.showToast(`Login berhasil! Selamat datang ${credential.name}`, 'success');
-            
-            // Show admin section if admin
-            if (this.currentRole === 'admin') {
-                this.switchSection('admin');
-                this.loadAdminData();
-            } else {
-                this.showToast('Fitur dashboard untuk siswa/guru dalam pengembangan', 'info');
+        // Save session
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        localStorage.setItem('currentRole', this.currentRole);
+        
+        this.showToast(`Login berhasil! Selamat datang ${credential.name}`, 'success');
+        
+        // Redirect ke dashboard berdasarkan role
+        setTimeout(() => {
+            switch(this.currentRole) {
+                case 'student':
+                    window.location.href = 'dashboard-siswa.html';
+                    break;
+                case 'teacher':
+                    window.location.href = 'dashboard-guru.html';
+                    break;
+                case 'admin':
+                    window.location.href = 'dashboard-admin.html';
+                    break;
             }
-            
-        } else {
-            this.showToast('Username atau password salah', 'error');
-        }
+        }, 1000);
+        
+    } else {
+        this.showToast('Username atau password salah', 'error');
     }
+}
     
     handleRegister() {
         const name = document.getElementById('regName').value;
