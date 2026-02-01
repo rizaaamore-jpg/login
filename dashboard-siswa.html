@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Siswa - SMK Jaktim 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .welcome {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome h2 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-5px);
+            border-color: #3498db;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+        }
+        
+        .action-btn i {
+            font-size: 2rem;
+            color: #3498db;
+        }
+        
+        .logout-btn {
+            display: block;
+            width: 200px;
+            margin: 2rem auto 0;
+            padding: 1rem;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>SMK Jakarta Timur 1</h1>
+            <p>Sistem Absensi Digital</p>
+            
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">👨‍🎓</div>
+                <div class="user-details">
+                    <h3 id="userName">Ahmad Budi Santoso</h3>
+                    <p id="userClass">X TKJ 1 - NIS: 2024001</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="welcome">
+                <h2>Selamat Datang!</h2>
+                <p>Silakan pilih menu di bawah ini</p>
+            </div>
+            
+            <div class="actions">
+                <a href="absensi.html" class="action-btn">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Absensi QR Code</span>
+                </a>
+                
+                <a href="riwayat.html" class="action-btn">
+                    <i class="fas fa-history"></i>
+                    <span>Riwayat Absensi</span>
+                </a>
+                
+                <a href="profil.html" class="action-btn">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profil Siswa</span>
+                </a>
+                
+                <a href="jadwal.html" class="action-btn">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Jadwal Pelajaran</span>
+                </a>
+            </div>
+            
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                Keluar
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Load user data
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('userData');
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            
+            if (!userData || !isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const user = JSON.parse(userData);
+            
+            // Update UI
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userClass').textContent = `${user.kelas} - NIS: ${user.nisn}`;
+            document.getElementById('userAvatar').textContent = user.avatar;
+            
+            // Logout button
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('userData');
+                sessionStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
